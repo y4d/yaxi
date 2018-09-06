@@ -1,4 +1,4 @@
-var yaxi = require('jiaxin');
+var yaxi = jiax;
 
 
 yaxi.scheduler.execute = function () {

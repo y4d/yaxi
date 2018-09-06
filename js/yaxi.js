@@ -1,4 +1,4 @@
-var jiaxin = Object.create(null);
+var jiax = Object.create(null);
 
 
 Object.extend = function (fn) {
@@ -36,7 +36,7 @@ Object.extend = function (fn) {
 
 
 
-jiaxin.Event = Object.extend(function (Class) {
+jiax.Event = Object.extend(function (Class) {
 
 
 
@@ -84,25 +84,25 @@ jiaxin.Event = Object.extend(function (Class) {
 
 
 
-jiaxin.Observe = Object.extend.call({}, function (Class) {
+jiax.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    var $Event = jiaxin.Event;
+    var $Event = jiax.Event;
 
     var $Events = Event.all;
 
-    var $events = jiaxin.events = Object.create(null);
+    var $events = jiax.events = Object.create(null);
 
-    var $watches = jiaxin.watches = Object.create(null);
-
-
-    var components = jiaxin.components = Object.create(null);
-
-    var observes = jiaxin.observes = Object.create(null);
+    var $watches = jiax.watches = Object.create(null);
 
 
-    var scheduler = jiaxin.scheduler = [];
+    var components = jiax.components = Object.create(null);
+
+    var observes = jiax.observes = Object.create(null);
+
+
+    var scheduler = jiax.scheduler = [];
 
     var delay = 0;
 
@@ -663,7 +663,7 @@ jiaxin.Observe = Object.extend.call({}, function (Class) {
 
 
 
-(function (jiaxin, ObserveArray) {
+(function (jiax, ObserveArray) {
 
 
 
@@ -671,7 +671,7 @@ jiaxin.Observe = Object.extend.call({}, function (Class) {
 
     var prototype = ObserveArray.prototype = Object.create(base);
 
-    var scheduler = jiaxin.scheduler.start;
+    var scheduler = jiax.scheduler.start;
 
 
     
@@ -812,7 +812,7 @@ jiaxin.Observe = Object.extend.call({}, function (Class) {
 
 
 
-})(jiaxin, jiaxin.ObserveArray = function ObserveArray(owner, data) {
+})(jiax, jiax.ObserveArray = function ObserveArray(owner, data) {
 
     var length;
 
@@ -820,7 +820,7 @@ jiaxin.Observe = Object.extend.call({}, function (Class) {
 
     if (data && (length = data.length) > 0)
     {
-        var Class = owner.$subtype || jiaxin.Observe,
+        var Class = owner.$subtype || jiax.Observe,
             index = this.length;
 
         for (var i = 0; i < length; i++)
@@ -840,7 +840,7 @@ jiaxin.Observe = Object.extend.call({}, function (Class) {
 
 
 
-jiaxin.Style = jiaxin.Observe.extend(function (Class) {
+jiax.Style = jiax.Observe.extend(function (Class) {
 
 
 
@@ -894,7 +894,7 @@ jiaxin.Style = jiaxin.Observe.extend(function (Class) {
 
 
 
-var yaxi = require('jiaxin');
+var yaxi = jiax;
 
 
 yaxi.scheduler.execute = function () {
@@ -906,7 +906,7 @@ yaxi.scheduler.execute = function () {
 
 
 
-yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
+yaxi.Node = jiax.Observe.extend(function (Class, base) {
 
 
 
@@ -943,7 +943,7 @@ yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
 
         get: function () {
 
-            var value = new jiaxin.Style(this);
+            var value = new jiax.Style(this);
 
             Object.defineProperty(this, 'style', {
 
@@ -961,7 +961,7 @@ yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
 
         get: function () {
 
-            var value = new jiaxin.ObserveArray(this);
+            var value = new jiax.ObserveArray(this);
 
             Object.defineProperty(this, 'children', {
 

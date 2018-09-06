@@ -1,4 +1,4 @@
-yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
+yaxi.Node = jiax.Observe.extend(function (Class, base) {
 
 
 
@@ -35,7 +35,7 @@ yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
 
         get: function () {
 
-            var value = new jiaxin.Style(this);
+            var value = new jiax.Style(this);
 
             Object.defineProperty(this, 'style', {
 
@@ -53,7 +53,7 @@ yaxi.Node = jiaxin.Observe.extend(function (Class, base) {
 
         get: function () {
 
-            var value = new jiaxin.ObserveArray(this);
+            var value = new jiax.ObserveArray(this);
 
             Object.defineProperty(this, 'children', {
 
