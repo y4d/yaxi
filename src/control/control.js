@@ -5,6 +5,24 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     var eventTarget = yaxi.EventTarget.prototype;
 
 
+    
+    Class.register = function (name) {
+
+        if (name)
+        {
+            yaxi.classes[this.typeName = this.prototype.typeName = name] = this;
+        }
+
+        return this;
+    }
+
+
+    
+    // 不处理bindings属性
+    this.__c_bindings = false;
+
+    
+
 
     this.$properties({
         
@@ -137,7 +155,25 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 触发事件
     this.trigger = eventTarget.trigger;
 
-    
+
+
+
+    this.destroy = function () {
+
+        var dom;
+
+        this.destroyed = true;
+        
+        if (dom = this.$dom)
+        {
+            dom.$control = this.$dom = null;
+        }
+
+        if (this.ondestroy)
+        {
+            this.ondestroy();
+        }
+    }
 
 
 
@@ -168,38 +204,46 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     this.update = function () {
 
-        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true)),
-            data;
+        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true));
 
-        if (data = this.__storage)
+        if (this.__changes)
         {
-            this.$patch(data);
+            this.__update_patch();
         }
 
-        if (data = this.__style)
+        if (this.__style)
         {
-            data.$patch(data.__storage);
+            this.__style.__update_patch();
         }
 
         return dom;
     }
 
 
-    this.$patch = function (storage) {
+    this.__update_patch = function () {
 
-        var dom = this.$dom;
+        var changes = base.__update_patch.call(this),
+            dom = this.$dom,
+            fn;
 
-        for (var name in storage)
+        for (var name in changes)
         {
-            (this['__set_' + name] || updateDom).call(this, dom, storage[name], name);
+            if (fn = this['__set_' + name])
+            {
+                fn.call(this, dom, changes[name]);
+            }
+            else if (fn !== false)
+            {
+                updateDom.call(this, dom, name, changes[name]);
+            }
         }
 
-        base.$patch.call(this, storage);
+        return changes;
     }
 
 
 
-    function updateDom(dom, value, name) {
+    function updateDom(dom, name, value) {
 
         if (value)
         {
@@ -220,16 +264,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     
     // 自定义事件更新逻辑
-    this.__event_patch = function (storage) {
+    this.__event_patch = function (changes) {
 
         var control = this.owner,
             dom = owner.$dom;
 
         if (dom)
         {
-            for (var name in storage)
+            for (var name in changes)
             {
-                if (storage[name])
+                if (changes[name])
                 {
                     dom.$control = control;
                     dom.addEventListener(name, domEventListener);
@@ -242,7 +286,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             }
         }
 
-        this.storage = null;
+        this.changes = null;
     }
 
 

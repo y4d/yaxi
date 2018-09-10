@@ -2,14 +2,16 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     
     
-    var ObserveArray = yaxi.ObserveArray;
-
     var fragment = document.createDocumentFragment();
 
 
 
+    yaxi.template(this, '<div class="yx-control yx-panel"></div>')
+
+
 
     this.$subtype = yaxi.Control;
+
 
 
 
@@ -23,8 +25,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+
     this.__c_children = '__init_children';
-    
+
     
     this.__init_children = function (data) {
 
@@ -32,10 +35,10 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (!children)
         {
-            children = this.__children = new ObserveArray(this, data);
+            children = this.__children = new yaxi.ObserveArray(this, data);
 
             children.__changed = 1;
-            children.$patch = childrenPatch;
+            children.__update_patch = childrenPatch;
     
             Object.defineProperty(this, 'children', {
     
@@ -45,6 +48,57 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         }
 
         return children;
+    }
+
+
+
+    // 模型
+    this.model = null;
+
+
+    this.__c_model = '__init_model';
+
+    this.__set_model = false;
+
+
+    this.__init_model = function (model) {
+
+        if (model)
+        {
+            (this.model = model instanceof yaxi.Model ? model : new yaxi.Model(model)).bind(this);
+        }
+    }
+
+
+    // 模板
+    this.template = null;
+
+
+    this.__c_template = '__init_template';
+
+    this.__set_template = false;
+
+
+    this.__init_template = function (template) {
+
+        this.template = template;
+    }
+
+    
+
+    this.destroy = function () {
+
+        var children = this.__children;
+
+        if (children)
+        {
+            for (var i = children.length; i--;)
+            {
+                children[i].destroy();
+            }
+        }
+
+        base.destroy.call(this);
     }
 
 
@@ -65,7 +119,11 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             }
 
             dom.appendChild(host);
-            children.$commit();
+            children.commit();
+        }
+        else
+        {
+            this.children.__changed = 0;
         }
 
         return dom;
@@ -73,9 +131,17 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    function childrenPatch(changes) {
+    function childrenPatch() {
 
-        var list, item;
+        var changes = this.getChanges(),
+            list,
+            item;
+
+        if (!changes)
+        {
+            this.owner.update();
+            return;
+        }
 
         if (list = changes[0])
         {
@@ -113,7 +179,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             sortChildNodes(this.owner.$dom, changes.slice(2));
         }
 
-        this.$commit();
+        this.commit();
     }
 
 
@@ -159,31 +225,6 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
                 if (item.destroy)
                 {
                     item.destroy();
-                }
-            }
-        }
-    }
-
-
-    this.destroy = function () {
-
-        var children = this.__children;
-
-        if (children)
-        {
-            for (var i = children.length; i--;)
-            {
-                var control = children[i],
-                    dom;
-    
-                if (dom = control.$dom)
-                {
-                    dom.$control = control.$dom = null;
-                }
-    
-                if (control.destroy)
-                {
-                    control.destroy();
                 }
             }
         }

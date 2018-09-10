@@ -2,6 +2,14 @@ var yaxi = Object.create(null);
 
 
 
+yaxi.classes = Object.create(null);
+
+
+yaxi.watches = Object.create(null);
+
+
+
+
 Object.extend = function (fn) {
 	
     var base = this.prototype || null,

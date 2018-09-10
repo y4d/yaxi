@@ -18,10 +18,10 @@
                 backgroundColor: 'red'
             },
             children: [
-                {
-                    Class: yaxi.Button,
-                    text: 'button'
-                }
+                // {
+                //     Class: yaxi.Button,
+                //     text: 'button'
+                // }
             ]
         });
 
@@ -29,14 +29,34 @@
         page.open();
 
 
-        for (var i = 0; i < 10; i++)
-        {
-            page.children.push({
+        // for (var i = 0; i < 10; i++)
+        // {
+        //     page.children.push({
                 
+        //         Class: yaxi.Button,
+        //         text: 'button'
+        //     });
+        // }
+
+
+
+
+        var panel = new yaxi.Panel({
+
+            model: {
+                text: '123456'
+            },
+            template: {
                 Class: yaxi.Button,
-                text: 'button'
-            });
-        }
+                bindings: {
+                    text: 'text'
+                }
+            }
+        });
+
+
+        page.children.push(panel);
+
 
     
     </script>

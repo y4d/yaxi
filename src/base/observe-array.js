@@ -6,46 +6,21 @@
 
     var prototype = (yaxi.ObserveArray = ObserveArray).prototype = Object.create(base);
 
-    var components = yaxi.components;
+    var classes = yaxi.classes;
+
+    var patches = yaxi.__patches;
 
 
-    
-    // 更新队列
-    var updateList = [];
-
-    var delay = 0;
-
-
-
-    function update() {
-
-        var list = updateList,
-            item,
-            changes;
-
-        for (var i = 0, l = list.length; i < l; i++)
-        {
-            item = list[i];
-  
-            if (changes = item.$changes())
-            {
-                item.$patch(changes);
-            }
-        }
-        
-        delay = list.length = 0;
-    }
 
 
     function patch(target) {
 
-        if (!delay)
+        if (!patches.delay)
         {
-            delay = setTimeout(update);
+            patches.delay = setTimeout(patches.update);
         }
 
-        updateList.push(target);
-
+        patches.push(target);
         target.__changed = 1;
     }
 
@@ -59,7 +34,7 @@
     
         if (data && (length = data.length) > 0)
         {
-            var Class = owner.$subtype || yaxi.Observe,
+            var Class = owner.$subtype,
                 index = 0,
                 item;
     
@@ -90,14 +65,9 @@
 
         var type;
 
-        if (type = data.Class)
+        if ((type = data.Class) && typeof type === 'string')
         {
-            delete data.Class;
-
-            if (typeof type === 'string')
-            {
-                type = components[type];
-            }
+            type = classes[type];
         }
 
         return new (type || Class)(data);
@@ -112,7 +82,7 @@
 
         while (index < length)
         {
-            item = items[index++];
+            var item = items[index++];
             
             if (!(item instanceof Class))
             {
@@ -323,8 +293,8 @@
 
 
 
-    prototype.$changes = function () {
-
+    prototype.getChanges = function () {
+                
         var original = this.__original,
             items,
             item1,
@@ -403,13 +373,7 @@
 
 
 
-    prototype.$patch = function (changes) {
-
-        this.$commit();
-    }
-
-
-    prototype.$commit = function () {
+    prototype.__update_patch = prototype.commit = function () {
 
         var length = this.length;
 

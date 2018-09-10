@@ -2,6 +2,14 @@ var yaxi = Object.create(null);
 
 
 
+yaxi.classes = Object.create(null);
+
+
+yaxi.watches = Object.create(null);
+
+
+
+
 Object.extend = function (fn) {
 	
     var base = this.prototype || null,
@@ -33,6 +41,261 @@ Object.extend = function (fn) {
 	return Class;
 }
 
+
+
+
+
+yaxi.__extend_properties = function (get, set) {
+
+
+
+    function to_boolean(value) {
+        
+        return !!value;
+    }
+
+
+    function to_integer(value) {
+
+        return value | 0;
+    }
+
+
+    function to_number(value) {
+
+        return +value || 0;
+    }
+
+
+    function to_string(value) {
+
+        return '' + value;
+    }
+
+
+    function to_date(value) {
+
+        return new Date(value);
+    }
+
+
+    function to_object(value) {
+
+        return value;
+    }
+
+
+    
+    function build(name, options) {
+
+        var type = options.type,
+            defaultValue = options.defaultValue,
+            convertor = options.convertor,
+            alias = options.alias || (options.alias = name),
+            key = '__v_' + name;
+
+        if (defaultValue === void 0)
+        {
+            options.defaultValue = defaultValue = null;
+        }
+
+        if (!type)
+        {
+            options.type = type = typeof defaultValue;
+        }
+
+        switch (type)
+        {
+            case 'boolean':
+                this[key] = defaultValue;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, convertor || (convertor = to_boolean), alias);
+                break;
+
+            case 'int':
+            case 'integer':
+                this[key] = defaultValue;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, convertor || (convertor = to_integer), alias);
+                break;
+
+            case 'number':
+                this[key] = defaultValue;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, convertor || (convertor = to_number), alias);
+                break;
+
+            case 'string':
+                this[key] = defaultValue;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, convertor || (convertor = to_string), alias);
+                break;
+
+            case 'date':
+                this[key] = defaultValue;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, convertor || (convertor = to_date), alias);
+                break;
+
+            default:
+                this[key] = convertor = null;
+                options.get = get(name, key, alias);
+                options.set = set(name, key, to_object, alias);
+                break;
+        }
+
+        if (convertor)
+        {
+            convertor.alias = alias;
+            this['__c_' + name] = options.convertor = convertor;
+        }
+        
+        this['__o_' + name] = options;
+    }
+
+
+
+    // 定义属性方法
+    return function (properties) {
+
+        if (properties)
+        {
+            var define = Object.defineProperty;
+
+            for (var name in properties)
+            {
+                var item = properties[name];
+
+                if (item == null)
+                {
+                    item = { defaultValue: null };
+                }
+                else if (typeof item !== 'object')
+                {
+                    item = { defaultValue: item };
+                }
+                
+                build.call(this, name, item);
+
+                define(this, name, item);
+            }
+        }
+    }
+
+
+
+}
+
+
+
+
+yaxi.__extend_watch = function (target, prefix) {
+
+
+
+    prefix = prefix || '';
+
+
+    
+    target[prefix + 'watch'] = function (name, listener) {
+
+        if (name && typeof listener === 'function')
+        {
+            var watches = yaxi.watches,
+                keys = watches[name] || (watches[name] = {}),
+                id = this.$uuid;
+
+            (keys[id] || (keys[id] = [])).push(listener);
+        }
+    }
+
+
+    target[prefix + 'unwatch'] = function (name, listener) {
+
+        var watches = yaxi.watches,
+            id = this.$uuid,
+            keys,
+            items;
+
+        if (!name)
+        {
+            for (name in watches)
+            {
+                delete watches[name][id];
+            }
+        }
+        else if (keys = watches[name])
+        {
+            if (listener)
+            {
+                if (items = keys[name])
+                {
+                    for (var i = items.length; i--;)
+                    {
+                        if (items[i] === listener)
+                        {
+                            items.splice(i, 1);
+                        }
+                    }
+
+                    if (!items.length)
+                    {
+                        keys[name] = null;
+                    }
+                }
+            }
+            else
+            {
+                keys[name] = null;
+            }
+        }
+    }
+
+
+    target[prefix + 'notify'] = function (source, name, value, oldValue) {
+
+        var keys = yaxi.watches[name];
+
+        if (keys)
+        {
+            var target = arguments[3] || this,
+                items,
+                index,
+                event,
+                fn;
+
+            do
+            {
+                if (items = keys[target.$uuid])
+                {
+                    index = 0;
+
+                    while (fn = items[index++])
+                    {
+                        if (!event)
+                        {
+                            event = {
+                                target: source,
+                                name: name,
+                                value: value,
+                                oldValue: oldValue
+                            };
+                        }
+
+                        if (fn.call(this, event) === false)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            while (target = target.$parent);
+        }
+        
+        return true;
+    }
+
+}
 
 
 
@@ -345,55 +608,11 @@ yaxi.EventTarget = Object.extend(function (Class) {
 yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
-
-    // 更新队列
-    var updateList = [];
-
-    var delay = 0;
-
     
+    var patches = yaxi.__patches = [];
+
+
     var uuid = 1;
-
-
-
-
-    yaxi.components = Object.create(null);
-
-
-    yaxi.watches = Object.create(null);
-
-
-
-
-    function update() {
-
-        var list = updateList,
-            item,
-            storage;
-
-        for (var i = 0, l = list.length; i < l; i++)
-        {
-            if ((item = list[i]) && (storage = item.__storage))
-            {
-                item.$patch(storage);
-            }
-        }
-
-        delay = list.length = 0;
-    }
-
-
-    function patch(target) {
-
-        if (!delay)
-        {
-            delay = setTimeout(update);
-        }
-
-        updateList.push(target);
-
-        return target.__storage = {};
-    }
 
 
 
@@ -404,7 +623,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         if (data)
         {
-            var storage = this.__storage = {},
+            var changes = this.__changes = {},
                 convert;
 
             for (var name in data)
@@ -417,328 +636,134 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     }
                     else
                     {
-                        storage[convert.alias] = convert(data[name]);
+                        changes[convert.alias] = convert(data[name]);
                     }
                 }
                 else if (convert !== false)
                 {
-                    storage[name] = data[name];
+                    changes[name] = data[name];
                 }
             }
         }
     }
 
 
-    Class.register = function (name) {
 
-        if (name)
-        {
-            yaxi.components[this.typeName = this.prototype.typeName = name] = this;
-        }
+    // 不处理Class属性
+    this.__c_Class = false;
 
-        return this;
-    }
 
 
     
-
-    function to_boolean(value) {
-        
-        return !!value;
-    }
-
-
-    function to_integer(value) {
-
-        return value | 0;
-    }
-
-
-    function to_number(value) {
-
-        return +value || 0;
-    }
-
-
-    function to_string(value) {
-
-        return '' + value;
-    }
-
-
-    function to_date(value) {
-
-        return new Date(value);
-    }
-
-
-    function to_object(value) {
-
-        return value;
-    }
-
-
-    function build(name, options) {
-
-        var type = options.type,
-            defaultValue = options.defaultValue,
-            convertor = options.convertor,
-            alias = options.alias || (options.alias = name),
-            key = '__v_' + name;
-
-        if (defaultValue === void 0)
-        {
-            options.defaultValue = defaultValue = null;
-        }
-
-        if (!type)
-        {
-            options.type = type = typeof defaultValue;
-        }
-
-        switch (type)
-        {
-            case 'boolean':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_boolean));
-                break;
-
-            case 'int':
-            case 'integer':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_integer));
-                break;
-
-            case 'number':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_number));
-                break;
-
-            case 'string':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_string));
-                break;
-
-            case 'date':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_date));
-                break;
-
-            default:
-                this[key] = convertor = null;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, to_object);
-                break;
-        }
-
-        if (convertor)
-        {
-            convertor.alias = alias;
-            this['__c_' + name] = options.convertor = convertor;
-        }
-        
-        this['__o_' + name] = options;
-    }
-
-
-
-    function build_value_get(key, alias) {
+    // 定义属性
+    this.$properties = yaxi.__extend_properties(function (name, key, alias) {
 
         return function () {
 
-            var value = this.__storage;
-            return value && (value = value[alias]) !== void 0 ? value : this[key];
+            var value;
+            return (value = this.__changes) && (value = value[alias]) !== void 0 ? value : this[key];
         }
-    }
 
-    
-    function build_value_set(name, key, alias, convertor) {
+    }, function (name, key, convertor, alias) {
 
         var watches = yaxi.watches;
 
         return function (value) {
 
-            var storage = this.__storage,
-                oldValue;
+            var changes = this.__changes,
+                any;
 
             value = convertor(value);
 
-            if (storage)
+            if (changes)
             {
-                if (value === (oldValue = storage[alias]))
+                if (value === (any = changes[alias]))
                 {
                     return;
                 }
     
                 if (value !== this[key])
                 {
-                    storage[alias] = value;
+                    changes[alias] = value;
                 }
                 else
                 {
-                    delete storage[alias];
+                    delete changes[alias];
                 }
             }
             else
             {
-                (storage = patch(this))[alias] = value;
+                (changes = patch(this))[alias] = value;
             }
 
             if (watches[name])
             {
-                this.$notify(name, value, oldValue !== void 0 ? oldValue : this[key]);
+                this.$notify(name, value, any !== void 0 ? any : this[key]);
             }
         }
-    }
+
+    });
 
 
 
-    // 定义属性
-    this.$properties = function (properties) {
+    // 扩展watch支持
+    yaxi.__extend_watch(this, '');
 
-        if (properties)
+
+
+
+    // 更新变更
+    patches.update = update;
+
+    
+
+    function update() {
+
+        var list = patches,
+            item;
+
+        for (var i = 0, l = list.length; i < l; i++)
         {
-            var define = Object.defineProperty;
-
-            for (var name in properties)
+            if (item = list[i])
             {
-                var item = properties[name];
-
-                if (item == null)
-                {
-                    item = { defaultValue: null };
-                }
-                else if (typeof item !== 'object')
-                {
-                    item = { defaultValue: item };
-                }
-                
-                build.call(this, name, item);
-
-                define(this, name, item);
+                item.__update_patch();
             }
         }
+
+        list.length = list.delay = 0;
     }
 
 
+    function patch(target) {
 
+        var list = patches;
 
-    this.$watch = function (name, listener) {
-
-        if (name && typeof listener === 'function')
+        if (!list.delay)
         {
-            var watches = yaxi.watches,
-                keys = watches[name] || (watches[name] = {}),
-                id = this.$uuid;
-
-            (keys[id] || (keys[id] = [])).push(listener);
+            list.delay = setTimeout(update);
         }
+
+        list.push(target);
+
+        return target.__changes = {};
     }
 
 
-    this.$unwatch = function (name, listener) {
+    
+    this.__update_patch = function () {
 
-        var watches = yaxi.watches,
-            id = this.$uuid,
-            keys,
-            items;
+        var changes = this.__changes;
 
-        if (!name)
+        this.__changes = null;
+
+        for (var name in changes)
         {
-            for (name in watches)
-            {
-                delete watches[name][id];
-            }
+            this['__v_' + name] = changes[name];
         }
-        else if (keys = watches[name])
-        {
-            if (listener)
-            {
-                if (items = keys[name])
-                {
-                    for (var i = items.length; i--;)
-                    {
-                        if (items[i] === listener)
-                        {
-                            items.splice(i, 1);
-                        }
-                    }
 
-                    if (!items.length)
-                    {
-                        keys[name] = null;
-                    }
-                }
-            }
-            else
-            {
-                keys[name] = null;
-            }
-        }
+        return changes;
     }
 
-
-    this.$notify = function (source, name, value, oldValue) {
-
-        var keys = yaxi.watches[name];
-
-        if (keys)
-        {
-            var target = arguments[3] || this,
-                items,
-                index,
-                event,
-                fn;
-
-            do
-            {
-                if (items = keys[target.$uuid])
-                {
-                    index = 0;
-
-                    while (fn = items[index++])
-                    {
-                        if (!event)
-                        {
-                            event = {
-                                target: source,
-                                name: name,
-                                value: value,
-                                oldValue: oldValue
-                            };
-                        }
-
-                        if (fn.call(this, event) === false)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            while (target = target.$parent);
-        }
-        
-        return true;
-    }
-
-
-
-
-    // 属性变更处理
-    this.$patch = function (storage) {
-
-        this.__storage = null;
-
-        for (var name in storage)
-        {
-            this['__v_' + name] = storage[name];
-        }
-    }
 
 
     // 事件变更处理
@@ -750,18 +775,18 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         if (value)
         {
             var events = this.__events,
-                storage;
+                changes;
 
             if (events)
             {
-                if (storage = events.storage)
+                if (changes = events.changes)
                 {
-                    storage[type] = value;
+                    changes[type] = value;
                 }
                 else
                 {
                     patch(events);
-                    (events.storage = {})[type] = value;
+                    (events.changes = {})[type] = value;
                 }
             }
             else
@@ -769,21 +794,15 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 patch(this.__events = {
 
                     owner: this,
-                    storage: storage = {},
-                    $patch: this.__event_patch
+                    changes: changes = {},
+                    __update_patch: this.__event_patch
                 });
 
-                storage[type] = value;
+                changes[type] = value;
             }
         }
     }
 
-
-    // 自定义事件更新逻辑
-    this.__event_patch = function (storage) {
-
-        this.storage = null;
-    }
 
 
 });
@@ -799,46 +818,21 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
     var prototype = (yaxi.ObserveArray = ObserveArray).prototype = Object.create(base);
 
-    var components = yaxi.components;
+    var classes = yaxi.classes;
+
+    var patches = yaxi.__patches;
 
 
-    
-    // 更新队列
-    var updateList = [];
-
-    var delay = 0;
-
-
-
-    function update() {
-
-        var list = updateList,
-            item,
-            changes;
-
-        for (var i = 0, l = list.length; i < l; i++)
-        {
-            item = list[i];
-  
-            if (changes = item.$changes())
-            {
-                item.$patch(changes);
-            }
-        }
-        
-        delay = list.length = 0;
-    }
 
 
     function patch(target) {
 
-        if (!delay)
+        if (!patches.delay)
         {
-            delay = setTimeout(update);
+            patches.delay = setTimeout(patches.update);
         }
 
-        updateList.push(target);
-
+        patches.push(target);
         target.__changed = 1;
     }
 
@@ -852,7 +846,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     
         if (data && (length = data.length) > 0)
         {
-            var Class = owner.$subtype || yaxi.Observe,
+            var Class = owner.$subtype,
                 index = 0,
                 item;
     
@@ -883,14 +877,9 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         var type;
 
-        if (type = data.Class)
+        if ((type = data.Class) && typeof type === 'string')
         {
-            delete data.Class;
-
-            if (typeof type === 'string')
-            {
-                type = components[type];
-            }
+            type = classes[type];
         }
 
         return new (type || Class)(data);
@@ -905,7 +894,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         while (index < length)
         {
-            item = items[index++];
+            var item = items[index++];
             
             if (!(item instanceof Class))
             {
@@ -1116,8 +1105,8 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    prototype.$changes = function () {
-
+    prototype.getChanges = function () {
+                
         var original = this.__original,
             items,
             item1,
@@ -1196,13 +1185,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    prototype.$patch = function (changes) {
-
-        this.$commit();
-    }
-
-
-    prototype.$commit = function () {
+    prototype.__update_patch = prototype.commit = function () {
 
         var length = this.length;
 
@@ -1280,23 +1263,466 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    this.$patch = function (storage) {
+    this.__update_patch = function () {
 
-        var style = this.owner.$dom;
+        var changes = base.__update_patch.call(this),
+            style = this.owner.$dom;
 
         if (style && (style = style.style))
         {
-            for (var name in storage)
+            for (var name in changes)
             {
-                style[name] = storage[name];
+                style[name] = changes[name];
             }
-
-            base.$patch.call(this, storage);
         }
+
+        return changes;
     }
 
 
 });
+
+
+
+
+(function (yaxi) {
+
+
+    
+    var classes = yaxi.classes;
+
+
+    var base = Array.prototype;
+
+    var prototype = (yaxi.Model = Model).prototype = Object.create(base);
+
+
+    var bindingTarget = [];
+
+    var $properties;
+
+
+
+
+    function Model(properties) {
+
+        this.$subtype = Object.extend.call({}, function (Class) {
+
+            Class.ctor = function (data) {
+
+                if (data)
+                {
+                    for (var name in data)
+                    {
+                        this['__v_' + name] = data[name];
+                    }
+                }
+            }
+
+            $properties.call(this, properties);
+
+        });
+    }
+
+    
+
+
+    prototype.length = 0;
+
+
+
+    // 绑定
+    prototype.bind = function (container) {
+
+        var bindings = this.__bindings;
+
+        if (bindings)
+        {
+            if (bindings.indexOf(container) < 0)
+            {
+                bindings.push(container);
+            }
+        }
+        else
+        {
+            this.__bindings = [container];
+        }
+    }
+
+
+    // 解除绑定
+    prototype.unbind = function (container) {
+
+        var bindings = this.__bindings,
+            index;
+
+        if (bindings && (index = bindings.indexOf(container)) >= 0)
+        {
+            bindings.splice(index, 1);
+        }
+    }
+
+
+    
+    function checkItems(model, fn, index, items, list) {
+
+        var subtype = model.$subtype,
+            length = items.length,
+            start,
+            item;
+
+        if (list)
+        {
+            start = 2;
+        }
+        else
+        {
+            list = [];
+            start = 0;
+        }
+
+        while (start < length)
+        {
+            item = new subtype(items[start++]);
+            item.$parent = model;
+            item.__index = index++;
+
+            list.push(item);
+        }
+
+        if ((item = model.__bindings) && item[0])
+        {
+            createTarget(model, item, list, fn, index);
+        }
+
+        return list;
+    }
+
+
+
+    prototype.push = function () {
+
+        if (arguments.length > 0)
+        {
+            return base.push.apply(this, checkItems(this, 'push', this.length, arguments));
+        }
+
+        return this.length;
+    }
+
+
+    prototype.pop = function () {
+
+        var item = base.pop.call(this);
+
+        if (item)
+        {
+            item.$parent = null;
+
+            
+        }
+
+        return item;
+    }
+
+
+    prototype.unshift = function () {
+
+        if (arguments.length > 0)
+        {
+            var items = checkItems(this, 'unshift', 0, arguments),
+                offset = items.length;
+
+            for (var i = this.length; i--;)
+            {
+                this[i].__index = offset + i;
+            }
+
+            return base.unshift.apply(this, items);
+        }
+
+        return this.length;
+    }
+
+
+    prototype.shift = function () {
+
+        var item = base.shift.call(this);
+
+        if (item)
+        {
+            item.$parent = null;
+
+            for (var i = this.length; i--;)
+            {
+                this[i].__index = i;
+            }
+        }
+
+        return item;
+    }
+
+
+    prototype.splice = function (index, length) {
+
+        var list;
+
+        switch (arguments.length)
+        {
+            case 0:
+                return [];
+
+            case 1:
+                list = base.splice.call(this, index);
+                break;
+
+            case 2:
+                list = base.splice.call(this, index, length);
+                break;
+
+            default:
+                list = checkItems(this, 'splice', index |= 0, arguments, [index, length]);
+                list = base.splice.apply(this, list);
+                break;
+        }
+
+        if (list.length > 0)
+        {
+            for (var i = list.length; i--;)
+            {
+                list[i].$parent = null;
+            }
+
+            length = this.length;
+            
+            while (index < length)
+            {
+                this[i].__index = index++;
+            }
+        }
+
+        return list;
+    }
+
+
+    prototype.clear = function () {
+
+        var list = base.splice.call(this, 0);
+
+        if (list.length > 0)
+        {
+            for (var i = list.length; i--;)
+            {
+                list[i].$parent = null;
+            }
+        }
+
+        return list;
+    }
+
+
+    prototype.sort = function (sortby) {
+
+        if (this.length > 0)
+        {
+            base.sort.call(this, sortby);
+        }
+
+        return this;
+    }
+
+
+    prototype.reverse = function () {
+
+        if (this.length > 0)
+        {
+            base.reverse.call(this);
+        }
+
+        return this;
+    }
+
+
+
+    yaxi.__extend_watch(prototype, '');
+
+
+
+    
+
+    
+    $properties = yaxi.__extend_properties(function (name, key) {
+
+        target = bindingTarget;
+
+        return function () {
+
+            var bindings, items;
+
+            if (target[0])
+            {
+                if (bindings = this.__bindings)
+                {
+                    if (items = bindings[name])
+                    {
+                        items.push([target.slice(0)])
+                    }
+                    else
+                    {
+                        bindings[name] = [target.slice(0)];
+                    }
+                }
+                else
+                {
+                    (this.__bindings = {})[name] = [target.slice(0)];
+                }
+            }
+
+            return this[key];
+        }
+
+    }, function (name, key, convertor) {
+
+        var watches = yaxi.watches;
+
+        return function (value) {
+
+            var bindings;
+
+            value = convertor(value);
+
+            if (value !== this[key])
+            {
+                if (watches[name])
+                {
+                    this.$parent.$notify(name, value, this[key]);
+                }
+
+                this[key] = value;
+
+                if ((bindings = this.__bindings) && (bindings = bindings[name]))
+                {
+                    notify_binding.call(this, value, bindings);
+                }
+            }
+        }
+
+    });
+
+
+
+    function notify_binding(value, bindings) {
+
+        for (var i = bindings.length; i--;)
+        {
+            var binding = bindings[i],
+                target = binding[0],
+                fn;
+
+            if (target.destroyed)
+            {
+                bindings.splice(i, 1);
+            }
+            else if (fn = binding[2])
+            {
+                target[binding[1]] = fn.call(target, value);
+            }
+            else
+            {
+                target[binding[1]] = value;
+            }
+        }
+    }
+
+
+
+    function createTarget(model, containers, list, fn, index) {
+
+        var start = 0,
+            container,
+            template,
+            bindings,
+            items,
+            item,
+            type,
+            any;
+
+        while (container = containers[start++])
+        {
+            if (template = container.template)
+            {
+                if (type = template.Class)
+                {
+                    if (typeof type === 'string')
+                    {
+                        type = classes[type] || container.$subtype;
+                    }
+                }
+                else
+                {
+                    type = container.$subtype;
+                }
+                
+                bindings = template.bindings;
+                items = fn === 'splice' ? [index, 0] : [];
+
+                for (var i = 0, l = list.length; i < l; i++)
+                {
+                    any = list[i];
+
+                    item = new type(template);
+                    item.__m_index = any.__index;
+
+                    if (bindings)
+                    {
+                        initBindings(any, item, bindings);
+                    }
+
+                    items.push(item);
+                }
+
+                if (any = container.children)
+                {
+                    any[fn].apply(any, items);
+                }
+            }
+        }
+    }
+
+
+    function initBindings(model, target, bindings) {
+
+        var bt = bindingTarget;
+
+        bt[0] = target;
+        
+        for (var name in bindings)
+        {
+            var binding = bindings[name];
+
+            if (typeof binding === 'function')
+            {
+                bt[2] = binding;
+                target[name] = binding.call(model);
+            }
+            else
+            {
+                bt[1] = binding;
+                target[name] = model[binding];
+            }
+        }
+
+        bt[0] = null;
+    }
+
+
+    function removeTarget(containers, list, index) {
+
+    }
+
+
+
+})(yaxi);
 
 
 
@@ -1307,6 +1733,24 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     
     var eventTarget = yaxi.EventTarget.prototype;
 
+
+    
+    Class.register = function (name) {
+
+        if (name)
+        {
+            yaxi.classes[this.typeName = this.prototype.typeName = name] = this;
+        }
+
+        return this;
+    }
+
+
+    
+    // 不处理bindings属性
+    this.__c_bindings = false;
+
+    
 
 
     this.$properties({
@@ -1440,7 +1884,25 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 触发事件
     this.trigger = eventTarget.trigger;
 
-    
+
+
+
+    this.destroy = function () {
+
+        var dom;
+
+        this.destroyed = true;
+        
+        if (dom = this.$dom)
+        {
+            dom.$control = this.$dom = null;
+        }
+
+        if (this.ondestroy)
+        {
+            this.ondestroy();
+        }
+    }
 
 
 
@@ -1471,38 +1933,46 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     this.update = function () {
 
-        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true)),
-            data;
+        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true));
 
-        if (data = this.__storage)
+        if (this.__changes)
         {
-            this.$patch(data);
+            this.__update_patch();
         }
 
-        if (data = this.__style)
+        if (this.__style)
         {
-            data.$patch(data.__storage);
+            this.__style.__update_patch();
         }
 
         return dom;
     }
 
 
-    this.$patch = function (storage) {
+    this.__update_patch = function () {
 
-        var dom = this.$dom;
+        var changes = base.__update_patch.call(this),
+            dom = this.$dom,
+            fn;
 
-        for (var name in storage)
+        for (var name in changes)
         {
-            (this['__set_' + name] || updateDom).call(this, dom, storage[name], name);
+            if (fn = this['__set_' + name])
+            {
+                fn.call(this, dom, changes[name]);
+            }
+            else if (fn !== false)
+            {
+                updateDom.call(this, dom, name, changes[name]);
+            }
         }
 
-        base.$patch.call(this, storage);
+        return changes;
     }
 
 
 
-    function updateDom(dom, value, name) {
+    function updateDom(dom, name, value) {
 
         if (value)
         {
@@ -1523,16 +1993,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     
     // 自定义事件更新逻辑
-    this.__event_patch = function (storage) {
+    this.__event_patch = function (changes) {
 
         var control = this.owner,
             dom = owner.$dom;
 
         if (dom)
         {
-            for (var name in storage)
+            for (var name in changes)
             {
-                if (storage[name])
+                if (changes[name])
                 {
                     dom.$control = control;
                     dom.addEventListener(name, domEventListener);
@@ -1545,7 +2015,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             }
         }
 
-        this.storage = null;
+        this.changes = null;
     }
 
 
@@ -1573,14 +2043,16 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     
     
-    var ObserveArray = yaxi.ObserveArray;
-
     var fragment = document.createDocumentFragment();
 
 
 
+    yaxi.template(this, '<div class="yx-control yx-panel"></div>')
+
+
 
     this.$subtype = yaxi.Control;
+
 
 
 
@@ -1594,8 +2066,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+
     this.__c_children = '__init_children';
-    
+
     
     this.__init_children = function (data) {
 
@@ -1603,10 +2076,10 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (!children)
         {
-            children = this.__children = new ObserveArray(this, data);
+            children = this.__children = new yaxi.ObserveArray(this, data);
 
             children.__changed = 1;
-            children.$patch = childrenPatch;
+            children.__update_patch = childrenPatch;
     
             Object.defineProperty(this, 'children', {
     
@@ -1616,6 +2089,57 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         }
 
         return children;
+    }
+
+
+
+    // 模型
+    this.model = null;
+
+
+    this.__c_model = '__init_model';
+
+    this.__set_model = false;
+
+
+    this.__init_model = function (model) {
+
+        if (model)
+        {
+            (this.model = model instanceof yaxi.Model ? model : new yaxi.Model(model)).bind(this);
+        }
+    }
+
+
+    // 模板
+    this.template = null;
+
+
+    this.__c_template = '__init_template';
+
+    this.__set_template = false;
+
+
+    this.__init_template = function (template) {
+
+        this.template = template;
+    }
+
+    
+
+    this.destroy = function () {
+
+        var children = this.__children;
+
+        if (children)
+        {
+            for (var i = children.length; i--;)
+            {
+                children[i].destroy();
+            }
+        }
+
+        base.destroy.call(this);
     }
 
 
@@ -1636,7 +2160,11 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             }
 
             dom.appendChild(host);
-            children.$commit();
+            children.commit();
+        }
+        else
+        {
+            this.children.__changed = 0;
         }
 
         return dom;
@@ -1644,9 +2172,17 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    function childrenPatch(changes) {
+    function childrenPatch() {
 
-        var list, item;
+        var changes = this.getChanges(),
+            list,
+            item;
+
+        if (!changes)
+        {
+            this.owner.update();
+            return;
+        }
 
         if (list = changes[0])
         {
@@ -1684,7 +2220,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             sortChildNodes(this.owner.$dom, changes.slice(2));
         }
 
-        this.$commit();
+        this.commit();
     }
 
 
@@ -1730,31 +2266,6 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
                 if (item.destroy)
                 {
                     item.destroy();
-                }
-            }
-        }
-    }
-
-
-    this.destroy = function () {
-
-        var children = this.__children;
-
-        if (children)
-        {
-            for (var i = children.length; i--;)
-            {
-                var control = children[i],
-                    dom;
-    
-                if (dom = control.$dom)
-                {
-                    dom.$control = control.$dom = null;
-                }
-    
-                if (control.destroy)
-                {
-                    control.destroy();
                 }
             }
         }

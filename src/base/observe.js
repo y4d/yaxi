@@ -1,55 +1,11 @@
 yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
-
-    // 更新队列
-    var updateList = [];
-
-    var delay = 0;
-
     
+    var patches = yaxi.__patches = [];
+
+
     var uuid = 1;
-
-
-
-
-    yaxi.components = Object.create(null);
-
-
-    yaxi.watches = Object.create(null);
-
-
-
-
-    function update() {
-
-        var list = updateList,
-            item,
-            storage;
-
-        for (var i = 0, l = list.length; i < l; i++)
-        {
-            if ((item = list[i]) && (storage = item.__storage))
-            {
-                item.$patch(storage);
-            }
-        }
-
-        delay = list.length = 0;
-    }
-
-
-    function patch(target) {
-
-        if (!delay)
-        {
-            delay = setTimeout(update);
-        }
-
-        updateList.push(target);
-
-        return target.__storage = {};
-    }
 
 
 
@@ -60,7 +16,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         if (data)
         {
-            var storage = this.__storage = {},
+            var changes = this.__changes = {},
                 convert;
 
             for (var name in data)
@@ -73,328 +29,134 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     }
                     else
                     {
-                        storage[convert.alias] = convert(data[name]);
+                        changes[convert.alias] = convert(data[name]);
                     }
                 }
                 else if (convert !== false)
                 {
-                    storage[name] = data[name];
+                    changes[name] = data[name];
                 }
             }
         }
     }
 
 
-    Class.register = function (name) {
 
-        if (name)
-        {
-            yaxi.components[this.typeName = this.prototype.typeName = name] = this;
-        }
+    // 不处理Class属性
+    this.__c_Class = false;
 
-        return this;
-    }
 
 
     
-
-    function to_boolean(value) {
-        
-        return !!value;
-    }
-
-
-    function to_integer(value) {
-
-        return value | 0;
-    }
-
-
-    function to_number(value) {
-
-        return +value || 0;
-    }
-
-
-    function to_string(value) {
-
-        return '' + value;
-    }
-
-
-    function to_date(value) {
-
-        return new Date(value);
-    }
-
-
-    function to_object(value) {
-
-        return value;
-    }
-
-
-    function build(name, options) {
-
-        var type = options.type,
-            defaultValue = options.defaultValue,
-            convertor = options.convertor,
-            alias = options.alias || (options.alias = name),
-            key = '__v_' + name;
-
-        if (defaultValue === void 0)
-        {
-            options.defaultValue = defaultValue = null;
-        }
-
-        if (!type)
-        {
-            options.type = type = typeof defaultValue;
-        }
-
-        switch (type)
-        {
-            case 'boolean':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_boolean));
-                break;
-
-            case 'int':
-            case 'integer':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_integer));
-                break;
-
-            case 'number':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_number));
-                break;
-
-            case 'string':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_string));
-                break;
-
-            case 'date':
-                this[key] = defaultValue;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, convertor || (convertor = to_date));
-                break;
-
-            default:
-                this[key] = convertor = null;
-                options.get = build_value_get(key, alias);
-                options.set = build_value_set(name, key, alias, to_object);
-                break;
-        }
-
-        if (convertor)
-        {
-            convertor.alias = alias;
-            this['__c_' + name] = options.convertor = convertor;
-        }
-        
-        this['__o_' + name] = options;
-    }
-
-
-
-    function build_value_get(key, alias) {
+    // 定义属性
+    this.$properties = yaxi.__extend_properties(function (name, key, alias) {
 
         return function () {
 
-            var value = this.__storage;
-            return value && (value = value[alias]) !== void 0 ? value : this[key];
+            var value;
+            return (value = this.__changes) && (value = value[alias]) !== void 0 ? value : this[key];
         }
-    }
 
-    
-    function build_value_set(name, key, alias, convertor) {
+    }, function (name, key, convertor, alias) {
 
         var watches = yaxi.watches;
 
         return function (value) {
 
-            var storage = this.__storage,
-                oldValue;
+            var changes = this.__changes,
+                any;
 
             value = convertor(value);
 
-            if (storage)
+            if (changes)
             {
-                if (value === (oldValue = storage[alias]))
+                if (value === (any = changes[alias]))
                 {
                     return;
                 }
     
                 if (value !== this[key])
                 {
-                    storage[alias] = value;
+                    changes[alias] = value;
                 }
                 else
                 {
-                    delete storage[alias];
+                    delete changes[alias];
                 }
             }
             else
             {
-                (storage = patch(this))[alias] = value;
+                (changes = patch(this))[alias] = value;
             }
 
             if (watches[name])
             {
-                this.$notify(name, value, oldValue !== void 0 ? oldValue : this[key]);
+                this.$notify(name, value, any !== void 0 ? any : this[key]);
             }
         }
-    }
+
+    });
 
 
 
-    // 定义属性
-    this.$properties = function (properties) {
+    // 扩展watch支持
+    yaxi.__extend_watch(this, '');
 
-        if (properties)
+
+
+
+    // 更新变更
+    patches.update = update;
+
+    
+
+    function update() {
+
+        var list = patches,
+            item;
+
+        for (var i = 0, l = list.length; i < l; i++)
         {
-            var define = Object.defineProperty;
-
-            for (var name in properties)
+            if (item = list[i])
             {
-                var item = properties[name];
-
-                if (item == null)
-                {
-                    item = { defaultValue: null };
-                }
-                else if (typeof item !== 'object')
-                {
-                    item = { defaultValue: item };
-                }
-                
-                build.call(this, name, item);
-
-                define(this, name, item);
+                item.__update_patch();
             }
         }
+
+        list.length = list.delay = 0;
     }
 
 
+    function patch(target) {
 
+        var list = patches;
 
-    this.$watch = function (name, listener) {
-
-        if (name && typeof listener === 'function')
+        if (!list.delay)
         {
-            var watches = yaxi.watches,
-                keys = watches[name] || (watches[name] = {}),
-                id = this.$uuid;
-
-            (keys[id] || (keys[id] = [])).push(listener);
+            list.delay = setTimeout(update);
         }
+
+        list.push(target);
+
+        return target.__changes = {};
     }
 
 
-    this.$unwatch = function (name, listener) {
+    
+    this.__update_patch = function () {
 
-        var watches = yaxi.watches,
-            id = this.$uuid,
-            keys,
-            items;
+        var changes = this.__changes;
 
-        if (!name)
+        this.__changes = null;
+
+        for (var name in changes)
         {
-            for (name in watches)
-            {
-                delete watches[name][id];
-            }
+            this['__v_' + name] = changes[name];
         }
-        else if (keys = watches[name])
-        {
-            if (listener)
-            {
-                if (items = keys[name])
-                {
-                    for (var i = items.length; i--;)
-                    {
-                        if (items[i] === listener)
-                        {
-                            items.splice(i, 1);
-                        }
-                    }
 
-                    if (!items.length)
-                    {
-                        keys[name] = null;
-                    }
-                }
-            }
-            else
-            {
-                keys[name] = null;
-            }
-        }
+        return changes;
     }
 
-
-    this.$notify = function (source, name, value, oldValue) {
-
-        var keys = yaxi.watches[name];
-
-        if (keys)
-        {
-            var target = arguments[3] || this,
-                items,
-                index,
-                event,
-                fn;
-
-            do
-            {
-                if (items = keys[target.$uuid])
-                {
-                    index = 0;
-
-                    while (fn = items[index++])
-                    {
-                        if (!event)
-                        {
-                            event = {
-                                target: source,
-                                name: name,
-                                value: value,
-                                oldValue: oldValue
-                            };
-                        }
-
-                        if (fn.call(this, event) === false)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            while (target = target.$parent);
-        }
-        
-        return true;
-    }
-
-
-
-
-    // 属性变更处理
-    this.$patch = function (storage) {
-
-        this.__storage = null;
-
-        for (var name in storage)
-        {
-            this['__v_' + name] = storage[name];
-        }
-    }
 
 
     // 事件变更处理
@@ -406,18 +168,18 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         if (value)
         {
             var events = this.__events,
-                storage;
+                changes;
 
             if (events)
             {
-                if (storage = events.storage)
+                if (changes = events.changes)
                 {
-                    storage[type] = value;
+                    changes[type] = value;
                 }
                 else
                 {
                     patch(events);
-                    (events.storage = {})[type] = value;
+                    (events.changes = {})[type] = value;
                 }
             }
             else
@@ -425,21 +187,15 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 patch(this.__events = {
 
                     owner: this,
-                    storage: storage = {},
-                    $patch: this.__event_patch
+                    changes: changes = {},
+                    __update_patch: this.__event_patch
                 });
 
-                storage[type] = value;
+                changes[type] = value;
             }
         }
     }
 
-
-    // 自定义事件更新逻辑
-    this.__event_patch = function (storage) {
-
-        this.storage = null;
-    }
 
 
 });

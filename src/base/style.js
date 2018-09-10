@@ -38,19 +38,20 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    this.$patch = function (storage) {
+    this.__update_patch = function () {
 
-        var style = this.owner.$dom;
+        var changes = base.__update_patch.call(this),
+            style = this.owner.$dom;
 
         if (style && (style = style.style))
         {
-            for (var name in storage)
+            for (var name in changes)
             {
-                style[name] = storage[name];
+                style[name] = changes[name];
             }
-
-            base.$patch.call(this, storage);
         }
+
+        return changes;
     }
 
 

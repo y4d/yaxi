@@ -3,7 +3,7 @@ const webminify = require('webminify');
 
 webminify()
     .load('src', [
-        'base/(yaxi|event|observe|observe-array|style).js',
+        'base/(yaxi|properties|watch|event|observe|observe-array|style|model).js',
         'control/(control|panel).js',
         'control/*.js'
     ])
