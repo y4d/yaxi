@@ -11,21 +11,32 @@
 
     <script type="text/javascript">
 
-        var node = new yaxi.Node(null, {});
 
-        var style = node.style;
+        var page = new yaxi.Page({
 
-        var date = performance.now();
+            style: {
+                backgroundColor: 'red'
+            },
+            children: [
+                {
+                    Class: yaxi.Button,
+                    text: 'button'
+                }
+            ]
+        });
 
-        for (var i = 0; i < 10000; i++)
+
+        page.open();
+
+
+        for (var i = 0; i < 10; i++)
         {
-            style.left = i;
-            style.top = i;
-            style.width = i;
-            style.height = i;
+            page.children.push({
+                
+                Class: yaxi.Button,
+                text: 'button'
+            });
         }
-
-        alert(performance.now() - date);
 
     
     </script>
