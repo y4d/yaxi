@@ -14,7 +14,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     this.$properties({
 
-        layout: 'row'
+        layout: ''
     });
 
 
@@ -30,7 +30,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    this.__c_children = '__init_children';
+    this.__c_children = true;
 
     
     this.__init_children = function (data) {
@@ -56,11 +56,18 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+    // 指定默认子类型
+    this.__c_subtype = '$subtype';
+
+    this.__set_subtype = false;
+
+
+
     // 模型
     this.model = null;
 
 
-    this.__c_model = '__init_model';
+    this.__c_model = true;
 
     this.__set_model = false;
 
@@ -78,7 +85,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
     this.template = null;
 
 
-    this.__c_template = '__init_template';
+    this.__c_template = true;
 
     this.__set_template = false;
 
@@ -111,7 +118,15 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     this.__set_layout = function (dom, value) {
 
-        dom.setAttribute('layout', value);
+        var classList = dom.classList,
+            layout = this.__layout;
+
+        if (layout)
+        {
+            classList.remove(layout);
+        }
+
+        classList.add(this.__layout = 'yx-layout-' + value);
     }
 
 

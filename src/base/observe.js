@@ -25,7 +25,14 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 {
                     if (typeof convert !== 'function')
                     {
-                        this[convert](data[name]);
+                        if (convert === true)
+                        {
+                            this['__init_' + name](data[name]);
+                        }
+                        else
+                        {
+                            this[convert] = data[name];
+                        }
                     }
                     else
                     {

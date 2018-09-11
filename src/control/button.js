@@ -49,7 +49,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
     this.__set_svg = function (dom, value) {
 
-        dom.firstChild.innerHTML = value ? this.__svg_template.replace('id', value) : '';
+        dom.firstChild.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value + '"></use></svg>' : '';
     }
 
 

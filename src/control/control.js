@@ -40,6 +40,36 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
+    // 父控件
+    Object.defineProperty(this, 'parent', {
+
+        get: function () {
+
+            return this.$parent;
+        }
+    })
+
+
+    // 顶级控件
+    Object.defineProperty(this, 'root', {
+
+        get: function () {
+
+            var target = this,
+                parent;
+
+            while (parent = target.$parent)
+            {
+                target = parent;
+            }
+
+            return target;
+        }
+    });
+
+
+
+    // 样式集
     Object.defineProperty(this, 'style', {
 
         get: function () {
@@ -50,7 +80,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    this.__c_style = '__init_style';
+    this.__c_style = true;
     
     
     this.__init_style = function (data) {
@@ -80,7 +110,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         if (name)
         {
             var className = this.className;
-            return className ? className.indexOf(' ' + name + ' ') >= 0 : false;
+            return className ? className.indexOf(name) >= 0 : false;
         }
         
         return false;
@@ -93,15 +123,13 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         {
             var className = this.className;
 
-            name = ' ' + name + ' ';
-
             if (!className)
             {
                 this.className = name;
             }
             else if (className.indexOf(name) < 0)
             {
-                this.className = className + name;
+                this.className = className + ' ' + name;
             }
         }
     }
@@ -115,7 +143,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
             if (className)
             {
-                this.className = className.replace(' ' + name + ' ', ' ');
+                this.className = className.replace(name, '').replace(/(?:^|\s)\s+|\s$/, '');
             }
         }
     }
@@ -129,11 +157,11 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
             if (className && className.indexOf(name) < 0)
             {
-                this.className = className.replace(' ' + name + ' ', ' ');
+                this.className = className.replace(name, '').replace(/(?:^|\s)\s+|\s$/, '');
             }
             else
             {
-                this.className = className + name;
+                this.className = className + ' ' + name;
             }
         }
     }
@@ -201,23 +229,27 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 	yaxi.template(this, '<div class="yx-control"></div>');
 
 
-    // svg图标模板
-    this.__svg_template = '<svg class="yx-svg-icon" aria-hidden="true"><use xlink:href="#id"></use></svg>';
-
-
 
     this.update = function () {
 
-        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true));
+        var dom = this.$dom || (this.$dom = this.$template.cloneNode(true)),
+            any;
+
+        dom.$control = this;
 
         if (this.__changes)
         {
             this.__update_patch();
         }
 
-        if (this.__style)
+        if (any = this.__style)
         {
-            this.__style.__update_patch();
+            any.__update_patch();
+        }
+
+        if (any = this.__events)
+        {
+            any.__update_patch();
         }
 
         return dom;
@@ -270,27 +302,20 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 自定义事件更新逻辑
     this.__event_patch = function () {
 
-        var changes = this.__changes;
+        var dom = this.owner.$dom,
+            changes;
 
-        if (changes)
+        if (dom && (changes = this.__changes))
         {
-            var control = this.owner,
-                dom = control.$dom;
-
-            if (dom)
+            for (var name in changes)
             {
-                for (var name in changes)
+                if (changes[name])
                 {
-                    if (changes[name])
-                    {
-                        dom.$control = control;
-                        dom.addEventListener(name, domEventListener);
-                    }
-                    else
-                    {
-                        dom.$control = null;
-                        dom.removeEventListener(name, domEventListener);
-                    }
+                    dom.addEventListener(name, domEventListener);
+                }
+                else
+                {
+                    dom.removeEventListener(name, domEventListener);
                 }
             }
 
@@ -301,11 +326,24 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     function domEventListener(event) {
 
-        var control = this.$control;
+        var dom = event.target,
+            any;
+
+        while (dom && dom !== this)
+        {
+            if (any = dom.$control)
+            {
+                break;
+            }
+
+            dom = dom.parentNode;
+        }
 
         event.stopPropagation();
 
-        if (control && control.trigger(event.type, { original: event }) === false)
+        any = any ? { target: any, original: event } : { original: event };
+
+        if (this.$control.trigger(event.type, any) === false)
         {
             event.preventDefault();
             return false;
