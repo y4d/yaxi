@@ -38,19 +38,19 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
     this.__set_type = function (dom, value) {
 
         dom.className = control.__class1 + (control.__class2 = value ? ' yx-button-' + value : '') + control.__class3; 
-    };
+    }
 
 
     this.__set_icon = function (dom, value) {
 
         dom.firstChild.className = 'yx-button-icon' + (value ? ' ' + value : '');
-    };
+    }
 
 
     this.__set_svg = function (dom, value) {
 
         dom.firstChild.innerHTML = value ? this.__svg_template.replace('id', value) : '';
-    };
+    }
 
 
     this.__set_plain = function (dom, value) {
@@ -63,7 +63,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
         {
             dom.removeAttribute('plain');
         }
-    };
+    }
     
     
     this.__set_vertical = function (dom, value) {
@@ -72,7 +72,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
         dom.firstChild.style.display = value;
         dom.lastChild.style.display = value;
-    };
+    }
 
 
     this.__set_loading = function (dom, value) {
@@ -87,7 +87,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
         {
             dom.removeAttribute('loading');
         }
-    };
+    }
 
 
     this.__set_autofocus = function (dom, value) {
@@ -102,7 +102,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
     this.__set_text = function (dom, value) {
 
         dom.lastChild.textContent = value;
-    };
+    }
 
 
 

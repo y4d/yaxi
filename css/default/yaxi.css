@@ -646,6 +646,23 @@ textarea::-webkit-input-placeholder {
 .yx-button-icon[loading]:before {
   content: "\e635";
 }
+.yx-page {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.yx-panel[layout="row"] {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+}
+.yx-panel[layout="column"] {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+}
 .yx-node-item {
   height: 2em;
 }

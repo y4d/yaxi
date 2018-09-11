@@ -2,16 +2,20 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     
     
-    var fragment = document.createDocumentFragment();
 
-
-
-    yaxi.template(this, '<div class="yx-control yx-panel"></div>')
+    yaxi.template(this, '<div class="yx-control yx-panel"></div>');
 
 
 
     this.$subtype = yaxi.Control;
 
+
+
+
+    this.$properties({
+
+        layout: 'row'
+    });
 
 
 
@@ -104,6 +108,13 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+
+    this.__set_layout = function (dom, value) {
+
+        dom.setAttribute('layout', value);
+    }
+
+
     this.update = function () {
 
         var dom = base.update.call(this),
@@ -111,14 +122,11 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (children)
         {
-            var host = fragment;
-
             for (var i = 0, l = children.length; i < l; i++)
             {
-                host.appendChild(children[i].update());
+                dom.appendChild(children[i].update());
             }
 
-            dom.appendChild(host);
             children.commit();
         }
         else
@@ -150,14 +158,13 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (list = changes[1])
         {
-            var host = fragment,
-                dom = this.owner.$dom;
+            var dom = this.owner.$dom;
 
             for (var i = list.length; i--;)
             {
                 if (!(item = list[i]).$dom)
                 {
-                    host.appendChild(item.update());
+                    dom.appendChild(item.update());
                 }
             }
 
@@ -171,7 +178,6 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
                 changes = list;
             }
 
-            dom.appendChild(host);
             sortChildNodes(dom, changes);
         }
         else if (changes[2])

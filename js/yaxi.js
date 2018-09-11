@@ -2048,16 +2048,20 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     
     
-    var fragment = document.createDocumentFragment();
 
-
-
-    yaxi.template(this, '<div class="yx-control yx-panel"></div>')
+    yaxi.template(this, '<div class="yx-control yx-panel"></div>');
 
 
 
     this.$subtype = yaxi.Control;
 
+
+
+
+    this.$properties({
+
+        layout: 'row'
+    });
 
 
 
@@ -2150,6 +2154,13 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+
+    this.__set_layout = function (dom, value) {
+
+        dom.setAttribute('layout', value);
+    }
+
+
     this.update = function () {
 
         var dom = base.update.call(this),
@@ -2157,14 +2168,11 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (children)
         {
-            var host = fragment;
-
             for (var i = 0, l = children.length; i < l; i++)
             {
-                host.appendChild(children[i].update());
+                dom.appendChild(children[i].update());
             }
 
-            dom.appendChild(host);
             children.commit();
         }
         else
@@ -2196,14 +2204,13 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         if (list = changes[1])
         {
-            var host = fragment,
-                dom = this.owner.$dom;
+            var dom = this.owner.$dom;
 
             for (var i = list.length; i--;)
             {
                 if (!(item = list[i]).$dom)
                 {
-                    host.appendChild(item.update());
+                    dom.appendChild(item.update());
                 }
             }
 
@@ -2217,7 +2224,6 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
                 changes = list;
             }
 
-            dom.appendChild(host);
             sortChildNodes(dom, changes);
         }
         else if (changes[2])
@@ -2324,19 +2330,19 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
     this.__set_type = function (dom, value) {
 
         dom.className = control.__class1 + (control.__class2 = value ? ' yx-button-' + value : '') + control.__class3; 
-    };
+    }
 
 
     this.__set_icon = function (dom, value) {
 
         dom.firstChild.className = 'yx-button-icon' + (value ? ' ' + value : '');
-    };
+    }
 
 
     this.__set_svg = function (dom, value) {
 
         dom.firstChild.innerHTML = value ? this.__svg_template.replace('id', value) : '';
-    };
+    }
 
 
     this.__set_plain = function (dom, value) {
@@ -2349,7 +2355,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
         {
             dom.removeAttribute('plain');
         }
-    };
+    }
     
     
     this.__set_vertical = function (dom, value) {
@@ -2358,7 +2364,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
         dom.firstChild.style.display = value;
         dom.lastChild.style.display = value;
-    };
+    }
 
 
     this.__set_loading = function (dom, value) {
@@ -2373,7 +2379,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
         {
             dom.removeAttribute('loading');
         }
-    };
+    }
 
 
     this.__set_autofocus = function (dom, value) {
@@ -2388,7 +2394,7 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
     this.__set_text = function (dom, value) {
 
         dom.lastChild.textContent = value;
-    };
+    }
 
 
 
@@ -2493,6 +2499,66 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 
 
 
+yaxi.ImageButton = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-imagebutton"><span class="yx-button-icon"></span><span></span></span>');
+
+
+
+    this.$properties({
+
+        // 文本内容
+        text: '',
+
+        // 图标类名
+        icon: '',
+
+        // svg图标id
+        svg: '',
+
+        // 是否竖排
+        vertical: false
+    });
+    
+
+
+
+    this.__set_icon = function (dom, value) {
+
+        dom.firstChild.className = 'yx-button-icon' + (value ? ' ' + value : '');
+    }
+
+
+    this.__set_svg = function (dom, value) {
+
+        dom.firstChild.innerHTML = value ? this.__svg_template.replace('id', value) : '';
+    }
+
+    
+    
+    this.__set_vertical = function (dom, value) {
+
+        value = value ? 'block' : '';
+
+        dom.firstChild.style.display = value;
+        dom.lastChild.style.display = value;
+    }
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    }
+
+
+
+}).register('ImageButton');
+
+
+
+
 yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 
 
@@ -2592,3 +2658,16 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
     
     
 }).register('Page');
+
+
+
+
+yaxi.Text = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-text"></span>');
+
+    
+
+});
