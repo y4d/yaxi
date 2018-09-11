@@ -29,7 +29,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     }
                     else
                     {
-                        changes[convert.alias] = convert(data[name]);
+                        changes[this['__a_' + name]] = convert(data[name]);
                     }
                 }
                 else if (convert !== false)
@@ -163,7 +163,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     this.__event_change = function (type, items, on) {
 
         // 刚注册或已注销完毕才注册事件变更
-        var value = on ? !items[1] : !item || !item[0];
+        var value = on ? !items[1] : !items || !items[0];
 
         if (value)
         {
@@ -172,26 +172,25 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
             if (events)
             {
-                if (changes = events.changes)
+                if (changes = events.__changes)
                 {
                     changes[type] = value;
                 }
                 else
                 {
                     patch(events);
-                    (events.changes = {})[type] = value;
+                    (events.__changes = {})[type] = value;
                 }
             }
             else
             {
-                patch(this.__events = {
+                patch(this.__events = events = {
 
                     owner: this,
-                    changes: changes = {},
                     __update_patch: this.__event_patch
                 });
 
-                changes[type] = value;
+                events.__changes[type] = value;
             }
         }
     }

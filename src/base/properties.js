@@ -99,7 +99,7 @@ yaxi.__extend_properties = function (get, set) {
 
         if (convertor)
         {
-            convertor.alias = alias;
+            this['__a_' + name] = alias;
             this['__c_' + name] = options.convertor = convertor;
         }
         

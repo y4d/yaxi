@@ -9,4 +9,5 @@ webminify()
     ])
     .combine('\r\n\r\n\r\n\r\n')
     // .compressjs()
-    .output('js/yaxi.js');
+    .output('js/yaxi.js')
+    .done();

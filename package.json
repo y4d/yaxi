@@ -2,9 +2,10 @@
   "name": "yaxi",
   "version": "1.0.6",
   "description": "",
-  "main": "index.js",
+  "main": "build/build-css.js",
   "scripts": {
-    "build": "node build.js",
+    "build": "node build/build-js.js",
+    "build:css": "node build/build-css.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

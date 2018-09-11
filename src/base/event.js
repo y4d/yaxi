@@ -36,9 +36,6 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     
     var Event = yaxi.Event;
-
-    var Events = Event.all;
-
     
 
     this.on = function (type, listener) {
@@ -148,7 +145,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
                 {
                     if (!event)
                     {
-                        event = new (Events[type] || Event)();
+                        event = new Event();
                         event.target = this;
 
                         if (payload)

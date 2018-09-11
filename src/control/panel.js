@@ -164,7 +164,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             if (changes[2])
             {
                 changes = changes.slice(2);
-                changes.push.apply(list, changes);
+                changes.push.apply(changes, list);
             }
             else
             {
@@ -193,14 +193,14 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         for (var i = items.length; i--;)
         {
             item = items[i];
-            dom.replaceChild(item.$dom, nodes[item.__change_index])
+            dom.insertBefore(item.$dom, nodes[item.__change_index])
         }
     }
 
 
     function sortFn(a, b) {
 
-        return a.__change_index > b.__change_index;
+        return a.__change_index - b.__change_index;
     }
 
 

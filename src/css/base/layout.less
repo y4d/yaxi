@@ -1,0 +1,38 @@
+.yx-layout-row,
+.yx-layout-column,
+.yx-layout-line,
+.yx-layout-vertical-line {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    table-layout: fixed;
+}
+
+.yx-layout-row,
+.yx-layout-column {
+    width: 100%;
+    height: 100%;
+}
+
+.yx-layout-vertical-line {
+    width: 100%;
+}
+
+.yx-layout-row>.yx-control,
+.yx-layout-column>.yx-control,
+.yx-layout-line>.yx-control {
+    display: table-cell;
+}
+
+.yx-layout-column>.yx-control,
+.yx-layout-vertical-line>.yx-control {
+    display: table-caption;
+}
+
+.yx-layout-body>.yx-control {
+    margin-top: 2px;
+}
+
+.yx-layout-body>.yx-control:first-child {
+    margin-top: 0 !important;
+}

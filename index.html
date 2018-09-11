@@ -4,6 +4,7 @@
     <title>test</title>
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+    <link rel="stylesheet" href="css/default/yaxi.css" />
 </head>
 <body>
 
@@ -29,14 +30,20 @@
         page.open();
 
 
-        // for (var i = 0; i < 10; i++)
-        // {
-        //     page.children.push({
+        for (var i = 0; i < 10; i++)
+        {
+            page.children.push({
                 
-        //         Class: yaxi.Button,
-        //         text: 'button'
-        //     });
-        // }
+                Class: yaxi.Button,
+                text: 'button'
+            });
+        }
+
+
+        page.children[0].on('tap', function () {
+
+            alert('tap');
+        });
 
 
 

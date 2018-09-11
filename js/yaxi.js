@@ -146,7 +146,7 @@ yaxi.__extend_properties = function (get, set) {
 
         if (convertor)
         {
-            convertor.alias = alias;
+            this['__a_' + name] = alias;
             this['__c_' + name] = options.convertor = convertor;
         }
         
@@ -338,9 +338,6 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     
     var Event = yaxi.Event;
-
-    var Events = Event.all;
-
     
 
     this.on = function (type, listener) {
@@ -450,7 +447,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
                 {
                     if (!event)
                     {
-                        event = new (Events[type] || Event)();
+                        event = new Event();
                         event.target = this;
 
                         if (payload)
@@ -636,7 +633,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     }
                     else
                     {
-                        changes[convert.alias] = convert(data[name]);
+                        changes[this['__a_' + name]] = convert(data[name]);
                     }
                 }
                 else if (convert !== false)
@@ -770,7 +767,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     this.__event_change = function (type, items, on) {
 
         // 刚注册或已注销完毕才注册事件变更
-        var value = on ? !items[1] : !item || !item[0];
+        var value = on ? !items[1] : !items || !items[0];
 
         if (value)
         {
@@ -779,26 +776,25 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
             if (events)
             {
-                if (changes = events.changes)
+                if (changes = events.__changes)
                 {
                     changes[type] = value;
                 }
                 else
                 {
                     patch(events);
-                    (events.changes = {})[type] = value;
+                    (events.__changes = {})[type] = value;
                 }
             }
             else
             {
-                patch(this.__events = {
+                patch(this.__events = events = {
 
                     owner: this,
-                    changes: changes = {},
                     __update_patch: this.__event_patch
                 });
 
-                changes[type] = value;
+                events.__changes[type] = value;
             }
         }
     }
@@ -1930,6 +1926,10 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 	yaxi.template(this, '<div class="yx-control"></div>');
 
 
+    // svg图标模板
+    this.__svg_template = '<svg class="yx-svg-icon" aria-hidden="true"><use xlink:href="#id"></use></svg>';
+
+
 
     this.update = function () {
 
@@ -1993,29 +1993,34 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     
     // 自定义事件更新逻辑
-    this.__event_patch = function (changes) {
+    this.__event_patch = function () {
 
-        var control = this.owner,
-            dom = owner.$dom;
+        var changes = this.__changes;
 
-        if (dom)
+        if (changes)
         {
-            for (var name in changes)
+            var control = this.owner,
+                dom = control.$dom;
+
+            if (dom)
             {
-                if (changes[name])
+                for (var name in changes)
                 {
-                    dom.$control = control;
-                    dom.addEventListener(name, domEventListener);
-                }
-                else
-                {
-                    dom.$control = null;
-                    dom.removeEventListener(name, domEventListener);
+                    if (changes[name])
+                    {
+                        dom.$control = control;
+                        dom.addEventListener(name, domEventListener);
+                    }
+                    else
+                    {
+                        dom.$control = null;
+                        dom.removeEventListener(name, domEventListener);
+                    }
                 }
             }
-        }
 
-        this.changes = null;
+            this.changes = null;
+        }
     }
 
 
@@ -2205,7 +2210,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
             if (changes[2])
             {
                 changes = changes.slice(2);
-                changes.push.apply(list, changes);
+                changes.push.apply(changes, list);
             }
             else
             {
@@ -2234,14 +2239,14 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         for (var i = items.length; i--;)
         {
             item = items[i];
-            dom.replaceChild(item.$dom, nodes[item.__change_index])
+            dom.insertBefore(item.$dom, nodes[item.__change_index])
         }
     }
 
 
     function sortFn(a, b) {
 
-        return a.__change_index > b.__change_index;
+        return a.__change_index - b.__change_index;
     }
 
 
@@ -2282,14 +2287,110 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
 
-    yaxi.template(this, '<input type="button"></input>');
+    yaxi.template(this, '<span class="yx-control yx-button" tabindex="0"><span class="yx-button-icon"></span><span></span></span>');
 
 
     this.$properties({
 
-        'text': { alias: 'value', defaultValue: '' }
+        // 文本内容
+        text: '',
+
+        // 按钮类型 default | primary | success | info | warn | danger
+        type: 'default',
+
+        // 图标类名
+        icon: '',
+
+        // svg图标id
+        svg: '',
+
+        // 是否朴素按钮
+        plain: false,
+
+        // 图标和文字是否竖排
+        vertical: false,
+
+        // 是否默认聚焦
+        autofocus: false,
+
+        // 是否加载中状态
+        loading: false
     });
     
+
+
+
+    
+    this.__set_type = function (dom, value) {
+
+        dom.className = control.__class1 + (control.__class2 = value ? ' yx-button-' + value : '') + control.__class3; 
+    };
+
+
+    this.__set_icon = function (dom, value) {
+
+        dom.firstChild.className = 'yx-button-icon' + (value ? ' ' + value : '');
+    };
+
+
+    this.__set_svg = function (dom, value) {
+
+        dom.firstChild.innerHTML = value ? this.__svg_template.replace('id', value) : '';
+    };
+
+
+    this.__set_plain = function (dom, value) {
+
+        if (value)
+        {
+            dom.setAttribute('plain', 1);
+        }
+        else
+        {
+            dom.removeAttribute('plain');
+        }
+    };
+    
+    
+    this.__set_vertical = function (dom, value) {
+
+        value = value ? 'block' : '';
+
+        dom.firstChild.style.display = value;
+        dom.lastChild.style.display = value;
+    };
+
+
+    this.__set_loading = function (dom, value) {
+
+        dom = dom.firstChild;
+
+        if (value)
+        {
+            dom.setAttribute('loading', 1);
+        }
+        else
+        {
+            dom.removeAttribute('loading');
+        }
+    };
+
+
+    this.__set_autofocus = function (dom, value) {
+
+        if (value)
+        {
+            dom.focus();
+        }
+    };
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    };
+
+
 
 }).register('Button');
 

@@ -201,6 +201,10 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 	yaxi.template(this, '<div class="yx-control"></div>');
 
 
+    // svg图标模板
+    this.__svg_template = '<svg class="yx-svg-icon" aria-hidden="true"><use xlink:href="#id"></use></svg>';
+
+
 
     this.update = function () {
 
@@ -264,29 +268,34 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     
     // 自定义事件更新逻辑
-    this.__event_patch = function (changes) {
+    this.__event_patch = function () {
 
-        var control = this.owner,
-            dom = owner.$dom;
+        var changes = this.__changes;
 
-        if (dom)
+        if (changes)
         {
-            for (var name in changes)
+            var control = this.owner,
+                dom = control.$dom;
+
+            if (dom)
             {
-                if (changes[name])
+                for (var name in changes)
                 {
-                    dom.$control = control;
-                    dom.addEventListener(name, domEventListener);
-                }
-                else
-                {
-                    dom.$control = null;
-                    dom.removeEventListener(name, domEventListener);
+                    if (changes[name])
+                    {
+                        dom.$control = control;
+                        dom.addEventListener(name, domEventListener);
+                    }
+                    else
+                    {
+                        dom.$control = null;
+                        dom.removeEventListener(name, domEventListener);
+                    }
                 }
             }
-        }
 
-        this.changes = null;
+            this.changes = null;
+        }
     }
 
 
