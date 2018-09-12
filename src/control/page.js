@@ -12,7 +12,7 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 		
 		if (this.onopening(options) !== false)
 		{
-			document.body.appendChild(this.$dom || this.update());
+			document.body.appendChild(this.$dom || this.render());
 			
 		    this.opener = opener;
 			this.onopened(options);

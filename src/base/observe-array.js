@@ -84,7 +84,14 @@
         {
             var item = items[index++];
             
-            if (!(item instanceof Class))
+            if (item instanceof Class)
+            {
+                if (item.destroyed)
+                {
+                    alert('the object has be destroyed, can not be reuse!');
+                }
+            }
+            else
             {
                 item = item ? createItem(Class, item) : new Class();
             }
@@ -293,7 +300,7 @@
 
 
 
-    prototype.getChanges = function () {
+    prototype.__check_update = function () {
                 
         var original = this.__original,
             items,
@@ -324,6 +331,8 @@
                     {
                         items = [item2];
                     }
+  
+                    item2.__last_index = null;
                 }
             }
 
@@ -370,7 +379,6 @@
 
         return changes;
     }
-
 
 
     prototype.__update_patch = prototype.commit = function () {

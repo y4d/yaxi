@@ -120,13 +120,14 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     function update() {
 
         var list = patches,
-            item;
+            item,
+            changes;
 
         for (var i = 0, l = list.length; i < l; i++)
         {
-            if (item = list[i])
+            if ((item = list[i]) && (changes = item.__check_update()))
             {
-                item.__update_patch();
+                item.__update_patch(changes);
             }
         }
 
@@ -149,10 +150,13 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     }
 
 
-    
-    this.__update_patch = function () {
+    this.__check_update = function () {
 
-        var changes = this.__changes;
+        return this.__changes;
+    }
+
+    
+    this.__update_patch = function (changes) {
 
         this.__changes = null;
 
@@ -160,8 +164,6 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         {
             this['__v_' + name] = changes[name];
         }
-
-        return changes;
     }
 
 
@@ -194,12 +196,25 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 patch(this.__events = events = {
 
                     owner: this,
+                    __check_update: this.__check_event,
                     __update_patch: this.__event_patch
                 });
 
                 events.__changes[type] = value;
             }
         }
+    }
+
+
+    this.__check_event = function () {
+
+        return this.__changes;
+    }
+
+
+    this.__event_patch = function () {
+
+        this.__changes = null;
     }
 
 

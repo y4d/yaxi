@@ -53,7 +53,7 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 		
 		if (stack.indexOf(this) < 0)
 		{
-			var dom = this.$dom || this.update(),
+			var dom = this.$dom || this.render(),
 				style = dom.style;
 				
 			style.left = x > 0 ? x + 'px' : x;

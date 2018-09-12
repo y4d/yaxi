@@ -724,13 +724,14 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     function update() {
 
         var list = patches,
-            item;
+            item,
+            changes;
 
         for (var i = 0, l = list.length; i < l; i++)
         {
-            if (item = list[i])
+            if ((item = list[i]) && (changes = item.__check_update()))
             {
-                item.__update_patch();
+                item.__update_patch(changes);
             }
         }
 
@@ -753,10 +754,13 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
     }
 
 
-    
-    this.__update_patch = function () {
+    this.__check_update = function () {
 
-        var changes = this.__changes;
+        return this.__changes;
+    }
+
+    
+    this.__update_patch = function (changes) {
 
         this.__changes = null;
 
@@ -764,8 +768,6 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         {
             this['__v_' + name] = changes[name];
         }
-
-        return changes;
     }
 
 
@@ -798,12 +800,25 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 patch(this.__events = events = {
 
                     owner: this,
+                    __check_update: this.__check_event,
                     __update_patch: this.__event_patch
                 });
 
                 events.__changes[type] = value;
             }
         }
+    }
+
+
+    this.__check_event = function () {
+
+        return this.__changes;
+    }
+
+
+    this.__event_patch = function () {
+
+        this.__changes = null;
     }
 
 
@@ -1108,7 +1123,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    prototype.getChanges = function () {
+    prototype.__check_update = function () {
                 
         var original = this.__original,
             items,
@@ -1139,6 +1154,8 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     {
                         items = [item2];
                     }
+  
+                    item2.__last_index = null;
                 }
             }
 
@@ -1185,7 +1202,6 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         return changes;
     }
-
 
 
     prototype.__update_patch = prototype.commit = function () {
@@ -1265,21 +1281,22 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
 
 
 
+    this.__check_update = function () {
 
-    this.__update_patch = function () {
+        return this.owner.$dom && this.__changes;
+    }
 
-        var changes = base.__update_patch.call(this),
-            style = this.owner.$dom;
 
-        if (style && (style = style.style))
+    this.__update_patch = function (changes) {
+
+        var style = this.owner.$dom.style;
+
+        for (var name in changes)
         {
-            for (var name in changes)
-            {
-                style[name] = changes[name];
-            }
+            style[name] = this['__v_' + name] = changes[name];
         }
 
-        return changes;
+        this.__changes = null;
     }
 
 
@@ -1622,11 +1639,7 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
                 target = binding[0],
                 fn;
 
-            if (target.destroyed)
-            {
-                bindings.splice(i, 1);
-            }
-            else if (fn = binding[2])
+            if (fn = binding[2])
             {
                 target[binding[1]] = fn.call(target, value);
             }
@@ -1922,8 +1935,6 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
         var dom;
 
-        this.destroyed = true;
-        
         if (dom = this.$dom)
         {
             dom.$control = this.$dom = null;
@@ -1962,51 +1973,61 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    this.update = function () {
+    // 渲染控件
+    this.render = function () {
 
         var dom = this.$dom || (this.$dom = this.$template.cloneNode(true)),
             any;
 
         dom.$control = this;
 
-        if (this.__changes)
+        if (any = this.__changes)
         {
-            this.__update_patch();
+            this.__update_patch(any);
         }
 
         if (any = this.__style)
         {
-            any.__update_patch();
+            any.__update_patch(any.__changes);
         }
 
         if (any = this.__events)
         {
-            any.__update_patch();
+            any.__update_patch(any.__changes);
         }
 
         return dom;
     }
 
 
-    this.__update_patch = function () {
+    this.__check_update = function () {
 
-        var changes = base.__update_patch.call(this),
-            dom = this.$dom,
+        return this.$dom && this.__changes;
+    }
+
+
+    this.__update_patch = function (changes) {
+
+        var dom = this.$dom,
+            changes,
+            value,
             fn;
 
         for (var name in changes)
         {
+            this['__v_' + name] = value = changes[name];
+
             if (fn = this['__set_' + name])
             {
-                fn.call(this, dom, changes[name]);
+                fn.call(this, dom, value);
             }
             else if (fn !== false)
             {
-                updateDom.call(this, dom, name, changes[name]);
+                updateDom.call(this, dom, name, value);
             }
         }
 
-        return changes;
+        this.__changes = null;
     }
 
 
@@ -2030,52 +2051,55 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
+
+    // 检查事件是否变更
+    this.__check_event = function () {
+
+        return this.owner.$dom && this.__changes;
+    }
+
     
     // 自定义事件更新逻辑
-    this.__event_patch = function () {
+    this.__event_patch = function (changes) {
 
-        var dom = this.owner.$dom,
-            changes;
+        var dom = this.owner.$dom;
 
-        if (dom && (changes = this.__changes))
+        for (var name in changes)
         {
-            for (var name in changes)
+            if (changes[name])
             {
-                if (changes[name])
-                {
-                    dom.addEventListener(name, domEventListener);
-                }
-                else
-                {
-                    dom.removeEventListener(name, domEventListener);
-                }
+                dom.addEventListener(name, domEventListener);
             }
-
-            this.changes = null;
+            else
+            {
+                dom.removeEventListener(name, domEventListener);
+            }
         }
+
+        this.__changes = null;
     }
 
 
     function domEventListener(event) {
 
-        var dom = event.target,
-            any;
+        var target = event.target,
+            control;
 
-        while (dom && dom !== this)
+        while (target && target !== this)
         {
-            if (any = dom.$control)
+            if (control = target.$control)
             {
                 break;
             }
 
-            dom = dom.parentNode;
+            target = target.parentNode;
         }
 
         event.stopPropagation();
 
-        any = any ? { target: any, original: event } : { original: event };
+        target = control ? { target: control, original: event } : { original: event };
 
-        if (this.$control.trigger(event.type, any) === false)
+        if (this.$control.trigger(event.type, target) === false)
         {
             event.preventDefault();
             return false;
@@ -2221,16 +2245,16 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
     }
 
 
-    this.update = function () {
+    this.render = function () {
 
-        var dom = base.update.call(this),
+        var dom = base.render.call(this),
             children = this.__children;
 
         if (children)
         {
             for (var i = 0, l = children.length; i < l; i++)
             {
-                dom.appendChild(children[i].update());
+                dom.appendChild(children[i].render());
             }
 
             children.commit();
@@ -2245,17 +2269,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    function childrenPatch() {
+    function childrenPatch(changes) {
 
-        var changes = this.getChanges(),
-            list,
-            item;
-
-        if (!changes)
-        {
-            this.owner.update();
-            return;
-        }
+        var list;
 
         if (list = changes[0])
         {
@@ -2268,10 +2284,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
             for (var i = list.length; i--;)
             {
-                if (!(item = list[i]).$dom)
-                {
-                    dom.appendChild(item.update());
-                }
+                dom.appendChild(list[i].$dom || list[i].render());
             }
 
             if (changes[2])
@@ -2518,7 +2531,7 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 		
 		if (stack.indexOf(this) < 0)
 		{
-			var dom = this.$dom || this.update(),
+			var dom = this.$dom || this.render(),
 				style = dom.style;
 				
 			style.left = x > 0 ? x + 'px' : x;
@@ -2621,7 +2634,7 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 		
 		if (this.onopening(options) !== false)
 		{
-			document.body.appendChild(this.$dom || this.update());
+			document.body.appendChild(this.$dom || this.render());
 			
 		    this.opener = opener;
 			this.onopened(options);

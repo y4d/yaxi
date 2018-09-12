@@ -130,16 +130,16 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
     }
 
 
-    this.update = function () {
+    this.render = function () {
 
-        var dom = base.update.call(this),
+        var dom = base.render.call(this),
             children = this.__children;
 
         if (children)
         {
             for (var i = 0, l = children.length; i < l; i++)
             {
-                dom.appendChild(children[i].update());
+                dom.appendChild(children[i].render());
             }
 
             children.commit();
@@ -154,17 +154,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    function childrenPatch() {
+    function childrenPatch(changes) {
 
-        var changes = this.getChanges(),
-            list,
-            item;
-
-        if (!changes)
-        {
-            this.owner.update();
-            return;
-        }
+        var list;
 
         if (list = changes[0])
         {
@@ -177,10 +169,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
             for (var i = list.length; i--;)
             {
-                if (!(item = list[i]).$dom)
-                {
-                    dom.appendChild(item.update());
-                }
+                dom.appendChild(list[i].$dom || list[i].render());
             }
 
             if (changes[2])

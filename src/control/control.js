@@ -190,8 +190,6 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
         var dom;
 
-        this.destroyed = true;
-        
         if (dom = this.$dom)
         {
             dom.$control = this.$dom = null;
@@ -201,6 +199,8 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         {
             this.ondestroy();
         }
+        
+        this.destroyed = true;
     }
 
 
@@ -230,51 +230,61 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    this.update = function () {
+    // 渲染控件
+    this.render = function () {
 
         var dom = this.$dom || (this.$dom = this.$template.cloneNode(true)),
             any;
 
         dom.$control = this;
 
-        if (this.__changes)
+        if (any = this.__changes)
         {
-            this.__update_patch();
+            this.__update_patch(any);
         }
 
         if (any = this.__style)
         {
-            any.__update_patch();
+            any.__update_patch(any.__changes);
         }
 
         if (any = this.__events)
         {
-            any.__update_patch();
+            any.__update_patch(any.__changes);
         }
 
         return dom;
     }
 
 
-    this.__update_patch = function () {
+    this.__check_update = function () {
 
-        var changes = base.__update_patch.call(this),
-            dom = this.$dom,
+        return this.$dom && this.__changes;
+    }
+
+
+    this.__update_patch = function (changes) {
+
+        var dom = this.$dom,
+            changes,
+            value,
             fn;
 
         for (var name in changes)
         {
+            this['__v_' + name] = value = changes[name];
+
             if (fn = this['__set_' + name])
             {
-                fn.call(this, dom, changes[name]);
+                fn.call(this, dom, value);
             }
             else if (fn !== false)
             {
-                updateDom.call(this, dom, name, changes[name]);
+                updateDom.call(this, dom, name, value);
             }
         }
 
-        return changes;
+        this.__changes = null;
     }
 
 
@@ -298,52 +308,55 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
+
+    // 检查事件是否变更
+    this.__check_event = function () {
+
+        return this.owner.$dom && this.__changes;
+    }
+
     
     // 自定义事件更新逻辑
-    this.__event_patch = function () {
+    this.__event_patch = function (changes) {
 
-        var dom = this.owner.$dom,
-            changes;
+        var dom = this.owner.$dom;
 
-        if (dom && (changes = this.__changes))
+        for (var name in changes)
         {
-            for (var name in changes)
+            if (changes[name])
             {
-                if (changes[name])
-                {
-                    dom.addEventListener(name, domEventListener);
-                }
-                else
-                {
-                    dom.removeEventListener(name, domEventListener);
-                }
+                dom.addEventListener(name, domEventListener);
             }
-
-            this.changes = null;
+            else
+            {
+                dom.removeEventListener(name, domEventListener);
+            }
         }
+
+        this.__changes = null;
     }
 
 
     function domEventListener(event) {
 
-        var dom = event.target,
-            any;
+        var target = event.target,
+            control;
 
-        while (dom && dom !== this)
+        while (target && target !== this)
         {
-            if (any = dom.$control)
+            if (control = target.$control)
             {
                 break;
             }
 
-            dom = dom.parentNode;
+            target = target.parentNode;
         }
 
         event.stopPropagation();
 
-        any = any ? { target: any, original: event } : { original: event };
+        target = control ? { target: control, original: event } : { original: event };
 
-        if (this.$control.trigger(event.type, any) === false)
+        if (this.$control.trigger(event.type, target) === false)
         {
             event.preventDefault();
             return false;
