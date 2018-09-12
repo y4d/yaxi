@@ -6,13 +6,13 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 	
 	
 	
-	document.addEventListener('touchstart', function (event) {
+	document.addEventListener('ontouchstart' ? 'touchstart' : 'mousedown', function (event) {
 		
 		var layer = stack[stack.length - 1];
 		
 		if (layer)
 		{
-			var root = layer.dom,
+			var root = layer.$dom,
 				node = event.target;
 				
 			while (node)
@@ -53,9 +53,15 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 		
 		if (stack.indexOf(this) < 0)
 		{
-			var dom = this.$dom || this.render(),
-				style = dom.style;
-				
+			var dom = this.$dom;
+			
+			if (!dom)
+			{
+				dom = this.$dom = this.render();
+				dom.classList.add('yx-floatlayer');
+			}
+
+			style = dom.style;
 			style.left = x > 0 ? x + 'px' : x;
 			style.top = y > 0 ? y + 'px' : y;
 			
@@ -69,20 +75,16 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 	
 	this.close = function () {
 		
-		var layer = stack.pop();
+		var layer = stack.pop(),
+			parent,
+			dom;
 		
-		if (layer)
+		if (layer && (dom = this.$dom) && (parent = dom.parentNode))
 		{
-			var dom = this.dom,
-				parent = dom.parentNode;
-				
-			if (parent)
-			{
-				parent.removeChild(dom);
-			}
+			parent.removeChild(dom);
 		}
 	}
-	
+
 	
 	
 });

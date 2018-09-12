@@ -914,7 +914,14 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         {
             var item = items[index++];
             
-            if (!(item instanceof Class))
+            if (item instanceof Class)
+            {
+                if (item.destroyed)
+                {
+                    alert('the object has be destroyed, can not be reuse!');
+                }
+            }
+            else
             {
                 item = item ? createItem(Class, item) : new Class();
             }
@@ -1639,7 +1646,11 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
                 target = binding[0],
                 fn;
 
-            if (fn = binding[2])
+            if (target.destroyed)
+            {
+                bindings.splice(i, 1);
+            }
+            else if (fn = binding[2])
             {
                 target[binding[1]] = fn.call(target, value);
             }
@@ -1944,6 +1955,8 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         {
             this.ondestroy();
         }
+        
+        this.destroyed = true;
     }
 
 
@@ -2366,107 +2379,19 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
 
-    yaxi.template(this, '<span class="yx-control yx-button" tabindex="0"><span class="yx-button-icon"></span><span></span></span>');
+    yaxi.template(this, '<button type="button" class="yx-control yx-button"></button>');
 
 
     this.$properties({
 
-        // 文本内容
         text: '',
-
-        // 按钮类型 default | primary | success | info | warn | danger
-        type: 'default',
-
-        // 图标类名
-        icon: '',
-
-        // svg图标id
-        svg: '',
-
-        // 是否朴素按钮
-        plain: false,
-
-        // 图标和文字是否竖排
-        vertical: false,
-
-        // 是否默认聚焦
-        autofocus: false,
-
-        // 是否加载中状态
-        loading: false
     });
     
 
 
-
-    
-    this.__set_type = function (dom, value) {
-
-        dom.className = control.__class1 + (control.__class2 = value ? ' yx-button-' + value : '') + control.__class3; 
-    }
-
-
-    this.__set_icon = function (dom, value) {
-
-        dom.firstChild.className = 'yx-button-icon' + (value ? ' ' + value : '');
-    }
-
-
-    this.__set_svg = function (dom, value) {
-
-        dom.firstChild.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value + '"></use></svg>' : '';
-    }
-
-
-    this.__set_plain = function (dom, value) {
-
-        if (value)
-        {
-            dom.setAttribute('plain', 1);
-        }
-        else
-        {
-            dom.removeAttribute('plain');
-        }
-    }
-    
-    
-    this.__set_vertical = function (dom, value) {
-
-        value = value ? 'block' : '';
-
-        dom.firstChild.style.display = value;
-        dom.lastChild.style.display = value;
-    }
-
-
-    this.__set_loading = function (dom, value) {
-
-        dom = dom.firstChild;
-
-        if (value)
-        {
-            dom.setAttribute('loading', 1);
-        }
-        else
-        {
-            dom.removeAttribute('loading');
-        }
-    }
-
-
-    this.__set_autofocus = function (dom, value) {
-
-        if (value)
-        {
-            dom.focus();
-        }
-    };
-
-
     this.__set_text = function (dom, value) {
 
-        dom.lastChild.textContent = value;
+        dom.textContent = value;
     }
 
 
@@ -2484,13 +2409,13 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 	
 	
 	
-	document.addEventListener('touchstart', function (event) {
+	document.addEventListener('ontouchstart' ? 'touchstart' : 'mousedown', function (event) {
 		
 		var layer = stack[stack.length - 1];
 		
 		if (layer)
 		{
-			var root = layer.dom,
+			var root = layer.$dom,
 				node = event.target;
 				
 			while (node)
@@ -2531,9 +2456,15 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 		
 		if (stack.indexOf(this) < 0)
 		{
-			var dom = this.$dom || this.render(),
-				style = dom.style;
-				
+			var dom = this.$dom;
+			
+			if (!dom)
+			{
+				dom = this.$dom = this.render();
+				dom.classList.add('yx-floatlayer');
+			}
+
+			style = dom.style;
 			style.left = x > 0 ? x + 'px' : x;
 			style.top = y > 0 ? y + 'px' : y;
 			
@@ -2547,23 +2478,68 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 	
 	this.close = function () {
 		
-		var layer = stack.pop();
+		var layer = stack.pop(),
+			parent,
+			dom;
 		
-		if (layer)
+		if (layer && (dom = this.$dom) && (parent = dom.parentNode))
 		{
-			var dom = this.dom,
-				parent = dom.parentNode;
-				
-			if (parent)
-			{
-				parent.removeChild(dom);
-			}
+			parent.removeChild(dom);
 		}
 	}
-	
+
 	
 	
 });
+
+
+
+
+yaxi.Icon = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-icon"></span>');
+    
+    
+
+    this.$properties({
+
+        // 图标类名
+        icon: '',
+
+        // svg图标id
+        svg: ''
+    });
+
+
+
+    this.__set_icon = function (dom, value) {
+
+        var classList = dom.classList,
+            icon = this.__icon_;
+
+        if (icon)
+        {
+            dom.classList.remove(icon);
+        }
+
+        if (this.__icon_ = value)
+        {
+            dom.classList.add(value);
+        }
+    }
+
+
+    this.__set_svg = function (dom, value) {
+
+        dom.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value.replace(/[<>"']/g, '') + '"></use></svg>' : '';
+    }
+
+
+
+
+}).register('Icon');
 
 
 
@@ -2573,7 +2549,7 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-iconbutton"><span class="icon"></span><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-iconbutton"><span class="yx-icon"></span><span></span></span>');
 
 
 
@@ -2592,21 +2568,32 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
 
 
 
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    }
+
+
     this.__set_icon = function (dom, value) {
 
-        dom.firstChild.className = 'icon' + (value ? ' ' + value : '');
+        var classList = dom.firstChild.classList,
+            icon = this.__icon_;
+
+        if (icon)
+        {
+            classList.remove(icon);
+        }
+
+        if (this.__icon_ = value)
+        {
+            classList.add(value);
+        }
     }
 
 
     this.__set_svg = function (dom, value) {
 
-        dom.firstChild.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value + '"></use></svg>' : '';
-    }
-
-
-    this.__set_text = function (dom, value) {
-
-        dom.lastChild.textContent = value;
+        dom.firstChild.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value.replace(/[<>"']/g, '') + '"></use></svg>' : '';
     }
 
 
@@ -2616,6 +2603,23 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
 
 
 
+yaxi.Image = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<img class="yx-control yx-image"></img>');
+    
+    
+
+    this.$properties({
+
+        // 图标路径
+        src: ''
+    });
+
+
+
+}).register('Image');
 
 
 
@@ -2723,12 +2727,81 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 
 
 
+yaxi.Password = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-password"><input type="password" /></span>');
+
+
+
+    this.$properties({
+
+        text: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.firstChild.textContent = value;
+    }
+
+
+
+}).register('Password');
+
+
+
+
 yaxi.Text = yaxi.Control.extend(function () {
 
 
 
     yaxi.template(this, '<span class="yx-control yx-text"></span>');
 
-    
 
-});
+
+    this.$properties({
+
+        text: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.textContent = value;
+    }
+
+
+
+}).register('Text');
+
+
+
+
+yaxi.TextBox = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-textbox"><input type="text" /></span>');
+
+
+
+    this.$properties({
+
+        text: { alias: 'value', defaultValue: '' },
+        placeholder: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.firstChild.textContent = value;
+    }
+
+
+
+}).register('TextBox');

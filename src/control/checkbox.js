@@ -18,4 +18,4 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
 
 
-}).register('Button');
+}).register('CheckBox');

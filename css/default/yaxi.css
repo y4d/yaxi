@@ -344,6 +344,50 @@ textarea::-webkit-input-placeholder {
     transform: rotate(1turn);
   }
 }
+.yx-icon {
+  text-align: center;
+}
+.yx-icon > svg {
+  display: inline-block;
+  width: 0.24rem;
+  height: 0.24rem;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.yx-selected {
+  color: #3a8ee6;
+}
+.yx-selected svg {
+  fill: #3a8ee6;
+}
+.yx-subject-1 {
+  font-size: 0.24rem;
+}
+.yx-subject-2 {
+  font-size: 0.2rem;
+}
+.yx-subject-3 {
+  font-size: 0.18rem;
+}
+.yx-subject-4 {
+  font-size: 0.16rem;
+}
+.yx-subject-5 {
+  font-size: 0.16rem;
+}
+.yx-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.yx-floatlayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
 .yx-layout-row {
   display: -webkit-flex;
   display: flex;
@@ -368,12 +412,8 @@ textarea::-webkit-input-placeholder {
   text-align: center;
 }
 .yx-button {
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
   margin: 0;
   border: 1px solid #dcdfe6;
-  padding: 5px 15px;
   outline: none;
   white-space: nowrap;
   text-align: center;
@@ -401,258 +441,6 @@ textarea::-webkit-input-placeholder {
   border-color: #ebeef5;
   background-color: #fff;
   cursor: not-allowed;
-}
-.yx-button[plain]:focus,
-.yx-button[plain]:hover {
-  color: #409eff;
-  border-color: #409eff;
-  background-color: #fff;
-}
-.yx-button[plain]:active {
-  color: #3a8ee6;
-  border-color: #3a8ee6;
-}
-.yx-button[plain][disabled] {
-  color: #c0c4cc;
-  border-color: #ebeef5;
-  background-color: #fff;
-}
-.yx-button-primary {
-  color: #fff;
-  border-color: #409eff;
-  background-color: #409eff;
-}
-.yx-button-primary:focus,
-.yx-button-primary:hover {
-  color: #fff;
-  border-color: #66b1ff;
-  background-color: #66b1ff;
-}
-.yx-button-primary:active {
-  color: #fff;
-  border-color: #3a8ee6;
-  background-color: #3a8ee6;
-}
-.yx-button-primary[disabled] {
-  color: #fff;
-  border-color: #a0cfff;
-  background-color: #a0cfff;
-}
-.yx-button-primary[plain] {
-  color: #409eff;
-  border-color: #b3d8ff;
-  background-color: #ecf5ff;
-}
-.yx-button-primary[plain]:focus,
-.yx-button-primary[plain]:hover {
-  color: #fff;
-  border-color: #409eff;
-  background-color: #409eff;
-}
-.yx-button-primary[plain]:active {
-  color: #fff;
-  border-color: #3a8ee6;
-  background-color: #3a8ee6;
-}
-.yx-button-primary[plain][disabled] {
-  color: #8cc5ff;
-  border-color: #d9ecff;
-  background-color: #ecf5ff;
-}
-.yx-button-success {
-  color: #fff;
-  border-color: #67c23a;
-  background-color: #67c23a;
-}
-.yx-button-success:focus,
-.yx-button-success:hover {
-  color: #fff;
-  border-color: #85ce61;
-  background-color: #85ce61;
-}
-.yx-button-success:active {
-  color: #fff;
-  border-color: #5daf34;
-  background-color: #5daf34;
-}
-.yx-button-success[disabled] {
-  color: #fff;
-  border-color: #b3e19d;
-  background-color: #b3e19d;
-}
-.yx-button-success[plain] {
-  color: #67c23a;
-  border-color: #c2e7b0;
-  background-color: #f0f9eb;
-}
-.yx-button-success[plain]:focus,
-.yx-button-success[plain]:hover {
-  color: #fff;
-  border-color: #67c23a;
-  background-color: #67c23a;
-}
-.yx-button-success[plain]:active {
-  color: #fff;
-  border-color: #5daf34;
-  background-color: #5daf34;
-}
-.yx-button-success[plain][disabled] {
-  color: #a4da89;
-  border-color: #e1f3d8;
-  background-color: #f0f9eb;
-}
-.yx-button-info {
-  color: #fff;
-  border-color: #909399;
-  background-color: #909399;
-}
-.yx-button-info:focus,
-.yx-button-info:hover {
-  color: #fff;
-  border-color: #a6a9ad;
-  background-color: #a6a9ad;
-}
-.yx-button-info:active {
-  color: #fff;
-  border-color: #82848a;
-  background-color: #82848a;
-}
-.yx-button-info[disabled] {
-  color: #fff;
-  border-color: #c8c9cc;
-  background-color: #c8c9cc;
-}
-.yx-button-info[plain] {
-  color: #909399;
-  border-color: #d3d4d6;
-  background-color: #f4f4f5;
-}
-.yx-button-info[plain]:focus,
-.yx-button-info[plain]:hover {
-  color: #fff;
-  border-color: #909399;
-  background-color: #909399;
-}
-.yx-button-info[plain]:active {
-  color: #fff;
-  border-color: #82848a;
-  background-color: #82848a;
-}
-.yx-button-info[plain][disabled] {
-  color: #bcbec2;
-  border-color: #e9e9eb;
-  background-color: #f4f4f5;
-}
-.yx-button-warn {
-  color: #fff;
-  border-color: #e6a23c;
-  background-color: #e6a23c;
-}
-.yx-button-warn:focus,
-.yx-button-warn:hover {
-  color: #fff;
-  border-color: #ebb563;
-  background-color: #ebb563;
-}
-.yx-button-warn:active {
-  color: #fff;
-  border-color: #cf9236;
-  background-color: #cf9236;
-}
-.yx-button-warn[disabled] {
-  color: #fff;
-  border-color: #f3d19e;
-  background-color: #f3d19e;
-}
-.yx-button-warn[plain] {
-  color: #e6a23c;
-  border-color: #f5dab1;
-  background-color: #fdf6ec;
-}
-.yx-button-warn[plain]:focus,
-.yx-button-warn[plain]:hover {
-  color: #fff;
-  border-color: #e6a23c;
-  background-color: #e6a23c;
-}
-.yx-button-warn[plain]:active {
-  color: #fff;
-  border-color: #cf9236;
-  background-color: #cf9236;
-}
-.yx-button-warn[plain][disabled] {
-  color: #f0c78a;
-  border-color: #faecd8;
-  background-color: #fdf6ec;
-}
-.yx-button-danger {
-  color: #fff;
-  border-color: #f56c6c;
-  background-color: #f56c6c;
-}
-.yx-button-danger:focus,
-.yx-button-danger:hover {
-  color: #fff;
-  border-color: #f78989;
-  background-color: #f78989;
-}
-.yx-button-danger:active {
-  color: #fff;
-  border-color: #dd6161;
-  background-color: #dd6161;
-}
-.yx-button-danger[disabled] {
-  color: #fff;
-  border-color: #fab6b6;
-  background-color: #fab6b6;
-}
-.yx-button-danger[plain] {
-  color: #f56c6c;
-  border-color: #fbc4c4;
-  background-color: #fef0f0;
-}
-.yx-button-danger[plain]:focus,
-.yx-button-danger[plain]:hover {
-  color: #fff;
-  border-color: #f56c6c;
-  background-color: #f56c6c;
-}
-.yx-button-danger[plain]:active {
-  color: #fff;
-  border-color: #dd6161;
-  background-color: #dd6161;
-}
-.yx-button-danger[plain][disabled] {
-  color: #f9a7a7;
-  border-color: #fde2e2;
-  background-color: #fef0f0;
-}
-.yx-button-icon {
-  display: inline-block;
-  font-family: iconfont;
-}
-.yx-button-icon[loading] {
-  animation: rotating 2s linear infinite;
-}
-.yx-button-icon[loading]:before {
-  content: "\e635";
-}
-.yx-selected {
-  color: #3a8ee6;
-}
-.yx-selected svg {
-  fill: #3a8ee6;
-}
-.yx-absolute {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.yx-page {
-  width: 100%;
-  height: 100%;
 }
 .yx-node-item {
   height: 2em;
