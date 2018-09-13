@@ -10,6 +10,8 @@
 
     var patches = yaxi.__patches;
 
+    var update = yaxi.__patch_update;
+
 
 
 
@@ -17,7 +19,7 @@
 
         if (!patches.delay)
         {
-            patches.delay = setTimeout(patches.update);
+            patches.delay = setTimeout(update);
         }
 
         patches.push(target);

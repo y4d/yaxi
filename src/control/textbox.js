@@ -26,5 +26,29 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     }
 
 
+    
+
+    this.__bind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.addEventListener(name, listener);
+    }
+
+
+    this.__unbind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.removeEventListener(name, listener);
+    }
+
+
 
 }).register('TextBox');

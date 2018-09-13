@@ -96,7 +96,31 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
     }
 
 
+
+    this.findByKey = function (key, deep) {
+
+        var children = this.__children;
+
+        if (children)
+        {
+            for (var i = 0, l = children.length; i < l; i++)
+            {
+                var item = children[i];
+
+                if (item.key === key)
+                {
+                    return item;
+                }
+
+                if (deep && item.__children && (item = item.findByKey(key, true)))
+                {
+                    return item;
+                }
+            }
+        }
+    }
     
+
 
     this.destroy = function () {
 

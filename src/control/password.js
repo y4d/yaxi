@@ -33,5 +33,35 @@ yaxi.Password = yaxi.Control.extend(function () {
     }
 
 
+    
+    
+    this.__on_input = this.__on_change = function (event) {
+
+        this.text = event.target.value;
+    }
+
+
+    this.__bind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.addEventListener(name, listener);
+    }
+
+
+    this.__unbind_event = function (dom, name, listener) {
+        
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.removeEventListener(name, listener);
+    }
+
+
 
 }).register('Password');

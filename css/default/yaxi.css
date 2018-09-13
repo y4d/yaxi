@@ -444,12 +444,6 @@ textarea::-webkit-input-placeholder {
   color: #3a8ee6;
   border-color: #3a8ee6;
 }
-.yx-button[disabled] {
-  color: #c0c4cc;
-  border-color: #ebeef5;
-  background-color: #ffffff;
-  cursor: not-allowed;
-}
 .yx-button[theme="primary"] {
   color: #ffffff;
   border-color: #8cc5ff;
@@ -458,7 +452,7 @@ textarea::-webkit-input-placeholder {
 .yx-button[theme="primary"]:focus,
 .yx-button[theme="primary"]:hover,
 .yx-button[theme="primary"]:active {
-  color: #3a8ee6;
+  color: #ffffff;
   border-color: #3a8ee6;
   background-color: #3a8ee6;
 }
@@ -505,6 +499,12 @@ textarea::-webkit-input-placeholder {
   color: #dd6161;
   border-color: #dd6161;
   background-color: #dd6161;
+}
+.yx-button[disabled] {
+  color: #c0c4cc;
+  border-color: #ebeef5;
+  background-color: #ffffff;
+  cursor: not-allowed;
 }
 .yx-checkbox {
   display: inline-block;

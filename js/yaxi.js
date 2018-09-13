@@ -716,10 +716,6 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    // 更新变更
-    patches.update = update;
-
-    
 
     function update() {
 
@@ -772,56 +768,13 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    // 事件变更处理
-    this.__event_change = function (type, items, on) {
+    // 更新变更
+    yaxi.__patch_update = update;
 
-        // 刚注册或已注销完毕才注册事件变更
-        var value = on ? !items[1] : !items || !items[0];
+    // 添加补丁
+    yaxi.__append_patch = patch;
 
-        if (value)
-        {
-            var events = this.__events,
-                changes;
-
-            if (events)
-            {
-                if (changes = events.__changes)
-                {
-                    changes[type] = value;
-                }
-                else
-                {
-                    patch(events);
-                    (events.__changes = {})[type] = value;
-                }
-            }
-            else
-            {
-                patch(this.__events = events = {
-
-                    owner: this,
-                    __check_update: this.__check_event,
-                    __update_patch: this.__event_patch
-                });
-
-                events.__changes[type] = value;
-            }
-        }
-    }
-
-
-    this.__check_event = function () {
-
-        return this.__changes;
-    }
-
-
-    this.__event_patch = function () {
-
-        this.__changes = null;
-    }
-
-
+    
 
 });
 
@@ -840,6 +793,8 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
     var patches = yaxi.__patches;
 
+    var update = yaxi.__patch_update;
+
 
 
 
@@ -847,7 +802,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         if (!patches.delay)
         {
-            patches.delay = setTimeout(patches.update);
+            patches.delay = setTimeout(update);
         }
 
         patches.push(target);
@@ -1789,7 +1744,6 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         id: '',
         lang: '',
         title: '',
-        value: null,
         key: null,
         tag: null
     });
@@ -1948,14 +1902,6 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     this.__init_events = function (events) {
 
-        this.__events = {
-
-            owner: this,
-            __changes: {},
-            __check_update: this.__check_event,
-            __update_patch: this.__event_patch
-        }
-
         for (var name in events)
         {
             this.on(name, events[name]);
@@ -2068,6 +2014,10 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
+    this.__set_key = this.__set_tag = false;
+
+
+
 
     function updateDom(dom, name, value) {
 
@@ -2089,31 +2039,94 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    // 检查事件是否变更
-    this.__check_event = function () {
 
-        return this.owner.$dom && this.__changes;
+    // 添加补丁
+    var patch = yaxi.__append_patch;
+
+    
+    // 事件变更处理
+    this.__event_change = function (type, items, on) {
+
+        // 刚注册或已注销完毕才注册事件变更
+        var value = on ? !items[1] : !items || !items[0];
+
+        if (value)
+        {
+            var events = this.__events,
+                changes;
+
+            if (events)
+            {
+                if (changes = events.__changes)
+                {
+                    changes[type] = value;
+                    return;
+                }
+            }
+            else
+            {
+                events = this.__events = {
+                    __owner: this,
+                    __check_update: check_event,
+                    __update_patch: event_patch
+                }
+            }
+
+            if (this.$dom)
+            {
+                patch(events)[type] = value;
+            }
+            else
+            {
+                (events.__changes = {})[type] = value;
+            }
+        }
+    }
+
+
+    // 检查事件是否变更
+    function check_event() {
+
+        return this.__owner.$dom && this.__changes;
     }
 
     
     // 自定义事件更新逻辑
-    this.__event_patch = function (changes) {
+    function event_patch(changes) {
 
-        var dom = this.owner.$dom;
+        var owner = this.__owner,
+            dom = owner.$dom;
 
         for (var name in changes)
         {
             if (changes[name])
             {
-                dom.addEventListener(name, domEventListener);
+                owner.__bind_event(dom, name, domEventListener);
             }
             else
             {
-                dom.removeEventListener(name, domEventListener);
+                owner.__unbind_event(dom, name, domEventListener);
             }
         }
 
         this.__changes = null;
+    }
+
+
+    function findControl(event) {
+
+        var target = event.target,
+            control;
+
+        while (target)
+        {
+            if (control = target.$control)
+            {
+                return control;
+            }
+
+            target = target.parentNode;
+        }
     }
 
 
@@ -2143,22 +2156,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
-    function findControl(event) {
+    this.__bind_event = function (dom, name, listener) {
 
-        var target = event.target,
-            control;
-
-        while (target)
-        {
-            if (control = target.$control)
-            {
-                return control;
-            }
-
-            target = target.parentNode;
-        }
+        dom.addEventListener(name, listener);
     }
 
+
+    this.__unbind_event = function (dom, name, listener) {
+
+        dom.removeEventListener(name, listener);
+    }
 
 
 
@@ -2174,9 +2181,50 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }, true);
 
 
+    document.addEventListener('input', function (event) {
+
+        var control = findControl(event);
+
+        if (control && !control.disabled)
+        {
+            control.__on_input(event);
+        }
+
+    }, true);
+
+
+    document.addEventListener('change', function (event) {
+
+        var control = findControl(event);
+
+        if (control && !control.disabled)
+        {
+            control.__on_change(event);
+        }
+
+    }, true);
+
+
+
 
     this.__on_tap = function (event) {
     }
+
+
+    this.__on_input = this.__on_change = function (event) {
+
+        var storage = this.__storage;
+
+        if (storage)
+        {
+            storage.text = event.target.value;
+        }
+        else
+        {
+            this.__v_text = event.target.value;
+        }
+    }
+
 
 
 
@@ -2283,7 +2331,31 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
     }
 
 
+
+    this.findByKey = function (key, deep) {
+
+        var children = this.__children;
+
+        if (children)
+        {
+            for (var i = 0, l = children.length; i < l; i++)
+            {
+                var item = children[i];
+
+                if (item.key === key)
+                {
+                    return item;
+                }
+
+                if (deep && item.__children && (item = item.findByKey(key, true)))
+                {
+                    return item;
+                }
+            }
+        }
+    }
     
+
 
     this.destroy = function () {
 
@@ -2870,6 +2942,36 @@ yaxi.Password = yaxi.Control.extend(function () {
     }
 
 
+    
+    
+    this.__on_input = this.__on_change = function (event) {
+
+        this.text = event.target.value;
+    }
+
+
+    this.__bind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.addEventListener(name, listener);
+    }
+
+
+    this.__unbind_event = function (dom, name, listener) {
+        
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.removeEventListener(name, listener);
+    }
+
+
 
 }).register('Password');
 
@@ -3006,6 +3108,30 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     this.__set_placeholder = function (dom, value) {
 
         dom.firstChild.placeholder = value;
+    }
+
+
+    
+
+    this.__bind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.addEventListener(name, listener);
+    }
+
+
+    this.__unbind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.removeEventListener(name, listener);
     }
 
 

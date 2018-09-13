@@ -112,10 +112,6 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    // 更新变更
-    patches.update = update;
-
-    
 
     function update() {
 
@@ -168,55 +164,12 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
 
 
-    // 事件变更处理
-    this.__event_change = function (type, items, on) {
+    // 更新变更
+    yaxi.__patch_update = update;
 
-        // 刚注册或已注销完毕才注册事件变更
-        var value = on ? !items[1] : !items || !items[0];
+    // 添加补丁
+    yaxi.__append_patch = patch;
 
-        if (value)
-        {
-            var events = this.__events,
-                changes;
-
-            if (events)
-            {
-                if (changes = events.__changes)
-                {
-                    changes[type] = value;
-                }
-                else
-                {
-                    patch(events);
-                    (events.__changes = {})[type] = value;
-                }
-            }
-            else
-            {
-                patch(this.__events = events = {
-
-                    owner: this,
-                    __check_update: this.__check_event,
-                    __update_patch: this.__event_patch
-                });
-
-                events.__changes[type] = value;
-            }
-        }
-    }
-
-
-    this.__check_event = function () {
-
-        return this.__changes;
-    }
-
-
-    this.__event_patch = function () {
-
-        this.__changes = null;
-    }
-
-
+    
 
 });
