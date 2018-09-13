@@ -8,7 +8,7 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
     this.$properties({
 
-        text: { alias: 'value', defaultValue: '' },
+        text: '',
         placeholder: ''
     });
 
@@ -17,6 +17,12 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     this.__set_text = function (dom, value) {
 
         dom.firstChild.textContent = value;
+    }
+
+
+    this.__set_placeholder = function (dom, value) {
+
+        dom.firstChild.placeholder = value;
     }
 
 

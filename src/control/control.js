@@ -184,6 +184,30 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     this.trigger = eventTarget.trigger;
 
 
+    
+    this.__c_events = true
+
+    this.__set_events = false;
+
+
+    this.__init_events = function (events) {
+
+        this.__events = {
+
+            owner: this,
+            __changes: {},
+            __check_update: this.__check_event,
+            __update_patch: this.__event_patch
+        }
+
+        for (var name in events)
+        {
+            this.on(name, events[name]);
+        }
+    }
+    
+
+
 
 
     this.destroy = function () {
@@ -339,28 +363,63 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     function domEventListener(event) {
 
+        var control = findControl(event) || this.$control;
+
+        event.stopPropagation();
+
+        while (control)
+        {
+            if (control.disabled)
+            {
+                control = control.$parent;
+            }
+            else
+            {
+                if (control.trigger(event.type, { original: event }) === false)
+                {
+                    event.preventDefault();
+                    return false;
+                }
+
+                break;
+            }
+        }
+    }
+
+
+    function findControl(event) {
+
         var target = event.target,
             control;
 
-        while (target && target !== this)
+        while (target)
         {
             if (control = target.$control)
             {
-                break;
+                return control;
             }
 
             target = target.parentNode;
         }
+    }
 
-        event.stopPropagation();
 
-        target = control ? { target: control, original: event } : { original: event };
 
-        if (this.$control.trigger(event.type, target) === false)
+
+    document.addEventListener('tap', function (event) {
+
+        var control = findControl(event);
+
+        if (control && !control.disabled)
         {
-            event.preventDefault();
-            return false;
+            control.__on_tap(event);
         }
+
+    }, true);
+
+
+
+    this.__on_tap = function (event) {
     }
 
 

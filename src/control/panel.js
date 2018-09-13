@@ -95,6 +95,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         this.template = template;
     }
 
+
     
 
     this.destroy = function () {

@@ -25,13 +25,13 @@ body {
   line-height: 1.5;
   height: 100%;
   overflow-x: hidden;
-  background-color: #fff;
+  background-color: #ffffff;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
 }
 body,
 input {
-  background-color: #fff;
+  background-color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 0.16rem;
 }
@@ -91,7 +91,7 @@ dfn {
 }
 mark {
   background: #cf9236;
-  color: #000;
+  color: #000000;
 }
 small {
   font-size: 80%;
@@ -187,7 +187,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 fieldset {
   margin: 0 2px;
-  border: 1px solid #c0c4cc;
+  border: 1px solid #ffffff;
   padding: 0.35em 0.625em 0.75em;
 }
 legend {
@@ -254,7 +254,7 @@ input::-moz-placeholder,
 textarea::-moz-placeholder,
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #c8c9cc;
+  color: #f4f4f5;
 }
 @font-face {
   font-family: "iconfont";
@@ -345,14 +345,19 @@ textarea::-webkit-input-placeholder {
   }
 }
 .yx-icon {
-  text-align: center;
-}
-.yx-icon > svg {
-  display: inline-block;
+  display: -webkit-flex;
+  display: flex;
   width: 0.24rem;
   height: 0.24rem;
   overflow: hidden;
-  vertical-align: middle;
+  font-size: 0.24rem;
+  align-items: center;
+  justify-content: center;
+}
+.yx-icon > svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: 0.2em;
 }
 .yx-selected {
   color: #3a8ee6;
@@ -388,6 +393,9 @@ textarea::-webkit-input-placeholder {
   top: 0;
   z-index: 10;
 }
+.yx-layout-block > * {
+  display: block;
+}
 .yx-layout-row {
   display: -webkit-flex;
   display: flex;
@@ -413,13 +421,13 @@ textarea::-webkit-input-placeholder {
 }
 .yx-button {
   margin: 0;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #c0c4cc;
   outline: none;
   white-space: nowrap;
   text-align: center;
   transition: 0.1s;
-  color: #606266;
-  background-color: #fff;
+  color: #000000;
+  background-color: #c0c4cc;
   cursor: pointer;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -428,9 +436,9 @@ textarea::-webkit-input-placeholder {
 }
 .yx-button:focus,
 .yx-button:hover {
-  color: #409eff;
-  border-color: #c6e2ff;
-  background-color: #ecf5ff;
+  color: #3a8ee6;
+  border-color: #8cc5ff;
+  background-color: #d9ecff;
 }
 .yx-button:active {
   color: #3a8ee6;
@@ -439,29 +447,140 @@ textarea::-webkit-input-placeholder {
 .yx-button[disabled] {
   color: #c0c4cc;
   border-color: #ebeef5;
-  background-color: #fff;
+  background-color: #ffffff;
   cursor: not-allowed;
 }
-.yx-node-item {
-  height: 2em;
+.yx-button[theme="primary"] {
+  color: #ffffff;
+  border-color: #8cc5ff;
+  background-color: #66b1ff;
 }
-.yx-node-expand,
-.yx-node-check,
-.yx-node-icon {
+.yx-button[theme="primary"]:focus,
+.yx-button[theme="primary"]:hover,
+.yx-button[theme="primary"]:active {
+  color: #3a8ee6;
+  border-color: #3a8ee6;
+  background-color: #3a8ee6;
+}
+.yx-button[theme="success"] {
+  color: #ffffff;
+  background-color: #85ce61;
+}
+.yx-button[theme="success"]:focus,
+.yx-button[theme="success"]:hover,
+.yx-button[theme="success"]:active {
+  color: #5daf34;
+  border-color: #5daf34;
+  background-color: #5daf34;
+}
+.yx-button[theme="info"] {
+  color: #ffffff;
+  background-color: #a6a9ad;
+}
+.yx-button[theme="info"]:focus,
+.yx-button[theme="info"]:hover,
+.yx-button[theme="info"]:active {
+  color: #82848a;
+  border-color: #82848a;
+  background-color: #82848a;
+}
+.yx-button[theme="warning"] {
+  color: #ffffff;
+  background-color: #ebb563;
+}
+.yx-button[theme="warning"]:focus,
+.yx-button[theme="warning"]:hover,
+.yx-button[theme="warning"]:active {
+  color: #cf9236;
+  border-color: #cf9236;
+  background-color: #cf9236;
+}
+.yx-button[theme="danger"] {
+  color: #ffffff;
+  background-color: #f78989;
+}
+.yx-button[theme="danger"]:focus,
+.yx-button[theme="danger"]:hover,
+.yx-button[theme="danger"]:active {
+  color: #dd6161;
+  border-color: #dd6161;
+  background-color: #dd6161;
+}
+.yx-checkbox {
   display: inline-block;
-  margin-top: 0.25em;
-  width: 1.5em;
-  height: 1.5em;
-  text-align: center;
+  height: 0.3rem;
+  line-height: 0.3rem;
+}
+.yx-checkbox > * {
+  display: inline-block;
   vertical-align: middle;
-  font-family: iconfont;
 }
-.yx-node-check {
-  display: none;
+.yx-checkbox > .yx-icon {
+  width: 0.18rem;
+  height: 0.18rem;
+  margin: 0 0.04rem;
+  border: 1px solid #c0c4cc;
+  border-radius: 0.04rem;
+  background-color: #ffffff;
+  outline: none;
 }
-.yx-node-list {
-  padding-left: 1.5em;
+.yx-checkbox-checked > .yx-icon {
+  border: 0.06rem solid #3a8ee6;
 }
-.yx-treeview[checkbox] .yx-node-check {
+.yx-radiobutton {
   display: inline-block;
+  height: 0.3rem;
+  line-height: 0.3rem;
+}
+.yx-radiobutton > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+.yx-radiobutton > .yx-icon {
+  width: 0.18rem;
+  height: 0.18rem;
+  margin: 0 0.04rem;
+  border: 1px solid #c0c4cc;
+  border-radius: 0.08rem;
+  background-color: #ffffff;
+  outline: none;
+}
+.yx-radiobutton-checked > .yx-icon {
+  border: 0.06rem solid #3a8ee6;
+}
+.yx-switchbutton {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.3rem;
+  border: 1px solid #c0c4cc;
+  padding: 0.03rem;
+  border-radius: 0.13rem;
+  background-color: #ffffff;
+}
+.yx-switchbutton > span {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  border-radius: 0.25%;
+  background-color: #c0c4cc;
+}
+.yx-switchbutton-checked {
+  border-color: #3a8ee6;
+  text-align: right;
+}
+.yx-switchbutton-checked > span {
+  background-color: #8cc5ff;
+}
+.yx-textbox {
+  width: 2rem;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  border: 1px solid #c0c4cc;
+  background-color: #ffffff;
+}
+.yx-textbox > input {
+  border: 0;
+  width: 100%;
+  background-color: #ffffff;
+  outline: none;
 }

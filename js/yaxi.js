@@ -1940,6 +1940,30 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     this.trigger = eventTarget.trigger;
 
 
+    
+    this.__c_events = true
+
+    this.__set_events = false;
+
+
+    this.__init_events = function (events) {
+
+        this.__events = {
+
+            owner: this,
+            __changes: {},
+            __check_update: this.__check_event,
+            __update_patch: this.__event_patch
+        }
+
+        for (var name in events)
+        {
+            this.on(name, events[name]);
+        }
+    }
+    
+
+
 
 
     this.destroy = function () {
@@ -2095,28 +2119,63 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     function domEventListener(event) {
 
+        var control = findControl(event) || this.$control;
+
+        event.stopPropagation();
+
+        while (control)
+        {
+            if (control.disabled)
+            {
+                control = control.$parent;
+            }
+            else
+            {
+                if (control.trigger(event.type, { original: event }) === false)
+                {
+                    event.preventDefault();
+                    return false;
+                }
+
+                break;
+            }
+        }
+    }
+
+
+    function findControl(event) {
+
         var target = event.target,
             control;
 
-        while (target && target !== this)
+        while (target)
         {
             if (control = target.$control)
             {
-                break;
+                return control;
             }
 
             target = target.parentNode;
         }
+    }
 
-        event.stopPropagation();
 
-        target = control ? { target: control, original: event } : { original: event };
 
-        if (this.$control.trigger(event.type, target) === false)
+
+    document.addEventListener('tap', function (event) {
+
+        var control = findControl(event);
+
+        if (control && !control.disabled)
         {
-            event.preventDefault();
-            return false;
+            control.__on_tap(event);
         }
+
+    }, true);
+
+
+
+    this.__on_tap = function (event) {
     }
 
 
@@ -2222,6 +2281,7 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         this.template = template;
     }
+
 
     
 
@@ -2384,9 +2444,16 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
     this.$properties({
 
+        type: '',
         text: '',
     });
     
+
+
+    this.__set_type = function (dom, value) {
+
+        dom.setAttribute('theme', value)
+    }
 
 
     this.__set_text = function (dom, value) {
@@ -2397,6 +2464,47 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
 
 }).register('Button');
+
+
+
+
+yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-checkbox"><span class="yx-icon"></span><span></span></span>');
+
+
+
+    this.$properties({
+
+        text: '',
+        checked: false
+    });
+    
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    }
+
+
+    this.__set_checked = function (dom, value) {
+
+        dom.classList[value ? 'add' : 'remove']('yx-checkbox-checked');
+    }
+
+
+    this.__on_tap = function () {
+
+        this.checked = this.$dom.firstChild.checked = !this.checked;
+        this.trigger('change');
+    }
+
+
+
+}).register('CheckBox');
 
 
 
@@ -2731,15 +2839,23 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-password"><input type="password" /></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox"><input type="password" /><span></span></span>');
 
 
 
     this.$properties({
 
-        text: ''
+        type: '',
+        text: '',
+        placeholder: ''
     });
 
+
+
+    this.__set_type = function (dom, value) {
+
+        dom.lastChild.className = value ? 'yx-password-' + value : '';
+    }
 
 
     this.__set_text = function (dom, value) {
@@ -2748,8 +2864,92 @@ yaxi.Password = yaxi.Control.extend(function () {
     }
 
 
+    this.__set_placeholder = function (dom, value) {
+
+        dom.firstChild.placeholder = value;
+    }
+
+
 
 }).register('Password');
+
+
+
+
+yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-radiobutton"><span class="yx-icon"></span><span></span></span>');
+
+
+
+    this.$properties({
+
+        text: '',
+        checked: false
+    });
+    
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    }
+
+
+    this.__set_checked = function (dom, value) {
+
+        dom.classList[value ? 'add' : 'remove']('yx-radiobutton-checked');
+    }
+
+
+    this.__on_tap = function () {
+
+        this.checked = !this.checked;
+        this.trigger('change');
+    }
+
+
+
+}).register('RadioButton');
+
+
+
+
+yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-switchbutton"><span><span></span>');
+
+
+
+    this.$properties({
+
+        checked: false
+    });
+    
+
+
+
+    this.__set_checked = function (dom, value) {
+
+        var classList = dom.classList;
+
+        if (value)
+        {
+            classList.add('yx-switchbutton-checked');
+        }
+        else
+        {
+            classList.remove('yx-switchbutton-checked');
+        }
+    }
+
+
+
+}).register('SwitchButton');
 
 
 
@@ -2791,7 +2991,7 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
     this.$properties({
 
-        text: { alias: 'value', defaultValue: '' },
+        text: '',
         placeholder: ''
     });
 
@@ -2800,6 +3000,12 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     this.__set_text = function (dom, value) {
 
         dom.firstChild.textContent = value;
+    }
+
+
+    this.__set_placeholder = function (dom, value) {
+
+        dom.firstChild.placeholder = value;
     }
 
 
