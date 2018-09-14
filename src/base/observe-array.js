@@ -311,7 +311,7 @@
 
         if (!original)
         {
-            return null;
+            return this;
         }
     
         if (changes = this.__changes)
@@ -407,7 +407,7 @@
         }
         else
         {
-            this.__original = null;
+            this.__original = [];
         }
 
         this.__changes = null;

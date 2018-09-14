@@ -470,16 +470,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }, true);
 
 
-    document.addEventListener('input', function (event) {
+    // document.addEventListener('input', function (event) {
 
-        var control = findControl(event);
+    //     var control = findControl(event);
 
-        if (control && !control.disabled)
-        {
-            control.__on_input(event);
-        }
+    //     if (control && !control.disabled)
+    //     {
+    //         control.__on_input(event);
+    //     }
 
-    }, true);
+    // });
 
 
     document.addEventListener('change', function (event) {
@@ -491,7 +491,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             control.__on_change(event);
         }
 
-    }, true);
+    });
 
 
 
@@ -500,7 +500,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
-    this.__on_input = this.__on_change = function (event) {
+    this.__on_change = function (event) {
 
         var storage = this.__storage;
 

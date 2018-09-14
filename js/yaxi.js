@@ -1094,7 +1094,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
 
         if (!original)
         {
-            return null;
+            return this;
         }
     
         if (changes = this.__changes)
@@ -1190,7 +1190,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
         }
         else
         {
-            this.__original = null;
+            this.__original = [];
         }
 
         this.__changes = null;
@@ -2181,16 +2181,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }, true);
 
 
-    document.addEventListener('input', function (event) {
+    // document.addEventListener('input', function (event) {
 
-        var control = findControl(event);
+    //     var control = findControl(event);
 
-        if (control && !control.disabled)
-        {
-            control.__on_input(event);
-        }
+    //     if (control && !control.disabled)
+    //     {
+    //         control.__on_input(event);
+    //     }
 
-    }, true);
+    // });
 
 
     document.addEventListener('change', function (event) {
@@ -2202,7 +2202,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             control.__on_change(event);
         }
 
-    }, true);
+    });
 
 
 
@@ -2211,7 +2211,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
-    this.__on_input = this.__on_change = function (event) {
+    this.__on_change = function (event) {
 
         var storage = this.__storage;
 
@@ -2246,6 +2246,19 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+    Class.ctor = function (data) {
+
+        var children;
+        
+        base.constructor.call(this, data);
+
+        children = this.__children = new yaxi.ObserveArray(this, data && data.children);
+        children.__changed = 1;
+        children.__update_patch = childrenPatch;
+    }
+
+
+
 
     this.$properties({
 
@@ -2258,43 +2271,17 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         get: function () {
 
-            return this.__init_children();
+            return this.__children;
         }
     });
 
 
 
 
-    this.__c_children = true;
-
-    
-    this.__init_children = function (data) {
-
-        var children = this.__children;
-
-        if (!children)
-        {
-            children = this.__children = new yaxi.ObserveArray(this, data);
-
-            children.__changed = 1;
-            children.__update_patch = childrenPatch;
-    
-            Object.defineProperty(this, 'children', {
-    
-                value: children,
-                writable: false
-            });
-        }
-
-        return children;
-    }
-
-
-
     // 指定默认子类型
     this.__c_subtype = '$subtype';
 
-    this.__set_subtype = false;
+    this.__c_children = this.__set_subtype = false;
 
 
 
@@ -2336,21 +2323,18 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         var children = this.__children;
 
-        if (children)
+        for (var i = 0, l = children.length; i < l; i++)
         {
-            for (var i = 0, l = children.length; i < l; i++)
+            var item = children[i];
+
+            if (item.key === key)
             {
-                var item = children[i];
+                return item;
+            }
 
-                if (item.key === key)
-                {
-                    return item;
-                }
-
-                if (deep && item.__children && (item = item.findByKey(key, true)))
-                {
-                    return item;
-                }
+            if (deep !== false && item.__children && (item = item.findByKey(key, true)))
+            {
+                return item;
             }
         }
     }
@@ -2361,12 +2345,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         var children = this.__children;
 
-        if (children)
+        for (var i = children.length; i--;)
         {
-            for (var i = children.length; i--;)
-            {
-                children[i].destroy();
-            }
+            children[i].destroy();
         }
 
         base.destroy.call(this);
@@ -2395,19 +2376,12 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         var dom = base.render.call(this),
             children = this.__children;
 
-        if (children)
+        for (var i = 0, l = children.length; i < l; i++)
         {
-            for (var i = 0, l = children.length; i < l; i++)
-            {
-                dom.appendChild(children[i].render());
-            }
+            dom.appendChild(children[i].render());
+        }
 
-            children.commit();
-        }
-        else
-        {
-            this.children.__changed = 0;
-        }
+        children.commit();
 
         return dom;
     }

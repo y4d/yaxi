@@ -11,6 +11,19 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
+    Class.ctor = function (data) {
+
+        var children;
+        
+        base.constructor.call(this, data);
+
+        children = this.__children = new yaxi.ObserveArray(this, data && data.children);
+        children.__changed = 1;
+        children.__update_patch = childrenPatch;
+    }
+
+
+
 
     this.$properties({
 
@@ -23,43 +36,17 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         get: function () {
 
-            return this.__init_children();
+            return this.__children;
         }
     });
 
 
 
 
-    this.__c_children = true;
-
-    
-    this.__init_children = function (data) {
-
-        var children = this.__children;
-
-        if (!children)
-        {
-            children = this.__children = new yaxi.ObserveArray(this, data);
-
-            children.__changed = 1;
-            children.__update_patch = childrenPatch;
-    
-            Object.defineProperty(this, 'children', {
-    
-                value: children,
-                writable: false
-            });
-        }
-
-        return children;
-    }
-
-
-
     // 指定默认子类型
     this.__c_subtype = '$subtype';
 
-    this.__set_subtype = false;
+    this.__c_children = this.__set_subtype = false;
 
 
 
@@ -101,21 +88,18 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         var children = this.__children;
 
-        if (children)
+        for (var i = 0, l = children.length; i < l; i++)
         {
-            for (var i = 0, l = children.length; i < l; i++)
+            var item = children[i];
+
+            if (item.key === key)
             {
-                var item = children[i];
+                return item;
+            }
 
-                if (item.key === key)
-                {
-                    return item;
-                }
-
-                if (deep && item.__children && (item = item.findByKey(key, true)))
-                {
-                    return item;
-                }
+            if (deep !== false && item.__children && (item = item.findByKey(key, true)))
+            {
+                return item;
             }
         }
     }
@@ -126,12 +110,9 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
         var children = this.__children;
 
-        if (children)
+        for (var i = children.length; i--;)
         {
-            for (var i = children.length; i--;)
-            {
-                children[i].destroy();
-            }
+            children[i].destroy();
         }
 
         base.destroy.call(this);
@@ -160,19 +141,12 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
         var dom = base.render.call(this),
             children = this.__children;
 
-        if (children)
+        for (var i = 0, l = children.length; i < l; i++)
         {
-            for (var i = 0, l = children.length; i < l; i++)
-            {
-                dom.appendChild(children[i].render());
-            }
+            dom.appendChild(children[i].render());
+        }
 
-            children.commit();
-        }
-        else
-        {
-            this.children.__changed = 0;
-        }
+        children.commit();
 
         return dom;
     }
