@@ -122,20 +122,6 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
 
 
-    this.__set_layout = function (dom, value) {
-
-        var classList = dom.classList,
-            layout = this.__layout;
-
-        if (layout)
-        {
-            classList.remove(layout);
-        }
-
-        classList.add(this.__layout = 'yx-layout-' + value);
-    }
-
-
     this.render = function () {
 
         var dom = base.render.call(this),

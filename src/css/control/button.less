@@ -14,12 +14,45 @@
     user-select: none;
 }
 
+.yx-button[theme="primary"] {
+    border-color: @primary-color-3;
+    background-color: @primary-color-1;
+    color: @default-color-5;
+}
+
+.yx-button[theme="second"] {
+    border-color: @second-color-3;
+    background-color: @second-color-1;
+    color: @default-color-5;
+}
+
+.yx-button[theme="success"] {
+    border-color: @success-color-3;
+    background-color: @success-color-1;
+    color: @default-color-5;
+}
+
+.yx-button[theme="warning"] {
+    border-color: @warning-color-3;
+    background-color: @warning-color-1;
+    color: @default-color-5;
+}
+
+.yx-button[theme="danger"] {
+    border-color: @danger-color-3;
+    background-color: @danger-color-1;
+    color: @default-color-5;
+}
+
+.yx-button[disabled] {
+    border-color: @disabled-color-3;
+    background-color: @disabled-color-5;
+    color: @disabled-color-1;
+}
+
 .yx-button:focus,
 .yx-button:hover,
-.yx-button:active,
-.yx-button[theme="default"]:focus,
-.yx-button[theme="default"]:hover,
-.yx-button[theme="default"]:active {
+.yx-button:active {
 	color: @primary-color-1;
 	border-color: @primary-color-3;
 	background-color: @primary-color-5

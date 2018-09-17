@@ -5,6 +5,7 @@ webminify()
     .load('src/css', [
         'default/color.less',
         'base/(reset|iconfont|animation|base|layout).less',
+        'control/(control|textbox).less',
         'control/*.less'
     ])
     .combine('\r\n\r\n\r\n\r\n')
