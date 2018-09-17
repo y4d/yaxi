@@ -695,9 +695,13 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     delete changes[alias];
                 }
             }
+            else if (value !== this[key])
+            {
+                patch(this)[alias] = value;
+            }
             else
             {
-                (changes = patch(this))[alias] = value;
+                return;
             }
 
             if (watches[name])
@@ -1744,6 +1748,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         id: '',
         lang: '',
         title: '',
+        theme: '',
         key: null,
         tag: null
     });
@@ -2774,6 +2779,64 @@ yaxi.Image = yaxi.Control.extend(function () {
 
 
 }).register('Image');
+
+
+
+
+yaxi.Memo = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-memo"><textarea></textarea></span>');
+
+
+
+    this.$properties({
+
+        text: '',
+        placeholder: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.firstChild.value = value;
+    }
+
+
+    this.__set_placeholder = function (dom, value) {
+
+        dom.firstChild.placeholder = value;
+    }
+
+
+    
+
+    this.__bind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.addEventListener(name, listener);
+    }
+
+
+    this.__unbind_event = function (dom, name, listener) {
+
+        if (name === 'focus' || name === 'blur')
+        {
+            dom = dom.firstChild;
+        }
+
+        dom.removeEventListener(name, listener);
+    }
+
+
+
+}).register('Memo');
 
 
 

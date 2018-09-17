@@ -91,9 +91,13 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                     delete changes[alias];
                 }
             }
+            else if (value !== this[key])
+            {
+                patch(this)[alias] = value;
+            }
             else
             {
-                (changes = patch(this))[alias] = value;
+                return;
             }
 
             if (watches[name])

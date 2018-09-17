@@ -33,6 +33,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         id: '',
         lang: '',
         title: '',
+        theme: '',
         key: null,
         tag: null
     });
