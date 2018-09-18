@@ -577,18 +577,29 @@ yaxi.EventTarget = Object.extend(function (Class) {
 			{
 				event.initEvent('swipe', true, true);
 				event.offsetX = offsetX;
-				event.offsetY = offsetX;
+                event.offsetY = offsetX;
+                
+                event.clientX = touch.clientX;
+                event.clientY = touch.clientY;
+
+                e.target.dispatchEvent(event);
 			}
 			else
 			{
 				// 初始化事件类型，是否冒泡，是否阻止浏览器的默认行为
-				event.initEvent('tap', true, true);
+                event.initEvent('tap', true, true);
+                
+                event.clientX = touch.clientX;
+                event.clientY = touch.clientY;
+                
+                setTimeout(function () {
+
+                    e.target.dispatchEvent(event);
+
+                }, 0);
 			}
 			
-			event.clientX = touch.clientX;
-			event.clientY = touch.clientY;
 			
-			e.target.dispatchEvent(event);
 		}
 	});
 
@@ -1709,6 +1720,570 @@ yaxi.Style = yaxi.Observe.extend(function (Class, base) {
 
 
 })(yaxi);
+
+
+
+
+/**
+ * 本部分代码从flyingon或yaxi框架中相关代码修改而来
+ */
+
+yaxi.Stream = Object.extend(function (Class) {
+
+
+
+    Class.ctor = function (value) {
+
+        if (arguments.length > 0)
+        {
+            if (typeof value === 'function')
+            {
+                value(this);
+            }
+            else
+            {
+                this.__cache = [value];
+            }
+        }
+    }
+
+
+
+    Class.fromPromise = function (promise) {
+
+        var instance = new Class();
+
+        if (typeof promise === 'function')
+        {
+            promise = promise();
+        }
+
+        promise
+            .then(function (value) {
+
+                instance.resolve(value);
+            })
+            .catch(function (error) {
+
+                instance.reject(error);
+            });
+
+        return instance;
+    }
+
+
+    Class.fromEvent = function (dom, type, capture) {
+
+        var instance = new Class();
+
+        dom.addEventListener(type, function (event) {
+
+            instance.resolve(event);
+
+        }, capture || false);
+
+        return instance;
+    }
+
+
+    Class.interval = function (period) {
+
+        var instance = new Class();
+        var value = 0;
+
+        function interval() {
+
+            setTimeout(function () {
+
+                instance.resolve(value++);
+                interval();
+
+            }, period | 0);
+        }
+
+        interval();
+
+        return instance;
+    }
+
+
+
+    this.registry = function (fn) {
+
+        var next = (this.__next = new Class());
+        var cache = this.__cache;
+
+        this.__fn = fn;
+
+        if (cache)
+        {
+            while (cache.length > 0)
+            {
+                try
+                {
+                    fn.call(this, next, cache.shift());
+                }
+                catch (e)
+                {
+                    this.reject(e);
+                }
+            }
+
+            this.__cache = null;
+        }
+
+        return next;
+    }
+
+
+
+    this.resolve = function (value) {
+
+        var any;
+
+        if (any = this.__next)
+        {
+            try
+            {
+                this.__fn && this.__fn(any, value);
+            }
+            catch (e)
+            {
+                this.reject(e);
+            }
+        }
+        else if (any = this.__cache)
+        {
+            any.push(value);
+        }
+        else
+        {
+            this.__cache = [value];
+        }
+    }
+
+
+    this.reject = function (error) {
+
+        var target = this,
+            handle,
+            fn;
+
+        do
+        {
+            if ((fn = target.__error))
+            {
+                fn(error);
+                handle = true;
+            }
+        }
+        while ((target = target.__next));
+
+        if (!handle)
+        {
+            throw error;
+        }
+    }
+
+
+    this.then = function (fn) {
+
+        return this.registry(function (next, value) {
+
+            fn(value);
+            next.resolve(value);
+        });
+    }
+
+
+    this.map = function (fn) {
+
+        return this.registry(function (next, value) {
+
+            next.resolve(fn(value));
+        });
+    }
+
+
+    this.catch = function (fault) {
+
+        this.__error = fault;
+        return (this.__next = new Class());
+    }
+
+
+    this.wait = function (time) {
+
+        var cache = [];
+        var timeout;
+
+        return this.registry(function (next, value) {
+
+            if (timeout)
+            {
+                cache.push(value);
+            }
+            else
+            {
+                timeout = setTimeout(function () {
+
+                    next.resolve(cache);
+                    timeout = 0;
+                    cache = [];
+
+                }, time | 0);
+            }
+        });
+    }
+
+
+    this.delay = function (time) {
+
+        return this.registry(function (next, value) {
+
+            setTimeout(function () {
+
+                next.resolve(value);
+
+            }, time | 0);
+        });
+    }
+
+
+    this.debounce = function (time) {
+
+        var timeout;
+
+        return this.registry(function (next, value) {
+
+            if (timeout)
+            {
+                clearTimeout(timeout);
+            }
+
+            timeout = setTimeout(function () {
+
+                next.resolve(value);
+                timeout = 0;
+
+            }, time | 0);
+        });
+    }
+
+
+    this.throttle = function (time) {
+
+        var timeout;
+
+        return this.registry(function (next, value) {
+
+            if (!timeout)
+            {
+                next.resolve(value);
+
+                timeout = setTimeout(function () {
+
+                    timeout = 0;
+
+                }, time | 0);
+            }
+        });
+    }
+
+    
+});
+
+
+
+
+/**
+ * 本部分代码从flyingon或yaxi框架中相关代码修改而来
+ */
+
+
+// http
+(function (yaxi) {
+
+
+
+    var http = yaxi.http = Object.create(null);
+
+    var enctype = 'application/x-www-form-urlencoded';
+
+    
+    
+    function encodeData(data) {
+
+        if (!data)
+        {
+            return '';
+        }
+
+        var list = [],
+            encode = encodeURIComponent,
+            value,
+            any;
+
+        for (var name in data)
+        {
+            value = data[name];
+            name = encode(name);
+
+            if (value === null)
+            {
+                list.push(name, '=null', '&');
+                continue;
+            }
+
+            switch (typeof value)
+            {
+                case 'undefined':
+                    list.push(name, '=&');
+                    break;
+
+                case 'boolean':
+                case 'number':
+                    list.push(name, '=', value, '&');
+                    break;
+
+                case 'string':
+                case 'function':
+                    list.push(name, '=', encode(value), '&');
+                    break;
+
+                default:
+                    if (value instanceof Array)
+                    {
+                        for (var i = 0, l = value.length; i < l; i++)
+                        {
+                            if ((any = value[i]) === void 0)
+                            {
+                                list.push(name, '=&');
+                            }
+                            else
+                            {
+                                list.push(name, '=', encode(any), '&'); //数组不支持嵌套
+                            }
+                        }
+                    }
+                    else
+                    {
+                        list.push(name, '=', encodeData(value), '&');
+                    }
+                    break;
+            }
+        }
+
+        list.pop();
+
+        return list.join('');
+    }
+
+
+    
+    function send(method, url, data, options) {
+
+        var stream = new yaxi.Stream(),
+            ajax = stream.ajax = new XMLHttpRequest(),
+            type,
+            any;
+
+        options = options || {};
+        options.method = method;
+        options.url = url;
+        options.data = data;
+        
+        if (/get|head|options/i.test(method))
+        {
+            if (data)
+            {
+                url = url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeData(data);
+                data = null;
+            }
+        }
+        else if ((type = options.contentType) === enctype)
+        {
+            data = encodeData(data);
+        }
+        else if (typeof data !== 'string')
+        {
+            type = 'application/json';
+            data = JSON.stringify(data);
+        }
+        
+        // CORS
+        if (options.CORS)
+        {
+            // withCredentials是XMLHTTPRequest2中独有的
+            if ('withCredentials' in ajax)
+            {
+                ajax.withCredentials = true;
+            }
+            else if (any = window.XDomainRequest)
+            {
+                ajax = new any();
+            }
+        }
+
+        ajax.onreadystatechange = function () {
+
+            if (this.readyState === 4)
+            {
+                if (this.status < 300)
+                {
+                    var data = JSON.parse(this.responseText);
+
+                    if (data.rcode === 200)
+                    {
+                        stream.resolve(data.data);
+                    }
+                    else
+                    {
+                        stream.reject(data.msg);
+                    }
+                }
+                else
+                {
+                    stream.reject(this.statusText);
+                }
+                
+                // 清除引用
+                this.onreadystatechange = null;
+            }
+        }
+
+        ajax.open(method, url, options.async !== false);
+        
+        if (type)
+        {
+            ajax.setRequestHeader('Content-Type', type);
+            // ajax.setRequestHeader('Content-Length', data.length);
+        }
+
+        if (any = options.header)
+        {
+            for (var name in any)
+            {
+                ajax.setRequestHeader(name, any[name]);
+            }
+        }
+
+        ajax.send(data);
+
+        return stream;
+    }
+
+
+
+    http.send = function (method, url, data, options) {
+
+        return send(method || 'GET', url, data, options);
+    }
+
+
+    http.head = function (url, data, options) {
+
+        return send('HEAD', url, data, options);
+    }
+
+
+    http.get = function (url, data, options) {
+
+        return send('GET', url, data, options);
+    }
+
+
+    http.post = function (url, data, options) {
+
+        return send('POST', url, data, options);
+    }
+
+
+    http.put = function (url, data, options) {
+
+        return send('PUT', url, data, options);
+    }
+    
+
+    http.del = function (url, data, options) {
+
+        return send('DELETE', url, data, options);
+    }
+
+
+
+})(yaxi);
+
+
+
+
+(function (color) {
+
+
+    color.default1 = "#000000";
+    color.default2 = "#606266";
+    color.default3 = "#c0c4cc";
+    color.default4 = "#ebeef5";
+    color.default5 = "#ffffff";
+    
+    
+    color.primary1 = "#3a8ee6";
+    color.primary2 = "#66b1ff";
+    color.primary3 = "#8cc5ff";
+    color.primary4 = "#b3d8ff";
+    color.primary5 = "#d9ecff";
+    
+    
+    color.second1 = "#3a8ee6";
+    color.second2 = "#66b1ff";
+    color.second3 = "#8cc5ff";
+    color.second4 = "#b3d8ff";
+    color.second5 = "#d9ecff";
+    
+    
+    color.success1 = "#5daf34";
+    color.success2 = "#85ce61";
+    color.success3 = "#a4da89";
+    color.success4 = "#c2e7b0";
+    color.success5 = "#f0f9eb";
+    
+    
+    color.warning1 = "#cf9236";
+    color.warning2 = "#ebb563";
+    color.warning3 = "#f0c78a";
+    color.warning4 = "#f5dab1";
+    color.warning5 = "#fdf6ec";
+    
+    
+    color.danger1 = "#dd6161";
+    color.danger2 = "#f78989";
+    color.danger3 = "#f9a7a7";
+    color.danger4 = "#fbc4c4";
+    color.danger5 = "#fef0f0";
+    
+    
+    color.disabled1 = "#82848a";
+    color.disabled2 = "#a6a9ad";
+    color.disabled3 = "#bcbec2";
+    color.disabled4 = "#d3d4d6";
+    color.disabled5 = "#f4f4f5";
+    
+    
+    color.link1 = "#66b1fe";
+    color.link2 = "#409efe";
+    
+    
+    color.shadow1 = "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)";
+    color.shadow2 = "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12)";
+    color.shadow3 = "0 2px 12px 0 rgba(0, 0, 0, 0.1)";
+
+
+
+    (yaxi.colors || (yaxi.colors = Object.create(null))).default = color;
+    
+    
+
+})(yaxi.color = Object.create(null));
 
 
 

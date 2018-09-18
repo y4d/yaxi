@@ -275,18 +275,29 @@ yaxi.EventTarget = Object.extend(function (Class) {
 			{
 				event.initEvent('swipe', true, true);
 				event.offsetX = offsetX;
-				event.offsetY = offsetX;
+                event.offsetY = offsetX;
+                
+                event.clientX = touch.clientX;
+                event.clientY = touch.clientY;
+
+                e.target.dispatchEvent(event);
 			}
 			else
 			{
 				// 初始化事件类型，是否冒泡，是否阻止浏览器的默认行为
-				event.initEvent('tap', true, true);
+                event.initEvent('tap', true, true);
+                
+                event.clientX = touch.clientX;
+                event.clientY = touch.clientY;
+                
+                setTimeout(function () {
+
+                    e.target.dispatchEvent(event);
+
+                }, 0);
 			}
 			
-			event.clientX = touch.clientX;
-			event.clientY = touch.clientY;
 			
-			e.target.dispatchEvent(event);
 		}
 	});
 
