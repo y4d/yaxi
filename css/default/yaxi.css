@@ -256,86 +256,6 @@ input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: #c0c4cc;
 }
-@font-face {
-  font-family: "iconfont";
-  src: url('../../icon/iconfont.eot?t=1526043228558');
-  /* IE9*/
-  src: url('../../icon/iconfont.eot?t=1526043228558#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../../icon/iconfont.ttf?t=1526043228558') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/ url('../../icon/iconfont.svg?t=1526043228558#iconfont') format('svg');
-  /* iOS 4.1- */
-}
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.icon-error:before {
-  content: "\e72a";
-}
-.icon-refresh:before {
-  content: "\e613";
-}
-.icon-ok:before {
-  content: "\e6aa";
-}
-.icon-cancel:before {
-  content: "\e63e";
-}
-.icon-search:before {
-  content: "\e62a";
-}
-.icon-loading:before {
-  content: "\e635";
-}
-.icon-add:before {
-  content: "\e658";
-}
-.icon-question:before {
-  content: "\e664";
-}
-.icon-save:before {
-  content: "\e611";
-}
-.icon-upload:before {
-  content: "\e614";
-}
-.icon-download:before {
-  content: "\e615";
-}
-.icon-camera:before {
-  content: "\e61a";
-}
-.icon-edit:before {
-  content: "\e61f";
-}
-.icon-more:before {
-  content: "\e620";
-}
-.icon-delete:before {
-  content: "\e621";
-}
-.icon-setup:before {
-  content: "\e612";
-}
-.icon-password:before {
-  content: "\e61c";
-}
-.icon-warn:before {
-  content: "\e61d";
-}
-.icon-info:before {
-  content: "\e61e";
-}
-.icon-collapse:before {
-  content: "\e625";
-}
-.icon-expand:before {
-  content: "\e626";
-}
-.icon-folder:before {
-  content: "\e7e2";
-}
 @keyframes rotating {
   0% {
     transform: rotate(0deg);
@@ -345,8 +265,8 @@ textarea::-webkit-input-placeholder {
   }
 }
 .yx-icon {
-  display: -webkit-flex;
-  display: flex;
+  display: -webkit-inline-flex;
+  display: inline-flex;
   overflow: hidden;
   font-size: 0.2rem;
   align-items: center;
@@ -541,17 +461,28 @@ textarea::-webkit-input-placeholder {
   display: inline-block;
   vertical-align: middle;
 }
-.yx-checkbox > .yx-icon {
-  width: 0.18rem;
-  height: 0.18rem;
-  margin: 0 0.04rem;
-  border: 1px solid #c0c4cc;
-  border-radius: 0.04rem;
-  background-color: #ffffff;
+.yx-checkbox > svg {
+  width: 1.2em;
+  height: 1.2em;
   outline: none;
 }
-.yx-checkbox-checked > .yx-icon {
-  border: 0.06rem solid #3a8ee6;
+.yx-button[theme="primary"] > svg {
+  fill: #8cc5ff;
+}
+.yx-button[theme="second"] > svg {
+  fill: #8cc5ff;
+}
+.yx-button[theme="success"] > svg {
+  fill: #a4da89;
+}
+.yx-button[theme="warning"] > svg {
+  fill: #f0c78a;
+}
+.yx-button[theme="danger"] > svg {
+  fill: #f9a7a7;
+}
+.yx-button[disabled] > svg {
+  fill: #bcbec2;
 }
 .yx-memo {
   display: inline-block;
@@ -577,17 +508,10 @@ textarea::-webkit-input-placeholder {
   display: inline-block;
   vertical-align: middle;
 }
-.yx-radiobutton > .yx-icon {
-  width: 0.18rem;
-  height: 0.18rem;
-  margin: 0 0.04rem;
-  border: 1px solid #c0c4cc;
-  border-radius: 0.08rem;
-  background-color: #ffffff;
+.yx-radiobutton > svg {
+  width: 1.2em;
+  height: 1.2em;
   outline: none;
-}
-.yx-radiobutton-checked > .yx-icon {
-  border: 0.06rem solid #3a8ee6;
 }
 .yx-switchbutton {
   display: inline-block;

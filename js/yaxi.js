@@ -1,3 +1,7 @@
+(function(window){var svgSprite='<svg><symbol id="icon-radio-checked" viewBox="0 0 1024 1024"><path d="M512 317c-107.25 0-195 87.75-195 195s87.75 195 195 195 195-87.75 195-195S619.25 317 512 317zM512 122C297.501875 122 122 297.501875 122 512s175.501875 390 390 390 390-175.501875 390-390S726.498125 122 512 122zM512 824c-171.59625 0-312-140.405625-312-312S340.40375 200 512 200 824 340.40375 824 512 683.59625 824 512 824z"  ></path></symbol><symbol id="icon-checkbox-uncheck" viewBox="0 0 1024 1024"><path d="M770.16291555 851.81667555l-516.32696888 0c-45.05031111 0-81.65262222-36.60344889-81.65262222-81.65262222l0-516.37475555c0-45.05031111 36.60344889-81.65262222 81.65262222-81.65262223l516.32696888 0c45.05031111 0 81.65262222 36.60344889 81.65262223 81.65262223l0 516.37475555c0 45.05031111-36.60344889 81.65262222-81.65262223 81.65262222zM253.83708445 220.72888889c-18.25336889 0-33.10819555 14.90375111-33.10819556 33.10819556l0 516.37475555c0 18.20444445 14.85482667 33.10819555 33.10819556 33.10819555l516.32696888 0c18.20444445 0 33.10819555-14.90375111 33.10819556-33.10819555l0-516.37475555c0-18.20444445-14.90375111-33.10819555-33.10819556-33.10819556l-516.32696888 0z"  ></path></symbol><symbol id="icon-checkbox-checked" viewBox="0 0 1024 1024"><path d="M770.16291555 851.81667555l-516.32696888 0c-45.05031111 0-81.65262222-36.60344889-81.65262222-81.65262222l0-516.37475555c0-45.05031111 36.60344889-81.65262222 81.65262222-81.65262223l516.32696888 0c45.05031111 0 81.65262222 36.60344889 81.65262223 81.65262223l0 516.37475555c0 45.05031111-36.60344889 81.65262222-81.65262223 81.65262222zM253.83708445 220.72888889c-18.25336889 0-33.10819555 14.90375111-33.10819556 33.10819556l0 516.37475555c0 18.20444445 14.85482667 33.10819555 33.10819556 33.10819555l516.32696888 0c18.20444445 0 33.10819555-14.90375111 33.10819556-33.10819555l0-516.37475555c0-18.20444445-14.90375111-33.10819555-33.10819556-33.10819556l-516.32696888 0z"  ></path><path d="M469.62005333 732.49223111l-186.12224-186.17116444 68.64327112-68.64327112 105.1488711 105.09994667 209.37500445-293.16437333 79.03118222 56.40988444z"  ></path></symbol><symbol id="icon-radio-uncheck" viewBox="0 0 1024 1024"><path d="M512 122C297.501875 122 122 297.501875 122 512s175.501875 390 390 390 390-175.501875 390-390S726.498125 122 512 122zM512 823.998125c-171.59624999 0-311.998125-140.40375001-311.998125-311.998125S340.40375001 200 512 200 824 340.40375001 824 512 683.59624999 823.998125 512 823.998125z"  ></path></symbol><symbol id="icon-checkbox-three" viewBox="0 0 1024 1024"><path d="M851.81629667 803.27111111V220.72888889a48.54518557 48.54518557 0 0 0-48.54518556-48.54518556H220.72888889a48.54518557 48.54518557 0 0 0-48.54518556 48.54518556v582.54222222a48.54518557 48.54518557 0 0 0 48.54518556 48.54518556h582.54222222a48.54518557 48.54518557 0 0 0 48.54518556-48.54518556z m-97.09037112-48.54518556H269.27407445V269.27407445h485.4518511v485.4518511z"  ></path><path d="M366.36444445 366.36444445h291.2711111v291.2711111H366.36444445z"  ></path></symbol></svg>';var script=function(){var scripts=document.getElementsByTagName("script");return scripts[scripts.length-1]}();var shouldInjectCss=script.getAttribute("data-injectcss");var ready=function(fn){if(document.addEventListener){if(~["complete","loaded","interactive"].indexOf(document.readyState)){setTimeout(fn,0)}else{var loadFn=function(){document.removeEventListener("DOMContentLoaded",loadFn,false);fn()};document.addEventListener("DOMContentLoaded",loadFn,false)}}else if(document.attachEvent){IEContentLoaded(window,fn)}function IEContentLoaded(w,fn){var d=w.document,done=false,init=function(){if(!done){done=true;fn()}};var polling=function(){try{d.documentElement.doScroll("left")}catch(e){setTimeout(polling,50);return}init()};polling();d.onreadystatechange=function(){if(d.readyState=="complete"){d.onreadystatechange=null;init()}}}};var before=function(el,target){target.parentNode.insertBefore(el,target)};var prepend=function(el,target){if(target.firstChild){before(el,target.firstChild)}else{target.appendChild(el)}};function appendSvg(){var div,svg;div=document.createElement("div");div.innerHTML=svgSprite;svgSprite=null;svg=div.getElementsByTagName("svg")[0];if(svg){svg.setAttribute("aria-hidden","true");svg.style.position="absolute";svg.style.width=0;svg.style.height=0;svg.style.overflow="hidden";prepend(svg,document.body)}}if(shouldInjectCss&&!window.__iconfont__svg__cssinject__){window.__iconfont__svg__cssinject__=true;try{document.write("<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>")}catch(e){console&&console.log(e)}}ready(appendSvg)})(window)
+
+
+
 var yaxi = Object.create(null);
 
 
@@ -2749,7 +2753,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    document.addEventListener('tap', function (event) {
+    document.addEventListener('ontouchend' in document ? 'tap' : 'click', function (event) {
 
         var control = findControl(event);
 
@@ -2758,7 +2762,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             control.__on_tap(event);
         }
 
-    }, true);
+    }, true) ;
 
 
     // document.addEventListener('input', function (event) {
@@ -3084,7 +3088,7 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-checkbox"><span class="yx-icon"></span><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-checkbox"><svg aria-hidden="true"><use xlink:href="#icon-checkbox-uncheck"></use></svg><span></span></span>');
 
 
 
@@ -3104,13 +3108,13 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
     this.__set_checked = function (dom, value) {
 
-        dom.classList[value ? 'add' : 'remove']('yx-checkbox-checked');
+        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
     }
 
 
     this.__on_tap = function () {
 
-        this.checked = this.$dom.firstChild.checked = !this.checked;
+        this.checked = !this.checked;
         this.trigger('change');
     }
 

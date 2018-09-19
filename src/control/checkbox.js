@@ -2,7 +2,7 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-checkbox"><span class="yx-icon"></span><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-checkbox"><svg aria-hidden="true"><use xlink:href="#icon-checkbox-uncheck"></use></svg><span></span></span>');
 
 
 
@@ -22,13 +22,13 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
     this.__set_checked = function (dom, value) {
 
-        dom.classList[value ? 'add' : 'remove']('yx-checkbox-checked');
+        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
     }
 
 
     this.__on_tap = function () {
 
-        this.checked = this.$dom.firstChild.checked = !this.checked;
+        this.checked = !this.checked;
         this.trigger('change');
     }
 

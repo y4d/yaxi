@@ -2,6 +2,7 @@ const webminify = require('webminify');
 
 
 webminify()
+    .load('icon/iconfont.js')
     .load('src', [
         'base/(yaxi|properties|watch|event|observe|observe-array|style|model|stream|http).js',
         'css/default/color.js',

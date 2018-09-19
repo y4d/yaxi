@@ -9,16 +9,33 @@
     vertical-align: middle;
 }
 
-.yx-checkbox>.yx-icon {
-    width: .18rem;
-    height: .18rem;
-    margin: 0 .04rem;
-    border: 1px solid @default-color-3;
-    border-radius: .04rem;
-    background-color: @default-color-5;
+.yx-checkbox>svg {
+    width: 1.2em;
+    height: 1.2em;
     outline: none;
 }
 
-.yx-checkbox-checked>.yx-icon {
-    border: .06rem solid @primary-color-1;
+
+.yx-button[theme="primary"]>svg {
+    fill: @primary-color-3;
+}
+
+.yx-button[theme="second"]>svg {
+    fill: @second-color-3;
+}
+
+.yx-button[theme="success"]>svg {
+    fill: @success-color-3;
+}
+
+.yx-button[theme="warning"]>svg {
+    fill: @warning-color-3;
+}
+
+.yx-button[theme="danger"]>svg {
+    fill: @danger-color-3;
+}
+
+.yx-button[disabled]>svg {
+    fill: @disabled-color-3;
 }

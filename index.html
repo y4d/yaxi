@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="font-size: 100px;">
 <head>
     <title>test</title>
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
@@ -15,9 +15,6 @@
 
         var page = new yaxi.Page({
 
-            style: {
-                backgroundColor: 'red'
-            },
             children: [
                 // {
                 //     Class: yaxi.Button,
@@ -34,36 +31,10 @@
         {
             page.children.push({
                 
-                Class: yaxi.Button,
-                text: 'button'
+                Class: yaxi.CheckBox,
+                text: 'checkbox ' + i
             });
         }
-
-
-        page.children[0].on('tap', function () {
-
-            alert('tap');
-        });
-
-
-
-
-        var panel = new yaxi.Panel({
-
-            model: {
-                text: '123456'
-            },
-            template: {
-                Class: yaxi.Button,
-                bindings: {
-                    text: 'text'
-                }
-            }
-        });
-
-
-        page.children.push(panel);
-
 
     
     </script>
