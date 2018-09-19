@@ -347,17 +347,14 @@ textarea::-webkit-input-placeholder {
 .yx-icon {
   display: -webkit-flex;
   display: flex;
-  width: 0.24rem;
-  height: 0.24rem;
   overflow: hidden;
-  font-size: 0.24rem;
+  font-size: 0.2rem;
   align-items: center;
   justify-content: center;
 }
 .yx-icon > svg {
   width: 1em;
   height: 1em;
-  vertical-align: 0.2em;
 }
 [layout="block"] > .yx-control {
   display: block;
