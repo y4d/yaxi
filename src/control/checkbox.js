@@ -9,6 +9,9 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
     this.$properties({
 
         text: '',
+        
+        fill: '',
+
         checked: false
     });
     
@@ -24,6 +27,13 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
         dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
     }
+
+
+    this.__set_fill = function (dom, value) {
+
+        dom.firstChild.style.fill = value;
+    }
+
 
 
     this.__on_tap = function () {

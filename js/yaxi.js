@@ -3095,6 +3095,9 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
     this.$properties({
 
         text: '',
+        
+        fill: '',
+
         checked: false
     });
     
@@ -3110,6 +3113,13 @@ yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
 
         dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
     }
+
+
+    this.__set_fill = function (dom, value) {
+
+        dom.firstChild.style.fill = value;
+    }
+
 
 
     this.__on_tap = function () {
@@ -3233,7 +3243,10 @@ yaxi.Icon = yaxi.Control.extend(function () {
         icon: '',
 
         // svg图标id
-        svg: ''
+        svg: '',
+
+        // svg颜色
+        fill: ''
     });
 
 
@@ -3261,6 +3274,15 @@ yaxi.Icon = yaxi.Control.extend(function () {
     }
 
 
+    
+    this.__set_fill = function (dom, value) {
+
+        if (dom = dom.firstChild.firstChild)
+        {
+            dom.style.fill = value;
+        }
+    }
+
 
 
 }).register('Icon');
@@ -3286,7 +3308,10 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
         icon: '',
 
         // svg图标id
-        svg: ''
+        svg: '',
+
+        // svg颜色
+        fill: ''
     });
     
 
@@ -3318,6 +3343,15 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
     this.__set_svg = function (dom, value) {
 
         dom.firstChild.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value.replace(/[<>"']/g, '') + '"></use></svg>' : '';
+    }
+
+
+    this.__set_fill = function (dom, value) {
+
+        if (dom = dom.firstChild.firstChild)
+        {
+            dom.style.fill = value;
+        }
     }
 
 
@@ -3591,6 +3625,9 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
     this.$properties({
 
         text: '',
+
+        fill: '',
+        
         checked: false
     });
     
@@ -3605,6 +3642,12 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
     this.__set_checked = function (dom, value) {
 
         dom.classList[value ? 'add' : 'remove']('yx-radiobutton-checked');
+    }
+
+
+    this.__set_fill = function (dom, value) {
+
+        dom.firstChild.style.fill = value;
     }
 
 

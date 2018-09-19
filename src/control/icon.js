@@ -12,7 +12,10 @@ yaxi.Icon = yaxi.Control.extend(function () {
         icon: '',
 
         // svg图标id
-        svg: ''
+        svg: '',
+
+        // svg颜色
+        fill: ''
     });
 
 
@@ -39,6 +42,15 @@ yaxi.Icon = yaxi.Control.extend(function () {
         dom.innerHTML = value ? '<svg aria-hidden="true"><use xlink:href="#' + value.replace(/[<>"']/g, '') + '"></use></svg>' : '';
     }
 
+
+    
+    this.__set_fill = function (dom, value) {
+
+        if (dom = dom.firstChild.firstChild)
+        {
+            dom.style.fill = value;
+        }
+    }
 
 
 

@@ -276,9 +276,6 @@ textarea::-webkit-input-placeholder {
   width: 1em;
   height: 1em;
 }
-[layout="block"] > .yx-control {
-  display: block;
-}
 [layout="row"] {
   display: -webkit-flex;
   display: flex;

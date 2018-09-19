@@ -9,6 +9,9 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
     this.$properties({
 
         text: '',
+
+        fill: '',
+        
         checked: false
     });
     
@@ -23,6 +26,12 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
     this.__set_checked = function (dom, value) {
 
         dom.classList[value ? 'add' : 'remove']('yx-radiobutton-checked');
+    }
+
+
+    this.__set_fill = function (dom, value) {
+
+        dom.firstChild.style.fill = value;
     }
 
 
