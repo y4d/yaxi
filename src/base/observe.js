@@ -41,7 +41,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 }
                 else if (convert !== false)
                 {
-                    changes[name] = data[name];
+                    this[name] = data[name];
                 }
             }
         }

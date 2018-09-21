@@ -1,26 +1,41 @@
 .yx-switchbutton {
+    position: relative;
     display: inline-block;
-    width: .6rem;
+    width: .5rem;
     height: .3rem;
-    border: 1px solid @default-color-3;
-    padding: .03rem;
-    border-radius: .13rem;
-    background-color: @default-color-5;
 }
 
-.yx-switchbutton>span {
+.yx-switchbutton-bar {
+    position: absolute;
     display: inline-block;
-    width: 50%;
-    height: 100%;
-    border-radius: .25%;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: .1rem;
+    margin-top: -.05rem;
+    border-radius: .05rem;
     background-color: @default-color-3;
 }
 
-.yx-switchbutton-checked {
-    border-color: @primary-color-1;
-    text-align: right;
+.yx-switchbutton-button {
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    top: 50%;
+    width: .2rem;
+    height: .2rem;
+    margin-top: -.1rem;
+    border: 1px solid @default-color-3;
+    border-radius: .1rem;
+    background-color: white;
 }
 
-.yx-switchbutton-checked>span {
+.yx-switchbutton-checked>.yx-switchbutton-bar {
     background-color: @primary-color-3;
+}
+
+.yx-switchbutton-checked>.yx-switchbutton-button {
+    left: auto;
+    right: 0;
+    transition: right 1s;
 }

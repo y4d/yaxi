@@ -2,7 +2,7 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-radiobutton"><span class="yx-icon"></span><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-radiobutton"><svg aria-hidden="true"><use xlink:href="#icon-radio-uncheck"></use></svg><span></span></span>');
 
 
 
@@ -25,7 +25,7 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
 
     this.__set_checked = function (dom, value) {
 
-        dom.classList[value ? 'add' : 'remove']('yx-radiobutton-checked');
+        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-radio-' + (value ? 'checked' : 'uncheck'));
     }
 
 

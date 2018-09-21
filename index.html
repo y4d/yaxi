@@ -16,25 +16,24 @@
         var page = new yaxi.Page({
 
             children: [
-                // {
-                //     Class: yaxi.Button,
-                //     text: 'button'
-                // }
+                {
+                    Class: yaxi.SwitchButton
+                },
+                {
+                    Class: yaxi.SwitchButton,
+                    checked: true
+                },
+                {
+                    Class: yaxi.Password
+                },
+                {
+                    Class: yaxi.RadioButton
+                }
             ]
         });
 
 
         page.open();
-
-
-        for (var i = 0; i < 10; i++)
-        {
-            page.children.push({
-                
-                Class: yaxi.CheckBox,
-                text: 'checkbox ' + i
-            });
-        }
 
     
     </script>

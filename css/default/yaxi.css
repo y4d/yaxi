@@ -486,24 +486,6 @@ input {
   vertical-align: -0.15em;
   overflow: hidden;
 }
-.yx-button[theme="primary"] > svg {
-  fill: #8cc5ff;
-}
-.yx-button[theme="second"] > svg {
-  fill: #b3d8ff;
-}
-.yx-button[theme="success"] > svg {
-  fill: #a4da89;
-}
-.yx-button[theme="warning"] > svg {
-  fill: #f0c78a;
-}
-.yx-button[theme="danger"] > svg {
-  fill: #f9a7a7;
-}
-.yx-button[disabled] > svg {
-  fill: #bcbec2;
-}
 .yx-memo {
   display: inline-block;
   width: 2rem;
@@ -518,6 +500,17 @@ input {
   background-color: #ffffff;
   outline: none;
   resize: none;
+}
+.yx-password {
+  position: relative;
+}
+.yx-password > svg {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  top: 50%;
+  right: 0.05rem;
+  margin-top: -0.5em;
 }
 .yx-radiobutton {
   display: inline-block;
@@ -536,27 +529,41 @@ input {
   overflow: hidden;
 }
 .yx-switchbutton {
+  position: relative;
   display: inline-block;
-  width: 0.6rem;
+  width: 0.5rem;
   height: 0.3rem;
-  border: 1px solid #c0c4cc;
-  padding: 0.03rem;
-  border-radius: 0.13rem;
-  background-color: #ffffff;
 }
-.yx-switchbutton > span {
+.yx-switchbutton-bar {
+  position: absolute;
   display: inline-block;
-  width: 50%;
-  height: 100%;
-  border-radius: 0.25%;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0.1rem;
+  margin-top: -0.05rem;
+  border-radius: 0.05rem;
   background-color: #c0c4cc;
 }
-.yx-switchbutton-checked {
-  border-color: #3a8ee6;
-  text-align: right;
+.yx-switchbutton-button {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 50%;
+  width: 0.2rem;
+  height: 0.2rem;
+  margin-top: -0.1rem;
+  border: 1px solid #c0c4cc;
+  border-radius: 0.1rem;
+  background-color: white;
 }
-.yx-switchbutton-checked > span {
+.yx-switchbutton-checked > .yx-switchbutton-bar {
   background-color: #8cc5ff;
+}
+.yx-switchbutton-checked > .yx-switchbutton-button {
+  left: auto;
+  right: 0;
+  transition: right 1s;
 }
 .yx-tab {
   display: -webkit-flex;

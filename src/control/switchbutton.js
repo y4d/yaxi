@@ -2,7 +2,7 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-switchbutton"><span><span></span>');
+    yaxi.template(this, '<span class="yx-control yx-switchbutton"><span class="yx-switchbutton-bar"></span><span class="yx-switchbutton-button"></span></span>');
 
 
 
@@ -26,6 +26,14 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
         {
             classList.remove('yx-switchbutton-checked');
         }
+    }
+
+
+
+    this.__on_tap = function () {
+
+        this.checked = !this.checked;
+        this.trigger('change');
     }
 
 

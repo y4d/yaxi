@@ -185,15 +185,13 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 
 
-(function () {
+'ontouchstart' in document ? (function () {
 
 
 	
 	// 触摸开始事件参数
     var start = {};
     
-    var touch = 'ontouchstart' in document;
-
 
 
 	function longTapDelay() {
@@ -222,7 +220,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	}
 
 
-	document.addEventListener(touch ? 'touchstart' : 'mousedown', function (e) {
+	document.addEventListener('touchstart', function (e) {
 		
 		var touch = e.changedTouches[0];
 		
@@ -234,7 +232,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 
 
-	document.addEventListener(touch ? 'touchmove' : 'mousemove', function (e) {
+	document.addEventListener('touchmove', function (e) {
 		
 		if (start.delay)
 		{
@@ -262,7 +260,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 		
 
-	document.addEventListener(touch ? 'touchend' : 'mouseup', function (e) {
+	document.addEventListener('touchend', function (e) {
 		
 		if (start.delay)
 		{
@@ -305,6 +303,21 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 	document.addEventListener('touchcancel', clearLongTap);
 
+
+})() : (function () {
+
+
+    document.addEventListener('click', function (e) {
+
+        var event = document.createEvent('HTMLEvents');
+
+        event.initEvent('tap', true, true);
+                
+        event.clientX = e.clientX;
+        event.clientY = e.clientY;
+        e.target.dispatchEvent(event);
+
+    });
 
 
 })();

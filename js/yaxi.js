@@ -1,4 +1,4 @@
-(function(window){var svgSprite='<svg><symbol id="icon-radio-checked" viewBox="0 0 1024 1024"><path d="M512 259.56503703c-138.83922963 0-252.43496297 113.59573333-252.43496297 252.43496297s113.59573333 252.43496297 252.43496297 252.43496297 252.43496297-113.59573333 252.43496297-252.43496297S650.83922963 259.56503703 512 259.56503703zM512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89594075c-222.13791289 0-403.89594075-181.76045511-403.89594075-403.89594075S289.86208711 108.10405925 512 108.10405925 915.89594075 289.86208711 915.89594075 512 734.13791289 915.89594075 512 915.89594075z"  ></path></symbol><symbol id="icon-checkbox-uncheck" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path></symbol><symbol id="icon-checkbox-checked" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path><path d="M449.57870885 836.76231882l-274.13886619-274.21092687 101.10445971-101.10445972 154.87344396 154.80138332 308.38779037-431.80089021 116.40478156 83.08594269z"  ></path></symbol><symbol id="icon-radio-uncheck" viewBox="0 0 1024 1024"><path d="M512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89351348c-222.13791287 0-403.89351348-181.75802787-403.89351348-403.89351348S289.86208713 108.10405925 512 108.10405925 915.89594075 289.86208713 915.89594075 512 734.13791287 915.89351348 512 915.89351348z"  ></path></symbol><symbol id="icon-checkbox-three" viewBox="0 0 1024 1024"><path d="M1012.51436242 941.01231019V82.98768981a71.50205225 71.50205225 0 0 0-71.50205223-71.50205223H82.98768981a71.50205225 71.50205225 0 0 0-71.50205223 71.50205223v858.02462038a71.50205225 71.50205225 0 0 0 71.50205223 71.50205223h858.02462038a71.50205225 71.50205225 0 0 0 71.50205223-71.50205223z m-143.00410448-71.50205225H154.48974206V154.48974206h715.02051588v715.02051588z"  ></path><path d="M297.49384493 297.49384493h429.01231014v429.01231014H297.49384493z"  ></path></symbol></svg>';var script=function(){var scripts=document.getElementsByTagName("script");return scripts[scripts.length-1]}();var shouldInjectCss=script.getAttribute("data-injectcss");var ready=function(fn){if(document.addEventListener){if(~["complete","loaded","interactive"].indexOf(document.readyState)){setTimeout(fn,0)}else{var loadFn=function(){document.removeEventListener("DOMContentLoaded",loadFn,false);fn()};document.addEventListener("DOMContentLoaded",loadFn,false)}}else if(document.attachEvent){IEContentLoaded(window,fn)}function IEContentLoaded(w,fn){var d=w.document,done=false,init=function(){if(!done){done=true;fn()}};var polling=function(){try{d.documentElement.doScroll("left")}catch(e){setTimeout(polling,50);return}init()};polling();d.onreadystatechange=function(){if(d.readyState=="complete"){d.onreadystatechange=null;init()}}}};var before=function(el,target){target.parentNode.insertBefore(el,target)};var prepend=function(el,target){if(target.firstChild){before(el,target.firstChild)}else{target.appendChild(el)}};function appendSvg(){var div,svg;div=document.createElement("div");div.innerHTML=svgSprite;svgSprite=null;svg=div.getElementsByTagName("svg")[0];if(svg){svg.setAttribute("aria-hidden","true");svg.style.position="absolute";svg.style.width=0;svg.style.height=0;svg.style.overflow="hidden";prepend(svg,document.body)}}if(shouldInjectCss&&!window.__iconfont__svg__cssinject__){window.__iconfont__svg__cssinject__=true;try{document.write("<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>")}catch(e){console&&console.log(e)}}ready(appendSvg)})(window)
+(function(window){var svgSprite='<svg><symbol id="icon-radio-checked" viewBox="0 0 1024 1024"><path d="M512 259.56503703c-138.83922963 0-252.43496297 113.59573333-252.43496297 252.43496297s113.59573333 252.43496297 252.43496297 252.43496297 252.43496297-113.59573333 252.43496297-252.43496297S650.83922963 259.56503703 512 259.56503703zM512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89594075c-222.13791289 0-403.89594075-181.76045511-403.89594075-403.89594075S289.86208711 108.10405925 512 108.10405925 915.89594075 289.86208711 915.89594075 512 734.13791289 915.89594075 512 915.89594075z"  ></path></symbol><symbol id="icon-checkbox-uncheck" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path></symbol><symbol id="icon-checkbox-checked" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path><path d="M449.57870885 836.76231882l-274.13886619-274.21092687 101.10445971-101.10445972 154.87344396 154.80138332 308.38779037-431.80089021 116.40478156 83.08594269z"  ></path></symbol><symbol id="icon-radio-uncheck" viewBox="0 0 1024 1024"><path d="M512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89351348c-222.13791287 0-403.89351348-181.75802787-403.89351348-403.89351348S289.86208713 108.10405925 512 108.10405925 915.89594075 289.86208713 915.89594075 512 734.13791287 915.89351348 512 915.89351348z"  ></path></symbol><symbol id="icon-eye-open" viewBox="0 0 1024 1024"><path d="M515.2 224C208 224 22.4 537.6 22.4 537.6s214.4 304 492.8 304 492.8-304 492.8-304S822.4 224 515.2 224zM832 652.8c-102.4 86.4-211.2 140.8-320 140.8s-217.6-51.2-320-140.8c-35.2-32-70.4-64-99.2-99.2-6.4-6.4-9.6-12.8-16-19.2 3.2-6.4 9.6-12.8 12.8-19.2 25.6-35.2 57.6-70.4 92.8-102.4 99.2-89.6 208-144 329.6-144s230.4 54.4 329.6 144c35.2 32 64 67.2 92.8 102.4 3.2 6.4 9.6 12.8 12.8 19.2-3.2 6.4-9.6 12.8-16 19.2-28.8 32-60.8 67.2-99.2 99.2z" fill="" ></path><path d="M512 345.6c-96 0-169.6 76.8-169.6 169.6 0 96 76.8 169.6 169.6 169.6 96 0 169.6-76.8 169.6-169.6S604.8 345.6 512 345.6z m0 294.4c-67.2 0-121.6-54.4-121.6-121.6 0-67.2 54.4-121.6 121.6-121.6 67.2 0 121.6 54.4 121.6 121.6 0 64-54.4 121.6-121.6 121.6z" fill="" ></path></symbol><symbol id="icon-eye-close" viewBox="0 0 1024 1024"><path d="M515.07 614.994c-178.665 0-345.256-96.19-434.896-251.012-13.098-22.615-5.32-51.471 17.191-64.57 22.615-13.097 51.574-5.32 64.57 17.192C234.69 442.264 369.968 520.34 514.968 520.34S795.245 442.263 868 316.502c13.098-22.615 41.955-30.392 64.57-17.294s30.289 41.955 17.293 64.57C860.326 518.804 693.735 614.993 515.07 614.993z m-244.974 47.07c-8.289 0-16.782-2.148-24.354-6.753-22.41-13.507-29.573-42.569-16.066-64.876l52.187-86.365c13.508-22.41 42.57-29.471 64.877-16.066 22.41 13.507 29.573 42.569 16.065 64.876l-52.187 86.365c-8.903 14.633-24.457 22.82-40.522 22.82z m487.39 0c-15.963 0-31.62-8.083-40.522-22.819l-52.188-86.365c-13.507-22.41-6.344-51.369 15.963-64.876 22.41-13.507 51.37-6.344 64.877 15.963l52.187 86.365c13.507 22.41 6.344 51.37-15.963 64.877-7.572 4.604-16.066 6.856-24.354 6.856z m-242.416 61.5c-26.094 0-47.276-21.182-47.276-47.276v-108.57c0-26.094 21.182-47.276 47.276-47.276 26.094 0 47.276 21.182 47.276 47.276v108.57c0 26.094-21.182 47.276-47.276 47.276z" fill="#707070" ></path></symbol><symbol id="icon-checkbox-three" viewBox="0 0 1024 1024"><path d="M1012.51436242 941.01231019V82.98768981a71.50205225 71.50205225 0 0 0-71.50205223-71.50205223H82.98768981a71.50205225 71.50205225 0 0 0-71.50205223 71.50205223v858.02462038a71.50205225 71.50205225 0 0 0 71.50205223 71.50205223h858.02462038a71.50205225 71.50205225 0 0 0 71.50205223-71.50205223z m-143.00410448-71.50205225H154.48974206V154.48974206h715.02051588v715.02051588z"  ></path><path d="M297.49384493 297.49384493h429.01231014v429.01231014H297.49384493z"  ></path></symbol></svg>';var script=function(){var scripts=document.getElementsByTagName("script");return scripts[scripts.length-1]}();var shouldInjectCss=script.getAttribute("data-injectcss");var ready=function(fn){if(document.addEventListener){if(~["complete","loaded","interactive"].indexOf(document.readyState)){setTimeout(fn,0)}else{var loadFn=function(){document.removeEventListener("DOMContentLoaded",loadFn,false);fn()};document.addEventListener("DOMContentLoaded",loadFn,false)}}else if(document.attachEvent){IEContentLoaded(window,fn)}function IEContentLoaded(w,fn){var d=w.document,done=false,init=function(){if(!done){done=true;fn()}};var polling=function(){try{d.documentElement.doScroll("left")}catch(e){setTimeout(polling,50);return}init()};polling();d.onreadystatechange=function(){if(d.readyState=="complete"){d.onreadystatechange=null;init()}}}};var before=function(el,target){target.parentNode.insertBefore(el,target)};var prepend=function(el,target){if(target.firstChild){before(el,target.firstChild)}else{target.appendChild(el)}};function appendSvg(){var div,svg;div=document.createElement("div");div.innerHTML=svgSprite;svgSprite=null;svg=div.getElementsByTagName("svg")[0];if(svg){svg.setAttribute("aria-hidden","true");svg.style.position="absolute";svg.style.width=0;svg.style.height=0;svg.style.overflow="hidden";prepend(svg,document.body)}}if(shouldInjectCss&&!window.__iconfont__svg__cssinject__){window.__iconfont__svg__cssinject__=true;try{document.write("<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>")}catch(e){console&&console.log(e)}}ready(appendSvg)})(window)
 
 
 
@@ -491,15 +491,13 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 
 
-(function () {
+'ontouchstart' in document ? (function () {
 
 
 	
 	// 触摸开始事件参数
     var start = {};
     
-    var touch = 'ontouchstart' in document;
-
 
 
 	function longTapDelay() {
@@ -528,7 +526,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	}
 
 
-	document.addEventListener(touch ? 'touchstart' : 'mousedown', function (e) {
+	document.addEventListener('touchstart', function (e) {
 		
 		var touch = e.changedTouches[0];
 		
@@ -540,7 +538,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 
 
-	document.addEventListener(touch ? 'touchmove' : 'mousemove', function (e) {
+	document.addEventListener('touchmove', function (e) {
 		
 		if (start.delay)
 		{
@@ -568,7 +566,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 		
 
-	document.addEventListener(touch ? 'touchend' : 'mouseup', function (e) {
+	document.addEventListener('touchend', function (e) {
 		
 		if (start.delay)
 		{
@@ -611,6 +609,21 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 	document.addEventListener('touchcancel', clearLongTap);
 
+
+})() : (function () {
+
+
+    document.addEventListener('click', function (e) {
+
+        var event = document.createEvent('HTMLEvents');
+
+        event.initEvent('tap', true, true);
+                
+        event.clientX = e.clientX;
+        event.clientY = e.clientY;
+        e.target.dispatchEvent(event);
+
+    });
 
 
 })();
@@ -661,7 +674,7 @@ yaxi.Observe = Object.extend.call({}, function (Class) {
                 }
                 else if (convert !== false)
                 {
-                    changes[name] = data[name];
+                    this[name] = data[name];
                 }
             }
         }
@@ -3463,6 +3476,23 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 
 
 
+	Class.closeAll = function (first) {
+
+		var page;
+
+		while (page = Class.current)
+		{
+			if (first && !page.opener)
+			{
+				return page;
+			}
+
+			page.close();
+		}
+	}
+
+
+
 	this.open = function (options) {
 				
 		var opener = Class.current || null;
@@ -3562,7 +3592,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-textbox"><input type="password" /><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-open"></use></svg></span>');
 
 
 
@@ -3635,6 +3665,40 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
+    this.__on_tap = function (event) {
+
+        var target = event.target,
+            dom = this.$dom,
+            icon;
+
+        while (target && target !== dom)
+        {
+            if (target.tagName === 'svg')
+            {
+                dom = dom.firstChild;
+                
+                if (dom.type === 'text')
+                {
+                    dom.type = 'password';
+                    icon = 'eye-open';
+                }
+                else
+                {
+                    dom.type = 'text';
+                    icon = 'eye-close';
+                }
+
+                target.firstChild.setAttribute('xlink:href', '#icon-' + icon);
+                return;
+            }
+
+            target = target.parentNode;
+        }
+    }
+
+
+
+
 }).register('Password');
 
 
@@ -3644,7 +3708,7 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-radiobutton"><span class="yx-icon"></span><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-radiobutton"><svg aria-hidden="true"><use xlink:href="#icon-radio-uncheck"></use></svg><span></span></span>');
 
 
 
@@ -3667,7 +3731,7 @@ yaxi.RadioButton = yaxi.Control.extend(function (Class, base) {
 
     this.__set_checked = function (dom, value) {
 
-        dom.classList[value ? 'add' : 'remove']('yx-radiobutton-checked');
+        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-radio-' + (value ? 'checked' : 'uncheck'));
     }
 
 
@@ -3694,7 +3758,7 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-switchbutton"><span><span></span>');
+    yaxi.template(this, '<span class="yx-control yx-switchbutton"><span class="yx-switchbutton-bar"></span><span class="yx-switchbutton-button"></span></span>');
 
 
 
@@ -3718,6 +3782,14 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
         {
             classList.remove('yx-switchbutton-checked');
         }
+    }
+
+
+
+    this.__on_tap = function () {
+
+        this.checked = !this.checked;
+        this.trigger('change');
     }
 
 

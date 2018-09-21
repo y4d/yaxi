@@ -2,7 +2,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-textbox"><input type="password" /><span></span></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-open"></use></svg></span>');
 
 
 
@@ -72,6 +72,40 @@ yaxi.Password = yaxi.Control.extend(function () {
 
         dom.removeEventListener(name, listener);
     }
+
+
+
+    this.__on_tap = function (event) {
+
+        var target = event.target,
+            dom = this.$dom,
+            icon;
+
+        while (target && target !== dom)
+        {
+            if (target.tagName === 'svg')
+            {
+                dom = dom.firstChild;
+                
+                if (dom.type === 'text')
+                {
+                    dom.type = 'password';
+                    icon = 'eye-open';
+                }
+                else
+                {
+                    dom.type = 'text';
+                    icon = 'eye-close';
+                }
+
+                target.firstChild.setAttribute('xlink:href', '#icon-' + icon);
+                return;
+            }
+
+            target = target.parentNode;
+        }
+    }
+
 
 
 

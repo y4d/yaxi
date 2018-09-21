@@ -6,6 +6,23 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 
 
 
+	Class.closeAll = function (first) {
+
+		var page;
+
+		while (page = Class.current)
+		{
+			if (first && !page.opener)
+			{
+				return page;
+			}
+
+			page.close();
+		}
+	}
+
+
+
 	this.open = function (options) {
 				
 		var opener = Class.current || null;
