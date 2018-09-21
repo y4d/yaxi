@@ -3061,16 +3061,9 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
     this.$properties({
 
-        type: '',
         text: '',
     });
     
-
-
-    this.__set_type = function (dom, value) {
-
-        dom.setAttribute('theme', value)
-    }
 
 
     this.__set_text = function (dom, value) {
@@ -3408,6 +3401,18 @@ yaxi.Memo = yaxi.Control.extend(function () {
 
 
 
+    // 获取输入的文字内容
+    Object.defineProperty(this, 'input', {
+
+        get: function () {
+
+            return this.$dom.firstChild.value;
+        }
+    });
+
+
+
+
     this.__set_text = function (dom, value) {
 
         dom.firstChild.value = value;
@@ -3569,6 +3574,17 @@ yaxi.Password = yaxi.Control.extend(function () {
     });
 
 
+    // 获取输入的文字内容
+    Object.defineProperty(this, 'input', {
+
+        get: function () {
+
+            return this.$dom.firstChild.value;
+        }
+    });
+
+
+    
 
     this.__set_type = function (dom, value) {
 
@@ -3578,7 +3594,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
     this.__set_text = function (dom, value) {
 
-        dom.firstChild.textContent = value;
+        dom.firstChild.value = value;
     }
 
 
@@ -3813,9 +3829,20 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
 
 
+    // 获取输入的文字内容
+    Object.defineProperty(this, 'input', {
+
+        get: function () {
+
+            return this.$dom.firstChild.value;
+        }
+    });
+
+
+
     this.__set_text = function (dom, value) {
 
-        dom.firstChild.textContent = value;
+        dom.firstChild.value = value;
     }
 
 

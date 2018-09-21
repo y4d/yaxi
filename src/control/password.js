@@ -14,6 +14,17 @@ yaxi.Password = yaxi.Control.extend(function () {
     });
 
 
+    // 获取输入的文字内容
+    Object.defineProperty(this, 'input', {
+
+        get: function () {
+
+            return this.$dom.firstChild.value;
+        }
+    });
+
+
+    
 
     this.__set_type = function (dom, value) {
 
@@ -23,7 +34,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
     this.__set_text = function (dom, value) {
 
-        dom.firstChild.textContent = value;
+        dom.firstChild.value = value;
     }
 
 

@@ -6,16 +6,9 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
     this.$properties({
 
-        type: '',
         text: '',
     });
     
-
-
-    this.__set_type = function (dom, value) {
-
-        dom.setAttribute('theme', value)
-    }
 
 
     this.__set_text = function (dom, value) {
