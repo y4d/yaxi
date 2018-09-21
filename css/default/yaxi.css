@@ -276,6 +276,10 @@ textarea::-webkit-input-placeholder {
   width: 1em;
   height: 1em;
 }
+input {
+  border: 1px solid #c0c4cc;
+  outline: none;
+}
 [layout="row"] {
   display: -webkit-flex;
   display: flex;
@@ -298,14 +302,15 @@ textarea::-webkit-input-placeholder {
   flex-grow: 1;
   align-items: center;
   text-align: center;
+  justify-content: space-around;
 }
 .yx-control[theme="primary"] {
   border-color: #8cc5ff;
   color: #3a8ee6;
 }
 .yx-control[theme="second"] {
-  border-color: #8cc5ff;
-  color: #3a8ee6;
+  border-color: #b3d8ff;
+  color: #66b1ff;
 }
 .yx-control[theme="success"] {
   border-color: #a4da89;
@@ -319,14 +324,30 @@ textarea::-webkit-input-placeholder {
   border-color: #f9a7a7;
   color: #dd6161;
 }
-.yx-control[disabled] {
+.yx-control[disabled],
+.yx-control[theme="disabled"] {
   border-color: #bcbec2;
   background-color: #f4f4f5;
   color: #82848a;
   cursor: not-allowed;
 }
-.yx-control[theme="primary"] svg {
+[theme="primary"] svg {
   fill: #3a8ee6;
+}
+[theme="second"] svg {
+  fill: #66b1ff;
+}
+[theme="success"] svg {
+  fill: #5daf34;
+}
+[theme="warning"] svg {
+  fill: #cf9236;
+}
+[theme="danger"] svg {
+  fill: #dd6161;
+}
+[theme="disabled"] svg {
+  fill: #82848a;
 }
 .yx-page {
   position: absolute;
@@ -376,8 +397,8 @@ textarea::-webkit-input-placeholder {
   color: #ffffff;
 }
 .yx-button[theme="second"] {
-  border-color: #8cc5ff;
-  background-color: #3a8ee6;
+  border-color: #b3d8ff;
+  background-color: #66b1ff;
   color: #ffffff;
 }
 .yx-button[theme="success"] {
@@ -417,9 +438,9 @@ textarea::-webkit-input-placeholder {
 .yx-button[theme="second"]:focus,
 .yx-button[theme="second"]:hover,
 .yx-button[theme="second"]:active {
-  color: #3a8ee6;
-  border-color: #3a8ee6;
-  background-color: #3a8ee6;
+  color: #66b1ff;
+  border-color: #66b1ff;
+  background-color: #66b1ff;
 }
 .yx-button[theme="success"]:focus,
 .yx-button[theme="success"]:hover,
@@ -445,7 +466,7 @@ textarea::-webkit-input-placeholder {
 .yx-button[disabled],
 .yx-button[theme][disabled] {
   color: #c0c4cc;
-  border-color: #ebeef5;
+  border-color: #f8f8f8;
   background-color: #ffffff;
   cursor: not-allowed;
 }
@@ -469,7 +490,7 @@ textarea::-webkit-input-placeholder {
   fill: #8cc5ff;
 }
 .yx-button[theme="second"] > svg {
-  fill: #8cc5ff;
+  fill: #b3d8ff;
 }
 .yx-button[theme="success"] > svg {
   fill: #a4da89;
@@ -536,6 +557,20 @@ textarea::-webkit-input-placeholder {
 }
 .yx-switchbutton-checked > span {
   background-color: #8cc5ff;
+}
+.yx-tab {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.yx-tab > * {
+  flex-grow: 1;
+  border-bottom: 1px solid #c0c4cc;
+}
+.yx-tab > [theme="primary"] {
+  border-bottom: 1px solid #8cc5ff;
 }
 .yx-text {
   display: inline-block;

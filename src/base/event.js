@@ -190,11 +190,13 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 	
 	// 触摸开始事件参数
-	var start = {};
+    var start = {};
+    
+    var touch = 'ontouchstart' in document;
 
 
 
-	function longTagDelay() {
+	function longTapDelay() {
 		
 		var target = start.target;
 		
@@ -220,7 +222,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	}
 
 
-	document.addEventListener('touchstart', function (e) {
+	document.addEventListener(touch ? 'touchstart' : 'mousedown', function (e) {
 		
 		var touch = e.changedTouches[0];
 		
@@ -228,11 +230,11 @@ yaxi.EventTarget = Object.extend(function (Class) {
 		start.clientY = touch.clientY;
 		start.swipe = false;
 		start.target = e.target;
-		start.delay = setTimeout(longTagDelay, 600);
+		start.delay = setTimeout(longTapDelay, 600);
 	});
 
 
-	document.addEventListener('touchmove', function (e) {
+	document.addEventListener(touch ? 'touchmove' : 'mousemove', function (e) {
 		
 		if (start.delay)
 		{
@@ -260,7 +262,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 		
 
-	document.addEventListener('touchend', function (e) {
+	document.addEventListener(touch ? 'touchend' : 'mouseup', function (e) {
 		
 		if (start.delay)
 		{
@@ -296,7 +298,6 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
                 }, 0);
 			}
-			
 			
 		}
 	});

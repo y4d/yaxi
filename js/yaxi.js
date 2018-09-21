@@ -496,11 +496,13 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
 	
 	// 触摸开始事件参数
-	var start = {};
+    var start = {};
+    
+    var touch = 'ontouchstart' in document;
 
 
 
-	function longTagDelay() {
+	function longTapDelay() {
 		
 		var target = start.target;
 		
@@ -526,7 +528,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	}
 
 
-	document.addEventListener('touchstart', function (e) {
+	document.addEventListener(touch ? 'touchstart' : 'mousedown', function (e) {
 		
 		var touch = e.changedTouches[0];
 		
@@ -534,11 +536,11 @@ yaxi.EventTarget = Object.extend(function (Class) {
 		start.clientY = touch.clientY;
 		start.swipe = false;
 		start.target = e.target;
-		start.delay = setTimeout(longTagDelay, 600);
+		start.delay = setTimeout(longTapDelay, 600);
 	});
 
 
-	document.addEventListener('touchmove', function (e) {
+	document.addEventListener(touch ? 'touchmove' : 'mousemove', function (e) {
 		
 		if (start.delay)
 		{
@@ -566,7 +568,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
 	});
 		
 
-	document.addEventListener('touchend', function (e) {
+	document.addEventListener(touch ? 'touchend' : 'mouseup', function (e) {
 		
 		if (start.delay)
 		{
@@ -602,7 +604,6 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
                 }, 0);
 			}
-			
 			
 		}
 	});
@@ -2227,7 +2228,7 @@ yaxi.Stream = Object.extend(function (Class) {
     color.default1 = "#000000";
     color.default2 = "#606266";
     color.default3 = "#c0c4cc";
-    color.default4 = "#ebeef5";
+    color.default4 = "#f8f8f8";
     color.default5 = "#ffffff";
     
     
@@ -2238,11 +2239,11 @@ yaxi.Stream = Object.extend(function (Class) {
     color.primary5 = "#d9ecff";
     
     
-    color.second1 = "#3a8ee6";
-    color.second2 = "#66b1ff";
-    color.second3 = "#8cc5ff";
-    color.second4 = "#b3d8ff";
-    color.second5 = "#d9ecff";
+    color.second1 = "#66b1ff";
+    color.second2 = "#8cc5ff";
+    color.second3 = "#b3d8ff";
+    color.second4 = "#d9ecff";
+    color.second5 = "#e9fcff";
     
     
     color.success1 = "#5daf34";
@@ -2753,7 +2754,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    document.addEventListener('ontouchend' in document ? 'tap' : 'click', function (event) {
+    document.addEventListener('tap', function (event) {
 
         var control = findControl(event);
 
@@ -3311,7 +3312,10 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
         svg: '',
 
         // svg颜色
-        fill: ''
+        fill: '',
+
+        // 图标大小
+        size: ''
     });
     
 
@@ -3352,6 +3356,12 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
         {
             dom.style.fill = value;
         }
+    }
+
+
+    this.__set_size = function (dom, value) {
+
+        dom.firstChild.style.fontSize = value;
     }
 
 
@@ -3697,6 +3707,65 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
 
 
 }).register('SwitchButton');
+
+
+
+
+yaxi.Tab = yaxi.Panel.extend(function (Class, base) {
+
+
+    yaxi.template(this, '<div class="yx-control yx-panel yx-tab"></div>');
+
+
+    Class.ctor = function (data) {
+
+        base.constructor.call(this, data);
+        this.on('tap', handleTap.bind(this));
+    }
+
+
+
+    function handleTap(event) {
+
+        var target = event.target;
+
+        while (target && target !== this)
+        {
+            if (target.$parent === this)
+            {
+                if (target.theme !== 'primary')
+                {
+                    var children = this.children,
+                        last;
+
+                    for (var i = children.length; i--;)
+                    {
+                        if ((last = children[i]) && last.theme === 'primary')
+                        {
+                            last.theme = '';
+                            break;
+                        }
+                    }
+
+                    target.theme = 'primary';
+
+                    this.trigger('selected-change', {
+
+                        current: target,
+                        last: last
+                    });
+                }
+
+                break;
+            }
+
+            target = target.$parent;
+        }
+    }
+
+
+
+}).register('Tab');
 
 
 

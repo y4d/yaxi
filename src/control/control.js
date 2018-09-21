@@ -459,7 +459,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
-    document.addEventListener('ontouchend' in document ? 'tap' : 'click', function (event) {
+    document.addEventListener('tap', function (event) {
 
         var control = findControl(event);
 

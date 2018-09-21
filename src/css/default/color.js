@@ -4,7 +4,7 @@
     color.default1 = "#000000";
     color.default2 = "#606266";
     color.default3 = "#c0c4cc";
-    color.default4 = "#ebeef5";
+    color.default4 = "#f8f8f8";
     color.default5 = "#ffffff";
     
     
@@ -15,11 +15,11 @@
     color.primary5 = "#d9ecff";
     
     
-    color.second1 = "#3a8ee6";
-    color.second2 = "#66b1ff";
-    color.second3 = "#8cc5ff";
-    color.second4 = "#b3d8ff";
-    color.second5 = "#d9ecff";
+    color.second1 = "#66b1ff";
+    color.second2 = "#8cc5ff";
+    color.second3 = "#b3d8ff";
+    color.second4 = "#d9ecff";
+    color.second5 = "#e9fcff";
     
     
     color.success1 = "#5daf34";

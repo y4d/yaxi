@@ -23,7 +23,8 @@
     color: @danger-color-1;
 }
 
-.yx-control[disabled] {
+.yx-control[disabled],
+.yx-control[theme="disabled"] {
     border-color: @disabled-color-3;
     background-color: @disabled-color-5;
     color: @disabled-color-1;
@@ -31,10 +32,29 @@
 }
 
 
-.yx-control[theme="primary"] svg {
+[theme="primary"] svg {
     fill: @primary-color-1;
 }
 
+[theme="second"] svg {
+    fill: @second-color-1;
+}
+
+[theme="success"] svg {
+    fill: @success-color-1;
+}
+
+[theme="warning"] svg {
+    fill: @warning-color-1;
+}
+
+[theme="danger"] svg {
+    fill: @danger-color-1;
+}
+
+[theme="disabled"] svg {
+    fill: @disabled-color-1;
+}
 
 
 .yx-page {

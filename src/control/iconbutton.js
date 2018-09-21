@@ -19,7 +19,10 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
         svg: '',
 
         // svg颜色
-        fill: ''
+        fill: '',
+
+        // 图标大小
+        size: ''
     });
     
 
@@ -60,6 +63,12 @@ yaxi.IconButton = yaxi.Control.extend(function (Class, base) {
         {
             dom.style.fill = value;
         }
+    }
+
+
+    this.__set_size = function (dom, value) {
+
+        dom.firstChild.style.fontSize = value;
     }
 
 
