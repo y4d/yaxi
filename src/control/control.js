@@ -337,6 +337,12 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 事件变更处理
     this.__event_change = function (type, items, on) {
 
+        // input和change事件特殊处理
+        if (type === 'input' || type === 'change')
+        {
+            return;
+        }
+
         // 刚注册或已注销完毕才注册事件变更
         var value = on ? !items[1] : !items || !items[0];
 
@@ -471,16 +477,18 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }, true);
 
 
-    // document.addEventListener('input', function (event) {
+    document.addEventListener('input', function (event) {
 
-    //     var control = findControl(event);
+        var control = findControl(event);
 
-    //     if (control && !control.disabled)
-    //     {
-    //         control.__on_input(event);
-    //     }
-
-    // });
+        if (control && !control.disabled)
+        {
+            control.trigger('input', {
+                
+                value: event.target.value
+            });
+        }
+    });
 
 
     document.addEventListener('change', function (event) {
@@ -490,6 +498,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         if (control && !control.disabled)
         {
             control.__on_change(event);
+            control.trigger('change');
         }
 
     });

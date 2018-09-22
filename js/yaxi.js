@@ -2645,6 +2645,12 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 事件变更处理
     this.__event_change = function (type, items, on) {
 
+        // input和change事件特殊处理
+        if (type === 'input' || type === 'change')
+        {
+            return;
+        }
+
         // 刚注册或已注销完毕才注册事件变更
         var value = on ? !items[1] : !items || !items[0];
 
@@ -2779,16 +2785,18 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }, true);
 
 
-    // document.addEventListener('input', function (event) {
+    document.addEventListener('input', function (event) {
 
-    //     var control = findControl(event);
+        var control = findControl(event);
 
-    //     if (control && !control.disabled)
-    //     {
-    //         control.__on_input(event);
-    //     }
-
-    // });
+        if (control && !control.disabled)
+        {
+            control.trigger('input', {
+                
+                value: event.target.value
+            });
+        }
+    });
 
 
     document.addEventListener('change', function (event) {
@@ -2798,6 +2806,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
         if (control && !control.disabled)
         {
             control.__on_change(event);
+            control.trigger('change');
         }
 
     });
@@ -3487,7 +3496,7 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 				return page;
 			}
 
-			page.close();
+			page.close('OK');
 		}
 	}
 
@@ -3592,7 +3601,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-open"></use></svg></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-close"></use></svg></span>');
 
 
 
@@ -3614,7 +3623,6 @@ yaxi.Password = yaxi.Control.extend(function () {
     });
 
 
-    
 
     this.__set_type = function (dom, value) {
 
@@ -3636,7 +3644,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
     
     
-    this.__on_input = this.__on_change = function (event) {
+    this.__on_change = function (event) {
 
         this.text = event.target.value;
     }
@@ -3680,12 +3688,12 @@ yaxi.Password = yaxi.Control.extend(function () {
                 if (dom.type === 'text')
                 {
                     dom.type = 'password';
-                    icon = 'eye-open';
+                    icon = 'eye-close';
                 }
                 else
                 {
                     dom.type = 'text';
-                    icon = 'eye-close';
+                    icon = 'eye-open';
                 }
 
                 target.firstChild.setAttribute('xlink:href', '#icon-' + icon);
@@ -3900,7 +3908,6 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     });
 
 
-
     // 获取输入的文字内容
     Object.defineProperty(this, 'input', {
 
@@ -3922,7 +3929,6 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
         dom.firstChild.placeholder = value;
     }
-
 
     
 

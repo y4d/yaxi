@@ -506,11 +506,11 @@ input {
 }
 .yx-password > svg {
   position: absolute;
-  width: 1em;
-  height: 1em;
+  width: 1.5em;
+  height: 1.5em;
   top: 50%;
   right: 0.05rem;
-  margin-top: -0.5em;
+  margin-top: -0.75em;
 }
 .yx-radiobutton {
   display: inline-block;

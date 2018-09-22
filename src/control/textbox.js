@@ -13,7 +13,6 @@ yaxi.TextBox = yaxi.Control.extend(function () {
     });
 
 
-
     // 获取输入的文字内容
     Object.defineProperty(this, 'input', {
 
@@ -35,7 +34,6 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
         dom.firstChild.placeholder = value;
     }
-
 
     
 

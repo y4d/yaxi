@@ -17,7 +17,7 @@ yaxi.Page = yaxi.Panel.extend(function (Class, base) {
 				return page;
 			}
 
-			page.close();
+			page.close('OK');
 		}
 	}
 

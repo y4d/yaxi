@@ -2,7 +2,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-open"></use></svg></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-close"></use></svg></span>');
 
 
 
@@ -24,7 +24,6 @@ yaxi.Password = yaxi.Control.extend(function () {
     });
 
 
-    
 
     this.__set_type = function (dom, value) {
 
@@ -46,7 +45,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
     
     
-    this.__on_input = this.__on_change = function (event) {
+    this.__on_change = function (event) {
 
         this.text = event.target.value;
     }
@@ -90,12 +89,12 @@ yaxi.Password = yaxi.Control.extend(function () {
                 if (dom.type === 'text')
                 {
                     dom.type = 'password';
-                    icon = 'eye-open';
+                    icon = 'eye-close';
                 }
                 else
                 {
                     dom.type = 'text';
-                    icon = 'eye-close';
+                    icon = 'eye-open';
                 }
 
                 target.firstChild.setAttribute('xlink:href', '#icon-' + icon);
