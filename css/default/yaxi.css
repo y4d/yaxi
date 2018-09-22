@@ -261,7 +261,7 @@ textarea::-webkit-input-placeholder {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(1turn);
+    transform: rotate(360deg);
   }
 }
 .yx-icon {
@@ -581,4 +581,22 @@ input {
 }
 .yx-text {
   display: inline-block;
+}
+.yx-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  border: 1px solid #c0c4cc;
+  padding: 0.1rem;
+  border-radius: 0.05rem;
+  background-color: #f8f8f8;
+}
+.yx-toast > * {
+  vertical-align: middle;
+}
+.yx-toast-loading {
+  width: 1.5em;
+  height: 1.5em;
+  -webkit-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
 }
