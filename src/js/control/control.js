@@ -216,6 +216,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             this.ondestroy();
         }
         
+        this.$parent = null;
         this.destroyed = true;
     }
 

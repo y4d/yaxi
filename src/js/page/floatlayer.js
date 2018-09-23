@@ -24,7 +24,7 @@ yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
 				
 				node = node.parentNode;
 			}
-				
+
 			layer.close();
 			
 			event.stopPropagation();

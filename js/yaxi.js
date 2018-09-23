@@ -1,4 +1,4 @@
-(function(window){var svgSprite='<svg><symbol id="icon-radio-checked" viewBox="0 0 1024 1024"><path d="M512 259.56503703c-138.83922963 0-252.43496297 113.59573333-252.43496297 252.43496297s113.59573333 252.43496297 252.43496297 252.43496297 252.43496297-113.59573333 252.43496297-252.43496297S650.83922963 259.56503703 512 259.56503703zM512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89594075c-222.13791289 0-403.89594075-181.76045511-403.89594075-403.89594075S289.86208711 108.10405925 512 108.10405925 915.89594075 289.86208711 915.89594075 512 734.13791289 915.89594075 512 915.89594075z"  ></path></symbol><symbol id="icon-loading" viewBox="0 0 1024 1024"><path d="M512.32 282.944c-31.872 0-57.664-25.792-57.664-57.664L454.656 57.984c0-31.808 25.792-57.6 57.664-57.6s57.664 25.792 57.664 57.6l0 167.424C569.984 257.216 544.192 282.944 512.32 282.944zM512.32 1023.616c-20.608 0-37.312-16.704-37.312-37.248l0-209.536c0-20.544 16.704-37.248 37.312-37.248 20.544 0 37.312 16.704 37.312 37.248l0 209.536C549.632 1006.912 532.864 1023.616 512.32 1023.616zM370.368 323.264c-19.328 0-38.08-10.048-48.448-28.032L234.176 145.792C218.752 119.04 227.968 84.8 254.656 69.312c26.752-15.36 60.992-6.272 76.416 20.48L418.752 239.36c15.36 26.752 6.272 60.928-20.48 76.352C389.44 320.832 379.904 323.264 370.368 323.264zM750.016 959.936c-11.776 0-22.848-6.016-29.12-16.768l-106.176-186.176c-9.344-16-3.968-36.544 12.16-45.888 16-9.344 36.48-3.84 45.888 12.16l106.112 186.112c9.344 16 3.904 36.608-12.096 45.952C761.344 958.528 755.648 959.936 750.016 959.936zM269.632 424.896c-8.96 0-17.856-2.176-26.048-6.912l-155.072-89.6C63.488 313.856 54.912 281.984 69.376 257.088c14.4-25.088 46.336-33.6 71.296-19.2l155.072 89.536C320.832 341.76 329.344 373.696 315.008 398.72 305.28 415.552 287.744 424.896 269.632 424.896L269.632 424.896zM928.768 783.168c-4.864 0-9.984-1.344-14.72-3.968l-193.344-112.128c-14.4-8.256-19.136-26.496-10.88-40.768 8.128-14.272 26.496-19.136 40.768-11.008l193.28 112.064c14.4 8.448 19.136 26.496 11.008 40.96C949.248 777.792 939.008 783.168 928.768 783.168L928.768 783.168zM235.264 561.92 48.768 561.92c-26.752 0-48.512-21.76-48.512-48.576s21.696-48.512 48.512-48.512l186.496 0c26.88 0 48.512 21.696 48.512 48.512S262.08 561.92 235.264 561.92zM993.856 542.528 993.856 542.528l-223.744 0c-16.512 0-29.888-13.376-29.888-29.824 0-16.448 13.376-29.824 29.888-29.824l0 0 223.744 0c16.512 0 29.888 13.376 29.888 29.824C1023.744 529.152 1010.368 542.528 993.856 542.528zM108.416 789.44c-15.488 0-30.656-8-38.784-22.464-12.224-21.504-5.056-48.896 16.384-61.12l169.088-96C276.544 597.632 303.808 604.864 316.16 626.304c12.288 21.504 4.992 48.832-16.448 61.056l-169.024 96C123.712 787.456 116.032 789.44 108.416 789.44zM736.576 414.272c-10.24 0-20.288-5.376-25.792-14.912-8.256-14.272-3.328-32.512 11.008-40.768l193.216-112.064c14.336-8.256 32.512-3.392 40.832 10.88 8.256 14.336 3.392 32.512-10.944 40.832L751.36 410.368C746.816 412.992 741.568 414.336 736.576 414.272L736.576 414.272zM278.144 960c-6.912 0-14.016-1.856-20.48-5.504-19.648-11.456-26.304-36.48-14.912-56.128l99.776-173.504c11.456-19.84 36.416-26.304 56.128-15.04 19.712 11.456 26.304 36.48 14.976 56.128l-99.84 173.44C306.176 952.64 292.352 960 278.144 960zM641.728 318.4c-4.928 0-10.048-1.28-14.784-3.968C612.608 306.176 607.808 287.872 615.936 273.536l110.976-192c8.384-14.272 26.496-19.136 40.96-10.944 14.272 8.192 19.136 26.496 10.88 40.768l-110.976 192C662.144 313.024 652.032 318.336 641.728 318.4L641.728 318.4z"  ></path></symbol><symbol id="icon-checkbox-uncheck" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path></symbol><symbol id="icon-checkbox-checked" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path><path d="M449.57870885 836.76231882l-274.13886619-274.21092687 101.10445971-101.10445972 154.87344396 154.80138332 308.38779037-431.80089021 116.40478156 83.08594269z"  ></path></symbol><symbol id="icon-radio-uncheck" viewBox="0 0 1024 1024"><path d="M512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89351348c-222.13791287 0-403.89351348-181.75802787-403.89351348-403.89351348S289.86208713 108.10405925 512 108.10405925 915.89594075 289.86208713 915.89594075 512 734.13791287 915.89351348 512 915.89351348z"  ></path></symbol><symbol id="icon-eye-open" viewBox="0 0 1024 1024"><path d="M515.2 224C208 224 22.4 537.6 22.4 537.6s214.4 304 492.8 304 492.8-304 492.8-304S822.4 224 515.2 224zM832 652.8c-102.4 86.4-211.2 140.8-320 140.8s-217.6-51.2-320-140.8c-35.2-32-70.4-64-99.2-99.2-6.4-6.4-9.6-12.8-16-19.2 3.2-6.4 9.6-12.8 12.8-19.2 25.6-35.2 57.6-70.4 92.8-102.4 99.2-89.6 208-144 329.6-144s230.4 54.4 329.6 144c35.2 32 64 67.2 92.8 102.4 3.2 6.4 9.6 12.8 12.8 19.2-3.2 6.4-9.6 12.8-16 19.2-28.8 32-60.8 67.2-99.2 99.2z" fill="" ></path><path d="M512 345.6c-96 0-169.6 76.8-169.6 169.6 0 96 76.8 169.6 169.6 169.6 96 0 169.6-76.8 169.6-169.6S604.8 345.6 512 345.6z m0 294.4c-67.2 0-121.6-54.4-121.6-121.6 0-67.2 54.4-121.6 121.6-121.6 67.2 0 121.6 54.4 121.6 121.6 0 64-54.4 121.6-121.6 121.6z" fill="" ></path></symbol><symbol id="icon-eye-close" viewBox="0 0 1024 1024"><path d="M515.07 614.994c-178.665 0-345.256-96.19-434.896-251.012-13.098-22.615-5.32-51.471 17.191-64.57 22.615-13.097 51.574-5.32 64.57 17.192C234.69 442.264 369.968 520.34 514.968 520.34S795.245 442.263 868 316.502c13.098-22.615 41.955-30.392 64.57-17.294s30.289 41.955 17.293 64.57C860.326 518.804 693.735 614.993 515.07 614.993z m-244.974 47.07c-8.289 0-16.782-2.148-24.354-6.753-22.41-13.507-29.573-42.569-16.066-64.876l52.187-86.365c13.508-22.41 42.57-29.471 64.877-16.066 22.41 13.507 29.573 42.569 16.065 64.876l-52.187 86.365c-8.903 14.633-24.457 22.82-40.522 22.82z m487.39 0c-15.963 0-31.62-8.083-40.522-22.819l-52.188-86.365c-13.507-22.41-6.344-51.369 15.963-64.876 22.41-13.507 51.37-6.344 64.877 15.963l52.187 86.365c13.507 22.41 6.344 51.37-15.963 64.877-7.572 4.604-16.066 6.856-24.354 6.856z m-242.416 61.5c-26.094 0-47.276-21.182-47.276-47.276v-108.57c0-26.094 21.182-47.276 47.276-47.276 26.094 0 47.276 21.182 47.276 47.276v108.57c0 26.094-21.182 47.276-47.276 47.276z" fill="#707070" ></path></symbol><symbol id="icon-checkbox-three" viewBox="0 0 1024 1024"><path d="M1012.51436242 941.01231019V82.98768981a71.50205225 71.50205225 0 0 0-71.50205223-71.50205223H82.98768981a71.50205225 71.50205225 0 0 0-71.50205223 71.50205223v858.02462038a71.50205225 71.50205225 0 0 0 71.50205223 71.50205223h858.02462038a71.50205225 71.50205225 0 0 0 71.50205223-71.50205223z m-143.00410448-71.50205225H154.48974206V154.48974206h715.02051588v715.02051588z"  ></path><path d="M297.49384493 297.49384493h429.01231014v429.01231014H297.49384493z"  ></path></symbol></svg>';var script=function(){var scripts=document.getElementsByTagName("script");return scripts[scripts.length-1]}();var shouldInjectCss=script.getAttribute("data-injectcss");var ready=function(fn){if(document.addEventListener){if(~["complete","loaded","interactive"].indexOf(document.readyState)){setTimeout(fn,0)}else{var loadFn=function(){document.removeEventListener("DOMContentLoaded",loadFn,false);fn()};document.addEventListener("DOMContentLoaded",loadFn,false)}}else if(document.attachEvent){IEContentLoaded(window,fn)}function IEContentLoaded(w,fn){var d=w.document,done=false,init=function(){if(!done){done=true;fn()}};var polling=function(){try{d.documentElement.doScroll("left")}catch(e){setTimeout(polling,50);return}init()};polling();d.onreadystatechange=function(){if(d.readyState=="complete"){d.onreadystatechange=null;init()}}}};var before=function(el,target){target.parentNode.insertBefore(el,target)};var prepend=function(el,target){if(target.firstChild){before(el,target.firstChild)}else{target.appendChild(el)}};function appendSvg(){var div,svg;div=document.createElement("div");div.innerHTML=svgSprite;svgSprite=null;svg=div.getElementsByTagName("svg")[0];if(svg){svg.setAttribute("aria-hidden","true");svg.style.position="absolute";svg.style.width=0;svg.style.height=0;svg.style.overflow="hidden";prepend(svg,document.body)}}if(shouldInjectCss&&!window.__iconfont__svg__cssinject__){window.__iconfont__svg__cssinject__=true;try{document.write("<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>")}catch(e){console&&console.log(e)}}ready(appendSvg)})(window)
+(function(window){var svgSprite='<svg><symbol id="icon-radio-checked" viewBox="0 0 1024 1024"><path d="M512 259.56503703c-138.83922963 0-252.43496297 113.59573333-252.43496297 252.43496297s113.59573333 252.43496297 252.43496297 252.43496297 252.43496297-113.59573333 252.43496297-252.43496297S650.83922963 259.56503703 512 259.56503703zM512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89594075c-222.13791289 0-403.89594075-181.76045511-403.89594075-403.89594075S289.86208711 108.10405925 512 108.10405925 915.89594075 289.86208711 915.89594075 512 734.13791289 915.89594075 512 915.89594075z"  ></path></symbol><symbol id="icon-checkbox-uncheck" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path></symbol><symbol id="icon-checkbox-checked" viewBox="0 0 1024 1024"><path d="M892.24735231 1012.51492048l-760.49638045 0c-66.35446257 0-120.26589234-53.91310559-120.26589234-120.26589234l0-760.56676528c0-66.35446257 53.91310559-120.26589234 120.26589234-120.26589236l760.49638045 0c66.35446257 0 120.26589234 53.91310559 120.26589235 120.26589236l0 760.56676528c0 66.35446257-53.91310559 120.26589234-120.26589235 120.26589234zM131.75264769 82.98768981c-26.88533005 0-48.76495786 21.95168848-48.76495788 48.76495788l0 760.56676528c0 26.81326939 21.87962782 48.76495786 48.76495788 48.76495787l760.49638045 0c26.81326939 0 48.76495786-21.95168848 48.76495787-48.76495787l0-760.56676528c0-26.81326939-21.95168848-48.76495786-48.76495787-48.76495788l-760.49638045 0z"  ></path><path d="M449.57870885 836.76231882l-274.13886619-274.21092687 101.10445971-101.10445972 154.87344396 154.80138332 308.38779037-431.80089021 116.40478156 83.08594269z"  ></path></symbol><symbol id="icon-back" viewBox="0 0 1024 1024"><path d="M769.405 977.483c-27.074 27.568-71.045 27.568-98.121 0l-416.591-423.804c-27.173-27.568-27.173-72.231 0-99.899l416.492-423.804c13.537-13.734 31.324-20.652 49.109-20.652s35.572 6.917 49.109 20.652c27.173 27.568 27.173 72.331 0 99.899l-367.482 373.806 367.482 373.904c27.074 27.568 27.074 72.231 0 99.899z"  ></path></symbol><symbol id="icon-radio-uncheck" viewBox="0 0 1024 1024"><path d="M512 7.13007408C234.323968 7.13007408 7.13007408 234.323968 7.13007408 512s227.19389392 504.86992592 504.86992592 504.86992592 504.86992592-227.19389392 504.86992592-504.86992592S789.676032 7.13007408 512 7.13007408zM512 915.89351348c-222.13791287 0-403.89351348-181.75802787-403.89351348-403.89351348S289.86208713 108.10405925 512 108.10405925 915.89594075 289.86208713 915.89594075 512 734.13791287 915.89351348 512 915.89351348z"  ></path></symbol><symbol id="icon-eye-open" viewBox="0 0 1024 1024"><path d="M515.2 224C208 224 22.4 537.6 22.4 537.6s214.4 304 492.8 304 492.8-304 492.8-304S822.4 224 515.2 224zM832 652.8c-102.4 86.4-211.2 140.8-320 140.8s-217.6-51.2-320-140.8c-35.2-32-70.4-64-99.2-99.2-6.4-6.4-9.6-12.8-16-19.2 3.2-6.4 9.6-12.8 12.8-19.2 25.6-35.2 57.6-70.4 92.8-102.4 99.2-89.6 208-144 329.6-144s230.4 54.4 329.6 144c35.2 32 64 67.2 92.8 102.4 3.2 6.4 9.6 12.8 12.8 19.2-3.2 6.4-9.6 12.8-16 19.2-28.8 32-60.8 67.2-99.2 99.2z" fill="" ></path><path d="M512 345.6c-96 0-169.6 76.8-169.6 169.6 0 96 76.8 169.6 169.6 169.6 96 0 169.6-76.8 169.6-169.6S604.8 345.6 512 345.6z m0 294.4c-67.2 0-121.6-54.4-121.6-121.6 0-67.2 54.4-121.6 121.6-121.6 67.2 0 121.6 54.4 121.6 121.6 0 64-54.4 121.6-121.6 121.6z" fill="" ></path></symbol><symbol id="icon-eye-close" viewBox="0 0 1024 1024"><path d="M515.49297778 629.18428445c-203.28106667 0-392.82460445-109.44284445-494.81500445-285.59587556-14.90261333-25.73084445-6.05297778-58.56256 19.55953778-73.46631111 25.73084445-14.90147555 58.67975111-6.05297778 73.46631111 19.56067555C196.48284445 432.65592889 350.39914667 521.48906667 515.37692445 521.48906667S834.26986667 432.65479111 917.04888889 289.56672c14.90261333-25.73084445 47.73546667-34.57934222 73.46631111-19.67672889s34.46215111 47.73546667 19.67559111 73.46631111C908.31758222 519.74144 718.77404445 629.18314667 515.49297778 629.18314667z m-278.72597333 53.5552c-9.43104 0-19.09418667-2.44394667-27.70944-7.68341334-25.4976-15.36796445-33.64750222-48.43406222-18.27953778-73.81447111l59.37720888-98.26417778c15.36910222-25.4976 48.4352-33.53144889 73.8156089-18.27953777 25.4976 15.36796445 33.64750222 48.43406222 18.2784 73.8144711l-59.3772089 98.26417778c-10.12963555 16.64910222-27.82663111 25.96408889-46.1050311 25.96408889z m554.5415111 0c-18.16234667 0-35.97653333-9.19665778-46.1050311-25.96295112l-59.37834667-98.26417778c-15.36796445-25.4976-7.21806222-58.44650667 18.16234667-73.8144711 25.4976-15.36796445 58.44764445-7.21806222 73.81560888 18.16234666l59.37720889 98.26417778c15.36796445 25.4976 7.21806222 58.44764445-18.16234667 73.81560889-8.61525333 5.23832889-18.27953778 7.80060445-27.70944 7.80060444z m-275.81553777 69.97333333c-29.68917333 0-53.78958222-24.10040889-53.78958223-53.78958223v-123.52853333c0-29.68917333 24.10040889-53.78958222 53.78958223-53.78958222 29.68917333 0 53.78958222 24.10040889 53.78958222 53.78958222v123.52853333c0 29.68917333-24.10040889 53.78958222-53.78958222 53.78958223z" fill="#707070" ></path></symbol><symbol id="icon-checkbox-three" viewBox="0 0 1024 1024"><path d="M1012.51436242 941.01231019V82.98768981a71.50205225 71.50205225 0 0 0-71.50205223-71.50205223H82.98768981a71.50205225 71.50205225 0 0 0-71.50205223 71.50205223v858.02462038a71.50205225 71.50205225 0 0 0 71.50205223 71.50205223h858.02462038a71.50205225 71.50205225 0 0 0 71.50205223-71.50205223z m-143.00410448-71.50205225H154.48974206V154.48974206h715.02051588v715.02051588z"  ></path><path d="M297.49384493 297.49384493h429.01231014v429.01231014H297.49384493z"  ></path></symbol></svg>';var script=function(){var scripts=document.getElementsByTagName("script");return scripts[scripts.length-1]}();var shouldInjectCss=script.getAttribute("data-injectcss");var ready=function(fn){if(document.addEventListener){if(~["complete","loaded","interactive"].indexOf(document.readyState)){setTimeout(fn,0)}else{var loadFn=function(){document.removeEventListener("DOMContentLoaded",loadFn,false);fn()};document.addEventListener("DOMContentLoaded",loadFn,false)}}else if(document.attachEvent){IEContentLoaded(window,fn)}function IEContentLoaded(w,fn){var d=w.document,done=false,init=function(){if(!done){done=true;fn()}};var polling=function(){try{d.documentElement.doScroll("left")}catch(e){setTimeout(polling,50);return}init()};polling();d.onreadystatechange=function(){if(d.readyState=="complete"){d.onreadystatechange=null;init()}}}};var before=function(el,target){target.parentNode.insertBefore(el,target)};var prepend=function(el,target){if(target.firstChild){before(el,target.firstChild)}else{target.appendChild(el)}};function appendSvg(){var div,svg;div=document.createElement("div");div.innerHTML=svgSprite;svgSprite=null;svg=div.getElementsByTagName("svg")[0];if(svg){svg.setAttribute("aria-hidden","true");svg.style.position="absolute";svg.style.width=0;svg.style.height=0;svg.style.overflow="hidden";prepend(svg,document.body)}}if(shouldInjectCss&&!window.__iconfont__svg__cssinject__){window.__iconfont__svg__cssinject__=true;try{document.write("<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>")}catch(e){console&&console.log(e)}}ready(appendSvg)})(window)
 
 
 
@@ -2235,6 +2235,10 @@ yaxi.Stream = Object.extend(function (Class) {
 
 
 
+
+
+
+
 (function (color) {
 
 
@@ -2524,6 +2528,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             this.ondestroy();
         }
         
+        this.$parent = null;
         this.destroyed = true;
     }
 
@@ -3100,146 +3105,29 @@ yaxi.Button = yaxi.Control.extend(function (Class, base) {
 
 
 
-yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
+yaxi.HtmlControl = yaxi.Control.extend(function (Class, base) {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-checkbox"><svg aria-hidden="true"><use xlink:href="#icon-checkbox-uncheck"></use></svg><span></span></span>');
+    yaxi.template(this, '<div class="yx-control yx-htmlcontrol"></div>');
 
 
 
     this.$properties({
 
-        text: '',
-        
-        fill: '',
-
-        checked: false
+        html: ''
     });
-    
 
 
-    this.__set_text = function (dom, value) {
-
-        dom.lastChild.textContent = value;
-    }
 
 
-    this.__set_checked = function (dom, value) {
+    this.__set_html = function (dom, value) {
 
-        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
-    }
-
-
-    this.__set_fill = function (dom, value) {
-
-        dom.firstChild.style.fill = value;
+        dom.innerHTML = value;
     }
 
 
 
-    this.__on_tap = function () {
-
-        this.checked = !this.checked;
-        this.trigger('change');
-    }
-
-
-
-}).register('CheckBox');
-
-
-
-
-yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
-	
-	
-	
-	var stack = [];
-	
-	
-	
-	document.addEventListener('ontouchstart' ? 'touchstart' : 'mousedown', function (event) {
-		
-		var layer = stack[stack.length - 1];
-		
-		if (layer)
-		{
-			var root = layer.$dom,
-				node = event.target;
-				
-			while (node)
-			{
-				if (node === root)
-				{
-					return;
-				}
-				
-				node = node.parentNode;
-			}
-				
-			layer.close();
-			
-			event.stopPropagation();
-			event.preventDefault();
-			
-			return false;
-		}
-		
-	}, true);
-	
-	
-	
-	
-	this.show = function (reference, offset) {
-		
-		var rect = reference.getBoundingClientRect(),
-			offsetX = offset ? (offset.x | 0) : 0,
-			offsetY = offset ? (offset.y | 0) : 0;
-		
-		this.showAt(rect.left + offsetX, rect.top + reference.offsetHeight + offsetY);
-	}
-	
-	
-	
-	this.showAt = function (x, y) {
-		
-		if (stack.indexOf(this) < 0)
-		{
-			var dom = this.$dom;
-			
-			if (!dom)
-			{
-				dom = this.$dom = this.render();
-				dom.classList.add('yx-floatlayer');
-			}
-
-			style = dom.style;
-			style.left = x > 0 ? x + 'px' : x;
-			style.top = y > 0 ? y + 'px' : y;
-			
-			document.body.appendChild(dom);
-			
-			stack.push(this);
-		}
-	}
-	
-	
-	
-	this.close = function () {
-		
-		var layer = stack.pop(),
-			parent,
-			dom;
-		
-		if (layer && (dom = this.$dom) && (parent = dom.parentNode))
-		{
-			parent.removeChild(dom);
-		}
-	}
-
-	
-	
 });
 
 
@@ -3407,6 +3295,143 @@ yaxi.Image = yaxi.Control.extend(function () {
 
 
 
+yaxi.Tab = yaxi.Panel.extend(function (Class, base) {
+
+
+    yaxi.template(this, '<div class="yx-control yx-panel yx-tab"></div>');
+
+
+    Class.ctor = function (data) {
+
+        base.constructor.call(this, data);
+        this.on('tap', handleTap.bind(this));
+    }
+
+
+
+    function handleTap(event) {
+
+        var target = event.target;
+
+        while (target && target !== this)
+        {
+            if (target.$parent === this)
+            {
+                if (target.theme !== 'primary')
+                {
+                    var children = this.children,
+                        last;
+
+                    for (var i = children.length; i--;)
+                    {
+                        if ((last = children[i]) && last.theme === 'primary')
+                        {
+                            last.theme = '';
+                            break;
+                        }
+                    }
+
+                    target.theme = 'primary';
+
+                    this.trigger('selected-change', {
+
+                        current: target,
+                        last: last
+                    });
+                }
+
+                break;
+            }
+
+            target = target.$parent;
+        }
+    }
+
+
+
+}).register('Tab');
+
+
+
+
+yaxi.Text = yaxi.Control.extend(function () {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-text"></span>');
+
+
+
+    this.$properties({
+
+        text: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.textContent = value;
+    }
+
+
+
+}).register('Text');
+
+
+
+
+yaxi.CheckBox = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-checkbox"><svg aria-hidden="true"><use xlink:href="#icon-checkbox-uncheck"></use></svg><span></span></span>');
+
+
+
+    this.$properties({
+
+        text: '',
+        
+        fill: '',
+
+        checked: false
+    });
+    
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.lastChild.textContent = value;
+    }
+
+
+    this.__set_checked = function (dom, value) {
+
+        dom.firstChild.firstChild.setAttribute('xlink:href', '#icon-checkbox-' + (value ? 'checked' : 'uncheck'));
+    }
+
+
+    this.__set_fill = function (dom, value) {
+
+        dom.firstChild.style.fill = value;
+    }
+
+
+
+    this.__on_tap = function () {
+
+        this.checked = !this.checked;
+        this.trigger('change');
+    }
+
+
+
+}).register('CheckBox');
+
+
+
+
 yaxi.Memo = yaxi.Control.extend(function () {
 
 
@@ -3473,126 +3498,6 @@ yaxi.Memo = yaxi.Control.extend(function () {
 
 
 }).register('Memo');
-
-
-
-
-yaxi.Page = yaxi.Panel.extend(function (Class, base) {
-
-
-
-	yaxi.template(this, '<div class="yx-control yx-page"></div>');
-
-
-
-	Class.closeAll = function (first) {
-
-		var page;
-
-		while (page = Class.current)
-		{
-			if (first && !page.opener)
-			{
-				return page;
-			}
-
-			page.close('OK');
-		}
-	}
-
-
-
-	this.open = function (options) {
-				
-		var opener = Class.current || null;
-		
-		if (this.onopening(options) !== false)
-		{
-			document.body.appendChild(this.$dom || this.render());
-			
-		    this.opener = opener;
-			this.onopened(options);
-			
-			if (opener)
-			{
-				opener.$dom.style.display = 'none';
-				opener.onhide();
-			}
-			
-			this.trigger('opened');
-			
-			Class.current = this;
-			
-			return true;
-		}
-
-		return false;
-	}
-	
-	
-	this.close = function (closeType) {
-		
-		if (this.onclosing(closeType) !== false)
-		{
-			var opener = this.opener || null,
-				dom = this.$dom;
-			
-			this.onclosed(closeType);
-			this.opener = null;
-			
-			if (dom.parentNode)
-			{
-				dom.parentNode.removeChild(dom);
-			}
-			
-			if (opener)
-			{
-				opener.$dom.style.display = '';
-				opener.onshow();
-			}
-
-			Class.current = opener;
-			
-			this.trigger('closed', { closeType: closeType });
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
-	this.onopening = function (options) {
-		
-	}
-	
-	
-	this.onopened = function (options) {
-		
-	}
-	
-	
-	this.onclosing = function (closeType) {
-		
-	}
-	
-	
-	this.onclosed = function (closeType) {
-		
-	}
-
-
-	this.onshow = function () {
-
-	}
-
-
-	this.onhide = function () {
-
-    }
-    
-    
-}).register('Page');
 
 
 
@@ -3807,92 +3712,6 @@ yaxi.SwitchButton = yaxi.Control.extend(function (Class, base) {
 
 
 
-yaxi.Tab = yaxi.Panel.extend(function (Class, base) {
-
-
-    yaxi.template(this, '<div class="yx-control yx-panel yx-tab"></div>');
-
-
-    Class.ctor = function (data) {
-
-        base.constructor.call(this, data);
-        this.on('tap', handleTap.bind(this));
-    }
-
-
-
-    function handleTap(event) {
-
-        var target = event.target;
-
-        while (target && target !== this)
-        {
-            if (target.$parent === this)
-            {
-                if (target.theme !== 'primary')
-                {
-                    var children = this.children,
-                        last;
-
-                    for (var i = children.length; i--;)
-                    {
-                        if ((last = children[i]) && last.theme === 'primary')
-                        {
-                            last.theme = '';
-                            break;
-                        }
-                    }
-
-                    target.theme = 'primary';
-
-                    this.trigger('selected-change', {
-
-                        current: target,
-                        last: last
-                    });
-                }
-
-                break;
-            }
-
-            target = target.$parent;
-        }
-    }
-
-
-
-}).register('Tab');
-
-
-
-
-yaxi.Text = yaxi.Control.extend(function () {
-
-
-
-    yaxi.template(this, '<span class="yx-control yx-text"></span>');
-
-
-
-    this.$properties({
-
-        text: ''
-    });
-
-
-
-    this.__set_text = function (dom, value) {
-
-        dom.textContent = value;
-    }
-
-
-
-}).register('Text');
-
-
-
-
 yaxi.TextBox = yaxi.Control.extend(function () {
 
 
@@ -3960,27 +3779,723 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
 
 
+yaxi.Page = yaxi.Control.extend(function (Class, base) {
+
+
+
+	yaxi.template(this, '<div class="yx-control yx-page"></div>');
+
+
+
+
+	Class.all = function () {
+
+		var list = [],
+			page;
+
+		while (page = Class.current)
+		{
+			list.push(page);
+		}
+
+		return list.reverse();
+	}
+
+
+	Class.closeTo = function (level, closeType) {
+
+		var list = Class.all;
+
+		level |= 0;
+
+		for (var i = list.length - 1; i > level; i--)
+		{
+			list[i].close(closeType || 'OK');
+		}
+	}
+
+
+	Class.closeAll = function (closeType) {
+
+		var page;
+
+		while (page = Class.current)
+		{
+			page.close(closeType || 'OK');
+		}
+	}
+
+
+
+	Class.ctor = function (data) {
+
+		var any;
+
+		base.constructor.call(this, data);
+
+		if (data)
+		{
+			if (any = data.header)
+			{
+				if (typeof any === 'string')
+				{
+					any = this.__template_header(any);
+				}
+		
+				any = this.header = new (any.Class || yaxi.Panel)(any);
+				any.$parent = this;
+				any.$className = 'yx-header';
+			}
+		
+			if (any = data.host)
+			{
+				this.host = new (any.Class || yaxi.Panel)(any);
+			}
+
+			if (any = data.footer)
+			{
+				any = this.footer = new (any.Class || yaxi.Panel)(any);
+				any.$parent = this;
+				any.$className = 'yx-footer';
+			}
+		}
+		
+		any = this.host || (this.host = new yaxi.Panel());
+		any.$parent = this;
+		any.$className = 'yx-host';
+	}
+
+
+
+	
+	this.__c_header = this.__c_host = this.__c_footer = false;
+
+
+	this.__template_header = function (text) {
+
+		return {
+
+			Class: yaxi.Header,
+			children: [
+				{
+					Class: yaxi.BackButton
+				},
+				{
+					Class: yaxi.Title,
+					text: text
+				}
+			]
+		};
+	}
+
+
+
+
+	this.$properties({
+
+		// 是否自动销毁
+		autoDestroy: true
+	});
+		
+
+
+	this.open = function (options) {
+				
+		var opener = Class.current || null;
+		
+		if (this.onopening(options) !== false)
+		{
+			document.body.appendChild(this.$dom || this.render());
+			
+		    this.opener = opener;
+			this.onopened(options);
+			this.onshow();
+			
+			if (opener)
+			{
+				opener.$dom.style.display = 'none';
+				opener.onhide();
+			}
+			
+			this.trigger('opened');
+			
+			Class.current = this;
+			
+			return true;
+		}
+
+		return false;
+	}
+	
+	
+	this.close = function (closeType) {
+		
+		if (this.onclosing(closeType) !== false)
+		{
+			var opener = this.opener || null,
+				dom = this.$dom;
+			
+			this.onhide();
+			this.onclosed(closeType);
+			this.opener = null;
+			
+			if (dom.parentNode)
+			{
+				dom.parentNode.removeChild(dom);
+			}
+			
+			if (opener)
+			{
+				opener.$dom.style.display = '';
+				opener.onshow();
+			}
+
+			Class.current = opener;
+			
+			this.trigger('closed', { closeType: closeType });
+
+			if (this.autoDestroy)
+			{
+				this.destroy();
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	this.onopening = function (options) {
+		
+	}
+	
+	
+	this.onopened = function (options) {
+		
+	}
+	
+	
+	this.onclosing = function (closeType) {
+		
+	}
+	
+	
+	this.onclosed = function (closeType) {
+		
+	}
+
+
+	this.onshow = function () {
+
+	}
+
+
+	this.onhide = function () {
+
+	}
+
+
+
+	this.destroy = function () {
+
+		var any;
+
+		if (any = this.footer)
+		{
+			any.destroy();
+		}
+
+		this.host.destroy();
+
+		if (any = this.header)
+		{
+			any.destroy();
+		}
+
+		base.destroy.call(this);
+	}
+	
+
+
+	
+    this.render = function () {
+
+        var dom = base.render.call(this),
+            any;
+
+        if (any = this.header)
+        {
+			any = any.render();
+			any.classList.add('yx-header');
+
+            dom.appendChild(any);
+        }
+
+        if (any = this.host)
+        {
+			any = any.render();
+			any.classList.add('yx-host');
+
+            dom.appendChild(any);
+        }
+
+        if (any = this.footer)
+        {
+			any = any.render();
+			any.classList.add('yx-footer');
+
+            dom.appendChild(any);
+        }
+
+        return dom;
+    }
+	
+	
+    
+}).register('Page');
+
+
+
+
+yaxi.BackButton = yaxi.Control.extend(function (Class, base) {
+
+
+
+    yaxi.template(this, '<span class="yx-control yx-backbutton yx-icon"><svg aria-hidden="true"><use xlink:href="#icon-back"></use></svg></span>');
+
+
+
+    Class.ctor = function (data) {
+
+        base.constructor.call(this, data);
+        this.on('tap', handleTap.bind(this));
+    }
+
+
+
+    function handleTap(event) {
+
+        this.root.close('BACK');
+    }
+
+
+});
+
+
+
+
+yaxi.Dialog = yaxi.Page.extend(function (Class, base) {
+	
+	
+	
+	var stack = [];
+	
+	var eventName = 'ontouchstart' ? 'touchstart' : 'mousedown';
+
+    
+
+
+    yaxi.template(this, '<div class="yx-control yx-dialog"></div>');
+	
+
+
+	this.$properties({
+
+		// 是否自动关闭
+		autoClose: false
+	});
+
+
+
+	this.__template_header = function (text) {
+
+		return {
+
+			Class: yaxi.Title,
+			text: text
+		};
+	}
+
+	
+
+	function checkTap(event) {
+		
+		var dialog = stack[stack.length - 1];
+		
+		if (dialog)
+		{
+			var dom = dialog.$dom,
+				node = event.target;
+				
+			while (node)
+			{
+				if (node === dom)
+				{
+					return;
+				}
+				
+				node = node.parentNode;
+			}
+
+			if (dialog.autoClose)
+			{
+				dialog.close();
+			}
+
+			event.stopImmediatePropagation();
+			return false;
+		}
+	}
+
+
+
+	function computePosition() {
+
+		var dialog = stack[stack.length - 1],
+			dom;
+
+		if (dialog && (dom = dialog.$dom))
+		{
+			var style = dom.style;
+
+			style.top = (window.innerHeight - dom.offsetHeight >> 1) + 'px';
+			style.left = (window.innerWidth - dom.offsetWidth >> 1) + 'px';
+		}
+	}
+
+
+	
+	this.open = function (options) {
+		
+		if (stack.indexOf(this) >= 0 || this.onopening(options) === false)
+		{
+			return false;
+		}
+
+		document.body.appendChild(this.$dom || this.render());
+
+		this.onopened(options);
+		this.onshow();
+
+		this.trigger('opened');
+
+		stack.push(this);
+		computePosition.call(this);
+
+		if (!stack[1])
+		{
+			document.addEventListener(eventName, checkTap, true);
+			window.addEventListener('resize', computePosition, true);
+		}
+
+		return true;
+	}
+	
+	
+	
+	this.close = function (closeType) {
+		
+		if (stack[stack.length - 1] !== this || this.onclosing(closeType) === false)
+		{
+			return false;
+		}
+
+		var dom = this.$dom;
+
+		if (dom && dom.parentNode)
+		{
+			dom.parentNode.removeChild(dom);
+		}
+
+		stack.pop();
+
+		if (stack[0])
+		{
+			computePosition();
+		}
+		else
+		{
+			document.removeEventListener(eventName, checkTap, true);
+			window.removeEventListener('resize', computePosition, true);
+		}
+
+		this.onhide();
+		this.onclosed(closeType);
+
+		this.trigger('closed', {
+
+			closeType: closeType
+		});
+
+		if (this.autoDestroy)
+		{
+			this.destroy();
+		}
+	}
+	
+
+
+});
+
+
+
+
+yaxi.FloatLayer = yaxi.Panel.extend(function (Class, base) {
+	
+	
+	
+	var stack = [];
+	
+	
+	
+	document.addEventListener('ontouchstart' ? 'touchstart' : 'mousedown', function (event) {
+		
+		var layer = stack[stack.length - 1];
+		
+		if (layer)
+		{
+			var root = layer.$dom,
+				node = event.target;
+				
+			while (node)
+			{
+				if (node === root)
+				{
+					return;
+				}
+				
+				node = node.parentNode;
+			}
+
+			layer.close();
+			
+			event.stopPropagation();
+			event.preventDefault();
+			
+			return false;
+		}
+		
+	}, true);
+	
+	
+	
+	
+	this.show = function (reference, offset) {
+		
+		var rect = reference.getBoundingClientRect(),
+			offsetX = offset ? (offset.x | 0) : 0,
+			offsetY = offset ? (offset.y | 0) : 0;
+		
+		this.showAt(rect.left + offsetX, rect.top + reference.offsetHeight + offsetY);
+	}
+	
+	
+	
+	this.showAt = function (x, y) {
+		
+		if (stack.indexOf(this) < 0)
+		{
+			var dom = this.$dom;
+			
+			if (!dom)
+			{
+				dom = this.$dom = this.render();
+				dom.classList.add('yx-floatlayer');
+			}
+
+			style = dom.style;
+			style.left = x > 0 ? x + 'px' : x;
+			style.top = y > 0 ? y + 'px' : y;
+			
+			document.body.appendChild(dom);
+			
+			stack.push(this);
+		}
+	}
+	
+	
+	
+	this.close = function () {
+		
+		var layer = stack.pop(),
+			parent,
+			dom;
+		
+		if (layer && (dom = this.$dom) && (parent = dom.parentNode))
+		{
+			parent.removeChild(dom);
+		}
+	}
+
+	
+	
+});
+
+
+
+
+yaxi.showMessage = function (options) {
+
+    var dialog, content, buttons, callback;
+
+    if (typeof options === 'string')
+    {
+        options = {
+            title: options
+        }
+    }
+    
+    if (buttons = (options || (options = {})).buttons)
+    {
+        for (var i = buttons.length; i--;)
+        {
+            if ((content = buttons[i]) && typeof content === 'string')
+            {
+                buttons[i] = {
+                    text: content
+                };
+
+                if (i === 0)
+                {
+                    buttons[i].theme = 'primary';
+                }
+            }
+        }
+    }
+    else
+    {
+        buttons = [
+            {
+                theme: 'primary',
+                text: 'OK'
+            },
+            {
+                text: 'Cancel'
+            }
+        ];
+    }
+
+    if ((content = options.content) && typeof content === 'string')
+    {
+        content = [
+            {
+                Class: yaxi.HtmlControl,
+                html: content
+            }
+        ];
+    }
+
+    callback = options.callback;
+
+    options = {
+        className: 'yx-messagebox',
+        header: options.title || '柚子钱包',
+        host: {
+            layout: 'row',
+            style: {
+                alignItems: 'center'
+            },
+            children: content
+        },
+        footer: {
+            subtype: yaxi.Button,
+            children: buttons,
+            events: {
+
+                tap: function (event) {
+
+                    this.root.close();
+                    callback && callback(event.target);
+                }
+            }
+        }
+    };
+    
+    dialog = new yaxi.Dialog(options);
+    dialog.open();
+
+    return dialog;
+}
+
+
+yaxi.prompt = function (options) {
+
+    options = options || {};
+
+    options.content = [
+        {
+            Class: options.password ? yaxi.Password : yaxi.TextBox,
+            text: options.value,
+            style: {
+                width: '100%'
+            }
+        }
+    ];
+
+    return yaxi.showMessage(options);
+}
+
+
+
+
+yaxi.Title = yaxi.Control.extend(function (Class) {
+    
+    
+
+    yaxi.template(this, '<div class="yx-control yx-title"></div>');
+    
+    
+
+    this.$properties({
+
+        text: ''
+    });
+
+
+
+    this.__set_text = function (dom, value) {
+
+        dom.textContent = value;
+    }
+	
+	
+	
+});
+
+
+
+
 (function () {
 
 
     var dom = document.createElement('div');
 
-    var loading = '<svg class="yx-toast-loading" aria-hidden="true"><use xlink:href="#icon-loading"></use></svg>';
+    var mask = document.createElement('div');
 
     var delay;
 
 
 
     dom.className = 'yx-toast';
+    mask.className = 'yx-toast-mask';
 
 
     function close() {
 
+        var any;
+
         delay = 0;
 
-        if (dom.parentNode)
+        if (any = dom.parentNode)
         {
-            dom.parentNode.removeChild(dom);
+            any.removeChild(dom);
+            window.removeEventListener('resize', computePosition, true);
+        }
+
+        if (any = mask.parentNode)
+        {
+            any.removeChild(mask);
         }
     }
 
@@ -3999,18 +4514,25 @@ yaxi.TextBox = yaxi.Control.extend(function () {
             options = { text: options };
         }
     
-        dom.innerHTML = (options.loading ? loading : '') + '<span>' + options.text + '</span>';
+        dom.innerHTML = (options.loading ? '<span class="yx-toast-loading"></span>' : '')
+            + '<span>' + options.text + '</span>';
     
+        if (options.mask !== false && !mask.parentNode)
+        {
+            document.body.appendChild(mask);
+        }
+
         if (!dom.parentNode)
         {
             document.body.appendChild(dom);
+            window.addEventListener('resize', computePosition, true);
         }
 
         style.cssText = options.style || '';
         style.marginLeft = -(dom.offsetWidth >> 1) + 'px';
 
         delay = setTimeout(close, options.time || 2500);
-    } 
+    }
 
 
     this.toast.hide = function () {
@@ -4018,15 +4540,19 @@ yaxi.TextBox = yaxi.Control.extend(function () {
         if (delay)
         {
             clearTimeout(delay);
-            delay = 0;
         }
 
-        if (dom.parentNode)
-        {
-            dom.parentNode.removeChild(dom);
-        }
+        close();
     }
 
 
+    function computePosition() {
+
+        var style = dom.style;
+
+        style.top = (window.innerHeight - dom.offsetHeight >> 1) + 'px';
+        style.left = (window.innerWidth - dom.offsetWidth >> 1) + 'px';
+    }
+    
 
 }).call(yaxi);

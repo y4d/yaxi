@@ -15,21 +15,29 @@
 
         var page = new yaxi.Page({
 
-            children: [
-                {
-                    Class: yaxi.SwitchButton
-                },
-                {
-                    Class: yaxi.SwitchButton,
-                    checked: true
-                },
-                {
-                    Class: yaxi.Password
-                },
-                {
-                    Class: yaxi.RadioButton
-                }
-            ]
+            // header: 'text',
+            host: {
+
+                children: [
+                    {
+                        Class: yaxi.SwitchButton
+                    },
+                    {
+                        Class: yaxi.SwitchButton,
+                        checked: true
+                    },
+                    {
+                        Class: yaxi.Password
+                    },
+                    {
+                        Class: yaxi.RadioButton
+                    }
+                ]
+            },
+            // footer: {
+            //     Class: yaxi.Text,
+            //     text: '11111111111111'
+            // }
         });
 
 

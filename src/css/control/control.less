@@ -59,15 +59,45 @@
 
 .yx-page {
     position: absolute;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: column;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
 }
 
-.yx-floatlayer {
+.yx-dialog {
     position: absolute;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: column;
     left: 0;
     top: 0;
     z-index: 10;
+    overflow: hidden;
+}
+
+
+.yx-header {
+    position: relative;
+    height: .45rem;
+    line-height: .45rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.yx-host {
+    position: relative;
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.yx-footer {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
 }
