@@ -2,7 +2,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
 
 
-    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><svg aria-hidden="true"><use xlink:href="#icon-eye-close"></use></svg></span>');
+    yaxi.template(this, '<span class="yx-control yx-textbox yx-password"><input type="password" /><span><svg aria-hidden="true"><use xlink:href="#icon-eye-close"></use></svg></span></span>');
 
 
 
@@ -82,7 +82,7 @@ yaxi.Password = yaxi.Control.extend(function () {
 
         while (target && target !== dom)
         {
-            if (target.tagName === 'svg')
+            if (target.tagName === 'SPAN')
             {
                 dom = dom.firstChild;
                 
@@ -97,7 +97,7 @@ yaxi.Password = yaxi.Control.extend(function () {
                     icon = 'eye-open';
                 }
 
-                target.firstChild.setAttribute('xlink:href', '#icon-' + icon);
+                target.firstChild.firstChild.setAttribute('xlink:href', '#icon-' + icon);
                 return;
             }
 

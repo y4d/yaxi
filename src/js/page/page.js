@@ -66,9 +66,9 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 				any.$className = 'yx-header';
 			}
 		
-			if (any = data.host)
+			if (any = data.content)
 			{
-				this.host = new (any.Class || yaxi.Panel)(any);
+				this.content = new (any.Class || yaxi.Panel)(any);
 			}
 
 			if (any = data.footer)
@@ -79,15 +79,15 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 			}
 		}
 		
-		any = this.host || (this.host = new yaxi.Panel());
+		any = this.content || (this.content = new yaxi.Panel());
 		any.$parent = this;
-		any.$className = 'yx-host';
+		any.$className = 'yx-content';
 	}
 
 
 
 	
-	this.__c_header = this.__c_host = this.__c_footer = false;
+	this.__c_header = this.__c_content = this.__c_footer = false;
 
 
 	this.__template_header = function (text) {
@@ -225,7 +225,7 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 			any.destroy();
 		}
 
-		this.host.destroy();
+		this.content.destroy();
 
 		if (any = this.header)
 		{
@@ -251,10 +251,10 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
             dom.appendChild(any);
         }
 
-        if (any = this.host)
+        if (any = this.content)
         {
 			any = any.render();
-			any.classList.add('yx-host');
+			any.classList.add('yx-content');
 
             dom.appendChild(any);
         }

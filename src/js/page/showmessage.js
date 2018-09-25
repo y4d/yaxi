@@ -1,42 +1,16 @@
 yaxi.showMessage = function (options) {
 
-    var dialog, content, buttons, callback;
+    var dialog, content, callback;
 
     if (typeof options === 'string')
     {
         options = {
-            title: options
-        }
-    }
-    
-    if (buttons = (options || (options = {})).buttons)
-    {
-        for (var i = buttons.length; i--;)
-        {
-            if ((content = buttons[i]) && typeof content === 'string')
-            {
-                buttons[i] = {
-                    text: content
-                };
-
-                if (i === 0)
-                {
-                    buttons[i].theme = 'primary';
-                }
-            }
+            header: options
         }
     }
     else
     {
-        buttons = [
-            {
-                theme: 'primary',
-                text: 'OK'
-            },
-            {
-                text: 'Cancel'
-            }
-        ];
+        options = options || {};
     }
 
     if ((content = options.content) && typeof content === 'string')
@@ -53,8 +27,8 @@ yaxi.showMessage = function (options) {
 
     options = {
         className: 'yx-messagebox',
-        header: options.title || '柚子钱包',
-        host: {
+        header: options.header || yaxi.showMessage.header,
+        content: {
             layout: 'row',
             style: {
                 alignItems: 'center'
@@ -63,7 +37,17 @@ yaxi.showMessage = function (options) {
         },
         footer: {
             subtype: yaxi.Button,
-            children: buttons,
+            children: options.buttons || [
+                {
+                    theme: 'primary',
+                    key: 'OK',
+                    text: '确定'
+                },
+                {
+                    key: 'Cancel',
+                    text: '取消'
+                }
+            ],
             events: {
 
                 tap: function (event) {
@@ -89,7 +73,7 @@ yaxi.prompt = function (options) {
     options.content = [
         {
             Class: options.password ? yaxi.Password : yaxi.TextBox,
-            text: options.value,
+            text: options.value || '',
             style: {
                 width: '100%'
             }

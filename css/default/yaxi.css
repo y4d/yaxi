@@ -314,7 +314,7 @@ input {
   right: 0;
   height: 0.45rem;
 }
-.yx-host {
+.yx-content {
   position: relative;
   width: 100%;
   height: 100%;
@@ -401,7 +401,7 @@ input {
   flex-shrink: 0;
   overflow: hidden;
 }
-.yx-host {
+.yx-content {
   position: relative;
   flex-grow: 1;
   overflow-x: hidden;
@@ -571,7 +571,18 @@ input {
 .yx-password {
   position: relative;
 }
-.yx-password > svg {
+.yx-password > input {
+  padding-right: 0.3rem;
+}
+.yx-password > span {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0.3rem;
+}
+.yx-password > span > svg {
   position: absolute;
   width: 1.2em;
   height: 1.2em;
@@ -663,7 +674,7 @@ input {
   border-bottom: 1px solid #c0c4cc;
   background-color: #f8f8f8;
 }
-.yx-host {
+.yx-content {
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -672,7 +683,7 @@ input {
   height: 0.4rem;
   line-height: 0.4rem;
 }
-.yx-dialog > .yx-host {
+.yx-dialog > .yx-content {
   min-height: 0.8rem;
   padding: 0.1rem;
 }
