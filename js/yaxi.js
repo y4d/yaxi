@@ -2565,11 +2565,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             dom.$control = this.$dom = null;
         }
 
+        if (this.__event_keys)
+        {
+            this.off();
+        }
+        
         if (this.ondestroy)
         {
             this.ondestroy();
         }
-        
+
         this.$parent = null;
         this.destroyed = true;
     }
@@ -2916,16 +2921,29 @@ yaxi.Panel = yaxi.Control.extend(function (Class, base) {
 
     this.$properties({
 
+        // 布局类型
         layout: ''
     });
 
 
 
+    // 子控件集合
     Object.defineProperty(this, 'children', {
 
         get: function () {
 
             return this.__children;
+        },
+        set: function (value) {
+
+            var children = this.__children;
+
+            children.clear();
+
+            if (value && value.length > 0)
+            {
+                children.push.apply(children, value);
+            }
         }
     });
 

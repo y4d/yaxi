@@ -253,11 +253,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             dom.$control = this.$dom = null;
         }
 
+        if (this.__event_keys)
+        {
+            this.off();
+        }
+        
         if (this.ondestroy)
         {
             this.ondestroy();
         }
-        
+
         this.$parent = null;
         this.destroyed = true;
     }
