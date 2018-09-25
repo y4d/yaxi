@@ -618,9 +618,9 @@ input {
   top: 50%;
   left: 0;
   right: 0;
-  height: 0.1rem;
-  margin-top: -0.05rem;
-  border-radius: 0.05rem;
+  height: 0.25rem;
+  margin-top: -0.125rem;
+  border-radius: 0.125rem;
   background-color: #c0c4cc;
 }
 .yx-switchbutton-button {
@@ -628,11 +628,11 @@ input {
   display: inline-block;
   left: 0;
   top: 50%;
-  width: 0.2rem;
-  height: 0.2rem;
-  margin-top: -0.1rem;
+  width: 0.25rem;
+  height: 0.25rem;
+  margin-top: -0.125rem;
   border: 1px solid #c0c4cc;
-  border-radius: 0.1rem;
+  border-radius: 0.125rem;
   background-color: white;
 }
 .yx-switchbutton-checked > .yx-switchbutton-bar {

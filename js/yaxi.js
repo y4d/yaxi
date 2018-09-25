@@ -2381,6 +2381,48 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
 
 
+    Object.defineProperty(this, 'offsetTop', {
+
+        get: function () {
+
+            var dom = this.$dom;
+            return dom ? dom.offsetTop: 0;
+        }
+    });
+
+
+    Object.defineProperty(this, 'offsetLeft', {
+
+        get: function () {
+
+            var dom = this.$dom;
+            return dom ? dom.offsetLeft: 0;
+        }
+    });
+
+
+    Object.defineProperty(this, 'offsetWidth', {
+
+        get: function () {
+
+            var dom = this.$dom;
+            return dom ? dom.offsetWidth: 0;
+        }
+    });
+
+
+    Object.defineProperty(this, 'offsetHeight', {
+
+        get: function () {
+
+            var dom = this.$dom;
+            return dom ? dom.offsetHeight: 0;
+        }
+    });
+
+
+
+
     // 样式集
     Object.defineProperty(this, 'style', {
 
@@ -3453,7 +3495,8 @@ yaxi.Memo = yaxi.Control.extend(function () {
 
         get: function () {
 
-            return this.$dom.firstChild.value;
+            var dom = this.$dom;
+            return dom ? dom.firstChild.value : 0;
         }
     });
 
@@ -3523,7 +3566,8 @@ yaxi.Password = yaxi.Control.extend(function () {
 
         get: function () {
 
-            return this.$dom.firstChild.value;
+            var dom = this.$dom;
+            return dom ? dom.firstChild.value : 0;
         }
     });
 
@@ -3732,7 +3776,8 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
         get: function () {
 
-            return this.$dom.firstChild.value;
+            var dom = this.$dom;
+            return dom ? dom.firstChild.value : 0;
         }
     });
 

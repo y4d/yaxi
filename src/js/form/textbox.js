@@ -18,7 +18,8 @@ yaxi.TextBox = yaxi.Control.extend(function () {
 
         get: function () {
 
-            return this.$dom.firstChild.value;
+            var dom = this.$dom;
+            return dom ? dom.firstChild.value : 0;
         }
     });
 
