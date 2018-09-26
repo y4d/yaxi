@@ -284,17 +284,21 @@ yaxi.EventTarget = Object.extend(function (Class) {
 			}
 			else
 			{
+                // 处理焦点事件以解决change事件触发晚的问题
+                var active = document.activeElement;
+
+                if (active && active !== e.target)
+                {
+                    active.blur();
+                }
+
 				// 初始化事件类型，是否冒泡，是否阻止浏览器的默认行为
                 event.initEvent('tap', true, true);
                 
                 event.clientX = touch.clientX;
                 event.clientY = touch.clientY;
-                
-                setTimeout(function () {
-
-                    e.target.dispatchEvent(event);
-
-                }, 0);
+            
+                e.target.dispatchEvent(event);
 			}
 			
 		}

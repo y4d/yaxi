@@ -590,17 +590,21 @@ yaxi.EventTarget = Object.extend(function (Class) {
 			}
 			else
 			{
+                // 处理焦点事件以解决change事件触发晚的问题
+                var active = document.activeElement;
+
+                if (active && active !== e.target)
+                {
+                    active.blur();
+                }
+
 				// 初始化事件类型，是否冒泡，是否阻止浏览器的默认行为
                 event.initEvent('tap', true, true);
                 
                 event.clientX = touch.clientX;
                 event.clientY = touch.clientY;
-                
-                setTimeout(function () {
-
-                    e.target.dispatchEvent(event);
-
-                }, 0);
+            
+                e.target.dispatchEvent(event);
 			}
 			
 		}
@@ -4452,8 +4456,12 @@ yaxi.showMessage = function (options) {
 
                 tap: function (event) {
 
-                    this.root.close();
-                    callback && callback(event.target);
+                    var dialog = this.parent;
+
+                    if (!callback || callback.call(dialog, event.target) !== false)
+                    {
+                        dialog.close();
+                    }
                 }
             }
         }
@@ -4474,7 +4482,7 @@ yaxi.prompt = function (options) {
 
     callback && (options.callback = function (button) {
 
-        callback(button.root.findByKey('input').text, button);
+        return callback.call(this, this.content.findByKey('input').text, button);
     });
 
     options.content = [

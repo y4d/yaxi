@@ -52,8 +52,12 @@ yaxi.showMessage = function (options) {
 
                 tap: function (event) {
 
-                    this.root.close();
-                    callback && callback(event.target);
+                    var dialog = this.parent;
+
+                    if (!callback || callback.call(dialog, event.target) !== false)
+                    {
+                        dialog.close();
+                    }
                 }
             }
         }
@@ -74,7 +78,7 @@ yaxi.prompt = function (options) {
 
     callback && (options.callback = function (button) {
 
-        callback(button.root.findByKey('input').text, button);
+        return callback.call(this, this.content.findByKey('input').text, button);
     });
 
     options.content = [
