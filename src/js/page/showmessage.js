@@ -68,11 +68,19 @@ yaxi.showMessage = function (options) {
 
 yaxi.prompt = function (options) {
 
+    var callback = options && options.callback;
+
     options = options || {};
+
+    callback && (options.callback = function (button) {
+
+        callback(button.root.findByKey('input').text, button);
+    });
 
     options.content = [
         {
             Class: options.password ? yaxi.Password : yaxi.TextBox,
+            key: 'input',
             text: options.value || '',
             style: {
                 width: '100%'
