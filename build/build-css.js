@@ -13,5 +13,4 @@ webminify()
     ])
     .combine('\r\n\r\n\r\n\r\n')
     .lessToCss()
-    .output('css/default/yaxi.css')
-    .done();
+    .output('css/default/yaxi.css');
