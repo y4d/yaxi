@@ -23,7 +23,7 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 
 	Class.closeTo = function (level, closeType) {
 
-		var list = Class.all;
+		var list = Class.all();
 
 		level |= 0;
 
