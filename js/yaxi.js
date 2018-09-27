@@ -2153,16 +2153,7 @@ yaxi.Stream = Object.extend(function (Class) {
             {
                 if (this.status < 300)
                 {
-                    var data = JSON.parse(this.responseText);
-
-                    if (data.rcode === 200)
-                    {
-                        stream.resolve(data.data);
-                    }
-                    else
-                    {
-                        stream.reject(data.msg);
-                    }
+                    stream.resolve(this.responseText || this.responseXML);
                 }
                 else
                 {
