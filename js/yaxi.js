@@ -2840,7 +2840,7 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
             changed;
         
         // 提交输入
-        if ((changed = input) && changed !== control)
+        if ((changed = input) && changed !== control && changed.$dom)
         {
             changed.__on_change();
             changed.trigger('change');
@@ -3888,6 +3888,8 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 		{
 			list[i].close(closeType || 'OK');
 		}
+
+		return list[level];
 	}
 
 

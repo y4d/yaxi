@@ -32,6 +32,8 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 		{
 			list[i].close(closeType || 'OK');
 		}
+
+		return list[level];
 	}
 
 
