@@ -179,6 +179,25 @@ yaxi.Stream = Object.extend(function (Class) {
     }
 
 
+    this.json = function (fn) {
+
+        return this.registry(function (next, value) {
+
+            if (typeof value === 'string')
+            {
+                value = JSON.parse(value);
+            }
+
+            if (fn)
+            {
+                fn(value);
+            }
+
+            next.resolve(value);
+        });
+    }
+
+
     this.catch = function (fault) {
 
         this.__error = fault;

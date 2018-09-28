@@ -18,5 +18,8 @@
     "url": "https://github.com/y4d/yaxi/issues"
   },
   "homepage": "https://github.com/y4d/yaxi#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "webminify": "^1.3.8"
+  }
 }
