@@ -44,13 +44,6 @@ yaxi.Password = yaxi.Control.extend(function () {
     }
 
 
-    
-    
-    this.__on_change = function (event) {
-
-        this.text = event.target.value;
-    }
-
 
     this.__bind_event = function (dom, name, listener) {
 

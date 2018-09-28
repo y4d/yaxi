@@ -381,6 +381,10 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     // 添加补丁
     var patch = yaxi.__append_patch;
 
+    // 正在输入的控件
+    var input;
+
+
     
     // 事件变更处理
     this.__event_change = function (type, items, on) {
@@ -457,26 +461,25 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
-    function findControl(event) {
+    function findControl(dom) {
 
-        var target = event.target,
-            control;
+        var control;
 
-        while (target)
+        while (dom)
         {
-            if (control = target.$control)
+            if (control = dom.$control)
             {
                 return control;
             }
 
-            target = target.parentNode;
+            dom = dom.parentNode;
         }
     }
 
 
     function domEventListener(event) {
 
-        var control = findControl(event) || this.$control;
+        var control = findControl(event.target) || this.$control;
 
         event.stopPropagation();
 
@@ -515,7 +518,16 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     document.addEventListener('tap', function (event) {
 
-        var control = findControl(event);
+        var control = findControl(event.target),
+            changed;
+        
+        // 提交输入
+        if ((changed = input) && changed !== control)
+        {
+            changed.__on_change();
+            changed.trigger('change');
+            changed = null;
+        }
 
         if (control && !control.disabled)
         {
@@ -527,13 +539,15 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     document.addEventListener('input', function (event) {
 
-        var control = findControl(event);
+        var control = findControl(event.target);
 
         if (control && !control.disabled)
         {
+            input = control;
+
             control.trigger('input', {
                 
-                value: event.target.value
+                text: event.target.value
             });
         }
     });
@@ -541,14 +555,22 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
 
     document.addEventListener('change', function (event) {
 
-        var control = findControl(event);
+        var changed;
 
-        if (control && !control.disabled)
+        if (changed = input)
         {
-            control.__on_change(event);
-            control.trigger('change');
+            changed.__on_change();
+            changed.trigger('change');
+            changed = null;
         }
 
+        // var control = findControl(event.target);
+
+        // if (control && !control.disabled)
+        // {
+        //     control.__on_change();
+        //     control.trigger('change');
+        // }
     });
 
 
@@ -558,18 +580,9 @@ yaxi.Control = yaxi.Observe.extend(function (Class, base) {
     }
 
 
-    this.__on_change = function (event) {
+    this.__on_change = function () {
 
-        var storage = this.__storage;
-
-        if (storage)
-        {
-            storage.text = event.target.value;
-        }
-        else
-        {
-            this.__v_text = event.target.value;
-        }
+        this.text = this.$dom.firstChild.value;
     }
 
 
