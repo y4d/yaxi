@@ -3866,11 +3866,12 @@ yaxi.Page = yaxi.Control.extend(function (Class, base) {
 	Class.all = function () {
 
 		var list = [],
-			page;
+			page = Class.current;
 
-		while (page = Class.current)
+		while (page)
 		{
 			list.push(page);
+			page = page.opener;
 		}
 
 		return list.reverse();
