@@ -85,8 +85,8 @@ yaxi.Stream = Object.extend(function (Class) {
 
         var instance = new Class(),
             cache = [],
+            index = 0,
             length = 0,
-            index,
             item;
 
         while (item = arguments[index])
