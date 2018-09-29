@@ -95,8 +95,6 @@ yaxi.Stream = Object.extend(function (Class) {
 
             (function (item, index) {
 
-                item.index = index++;
-
                 item
                     .then(function (value) {
 
