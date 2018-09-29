@@ -81,6 +81,44 @@ yaxi.Stream = Object.extend(function (Class) {
     }
 
 
+    Class.all = function () {
+
+        var instance = new Class(),
+            cache = [],
+            length = 0,
+            index,
+            item;
+
+        while (item = arguments[index])
+        {
+            length++;
+
+            (function (item, index) {
+
+                item.index = index++;
+
+                item
+                    .then(function (value) {
+
+                        cache[index] = value;
+
+                        if (!--length)
+                        {
+                            instance.resolve(cache);
+                        }
+                    })
+                    .catch(function (error) {
+                        
+                        instance.reject(error);
+                    });
+
+            })(item, index++);
+        }
+
+        return instance;
+    }
+
+
 
     this.registry = function (fn) {
 
@@ -95,7 +133,7 @@ yaxi.Stream = Object.extend(function (Class) {
             {
                 try
                 {
-                    fn.call(this, next, cache.shift());
+                    fn.call(this, cache.shift(), next);
                 }
                 catch (e)
                 {
@@ -113,17 +151,21 @@ yaxi.Stream = Object.extend(function (Class) {
 
     this.resolve = function (value) {
 
-        var any;
+        var next = this.__next,
+            any;
 
-        if (any = this.__next)
+        if (next)
         {
-            try
+            if (any = this.__fn)
             {
-                this.__fn && this.__fn(any, value);
-            }
-            catch (e)
-            {
-                this.reject(e);
+                try
+                {
+                    any.call(this, value, next);
+                }
+                catch (e)
+                {
+                    this.reject(e);
+                }
             }
         }
         else if (any = this.__cache)
@@ -162,17 +204,53 @@ yaxi.Stream = Object.extend(function (Class) {
 
     this.then = function (fn) {
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
-            fn(value);
+            if (fn)
+            {
+                var result = fn(value);
+
+                if (result !== void 0)
+                {
+                    value = result;
+                }
+            }
+
             next.resolve(value);
+        });
+    }
+
+
+    this.combine = function (stream) {
+
+        return this.registry(function (value, next) {
+
+            stream
+                .then(function (thenValue) {
+
+                    if (value instanceof Array)
+                    {
+                        thenValue = [value, thenValue];
+                    }
+                    else
+                    {
+                        value.push(thenValue);
+                        thenValue = value;
+                    }
+
+                    next.resolve(thenValue);
+                })
+                .catch(function (error) {
+
+                    next.reject(error);
+                });
         });
     }
 
 
     this.map = function (fn) {
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             next.resolve(fn(value));
         });
@@ -181,7 +259,7 @@ yaxi.Stream = Object.extend(function (Class) {
 
     this.json = function (fn) {
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             if (typeof value === 'string')
             {
@@ -190,7 +268,7 @@ yaxi.Stream = Object.extend(function (Class) {
 
             if (fn)
             {
-                fn(value);
+                value = fn(value);
             }
 
             next.resolve(value);
@@ -210,7 +288,7 @@ yaxi.Stream = Object.extend(function (Class) {
         var cache = [];
         var timeout;
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             if (timeout)
             {
@@ -232,7 +310,7 @@ yaxi.Stream = Object.extend(function (Class) {
 
     this.delay = function (time) {
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             setTimeout(function () {
 
@@ -247,7 +325,7 @@ yaxi.Stream = Object.extend(function (Class) {
 
         var timeout;
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             if (timeout)
             {
@@ -268,7 +346,7 @@ yaxi.Stream = Object.extend(function (Class) {
 
         var timeout;
 
-        return this.registry(function (next, value) {
+        return this.registry(function (value, next) {
 
             if (!timeout)
             {
