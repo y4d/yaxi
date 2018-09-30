@@ -425,7 +425,10 @@ yaxi.EventTarget = Object.extend(function (Class) {
                 items = events[type] = [listener];
             }
             
-            this.__event_change(type, items, true);
+            if (listener = this.__event_change)
+            {
+                this.__event_change(type, items, true);
+            }
         }
     }
 
