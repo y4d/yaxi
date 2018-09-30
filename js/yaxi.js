@@ -49,7 +49,7 @@ Object.extend = function (fn) {
 
 
 
-(function (Math) {
+;(function (Math) {
     
 
     var pows = Object.create(null);

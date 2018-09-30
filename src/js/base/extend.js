@@ -1,4 +1,4 @@
-(function (Math) {
+;(function (Math) {
     
 
     var pows = Object.create(null);
