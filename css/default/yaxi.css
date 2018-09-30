@@ -282,38 +282,6 @@ input {
   font-size: 0.16rem;
   padding: 0.02rem 0.05rem;
 }
-[layout="left"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-[layout="right"] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-[layout="top"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-[layout="center"],
-[layout="middle"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-[layout="bottom"] {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 [layout="row"] {
   display: -webkit-flex;
   display: flex;

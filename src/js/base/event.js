@@ -36,9 +36,12 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     
     var Event = yaxi.Event;
+
+    var prototype = this;
+
     
 
-    this.on = function (type, listener) {
+    this.on = yaxi.on = function (type, listener) {
         
         if (type && typeof listener === 'function')
         {
@@ -67,7 +70,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
     }
 
 
-    this.once = function (type, listener) {
+    this.once = yaxi.once = function (type, listener) {
 
         if (typeof listener === 'function')
         {
@@ -82,7 +85,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
     }
 
 
-    this.off = function (type, listener) {
+    this.off = yaxi.off = function (type, listener) {
         
         var events = this.__event_keys,
             items;
@@ -122,12 +125,15 @@ yaxi.EventTarget = Object.extend(function (Class) {
                 events[type] = null;
             }
 
-            this.__event_change(type, items, false);
+            if (listener = this.__event_change)
+            {
+                listener.call(this, type, items, false);
+            }
         }
     }
 
 
-    this.trigger = function (type, payload) {
+    this.trigger = yaxi.trigger = function (type, payload) {
         
         var target = this,
             events,
@@ -178,6 +184,17 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     this.__event_change = function (type, items, on) {
     }
+
+
+
+    Class.mixin = function (target) {
+
+        target.on = prototype.on;
+        target.once = prototype.once;
+        target.off = prototype.off;
+        target.trigger = prototype.trigger;
+    }
+
 
 
 });

@@ -49,6 +49,60 @@ Object.extend = function (fn) {
 
 
 
+(function (Math) {
+    
+
+    var pows = Object.create(null);
+    
+    var round = Math.round;
+
+
+
+    Math.round2 = function (value, digits) {
+
+        if ((digits |= 0) > 0)
+        {
+            var pow = pows[digits] || (pows[digits] = Math.pow(10, digits));
+
+            // +0.00000001解决如2.135*100不等于213.5的问题
+            return round(value * pow + 0.00000001) / pow;
+        }
+
+        // +0.00000001解决如2.135*100不等于213.5的问题
+        return round(value + 0.00000001);
+    }
+
+
+    // 注: 不同浏览器toFixed有差异, chrome使用的是银行家舍入规则
+    // 银行家舍入: 所谓银行家舍入法, 其实质是一种四舍六入五取偶(又称四舍六入五留双)法
+    // 简单来说就是: 四舍六入五考虑, 五后非零就进一, 五后为零看奇偶, 五前为奇应舍去, 五前为偶要进一
+    // 此处统一处理为四舍五入
+    Object.defineProperty(Number.prototype, 'toFixed2', {
+
+        enumerable: false,
+
+        value: (1.115).toFixed(2) !== '1.11' ? (0).toFixed : function (digits) {
+
+            if ((digits |= 0) > 0)
+            {
+                var pow = pows[digits] || (pows[digits] = Math.pow(10, digits));
+    
+                // +0.00000001解决如2.135*100不等于213.5的问题
+                return (round(this * pow + 0.00000001) / pow).toFixed(digits);
+            }
+    
+            // +0.00000001解决如2.135*100不等于213.5的问题
+            return '' + round(this + 0.00000001);
+        }
+    });
+
+
+
+})(Math);
+
+
+
+
 yaxi.__extend_properties = function (get, set) {
 
 
@@ -342,9 +396,12 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     
     var Event = yaxi.Event;
+
+    var prototype = this;
+
     
 
-    this.on = function (type, listener) {
+    this.on = yaxi.on = function (type, listener) {
         
         if (type && typeof listener === 'function')
         {
@@ -373,7 +430,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
     }
 
 
-    this.once = function (type, listener) {
+    this.once = yaxi.once = function (type, listener) {
 
         if (typeof listener === 'function')
         {
@@ -388,7 +445,7 @@ yaxi.EventTarget = Object.extend(function (Class) {
     }
 
 
-    this.off = function (type, listener) {
+    this.off = yaxi.off = function (type, listener) {
         
         var events = this.__event_keys,
             items;
@@ -428,12 +485,15 @@ yaxi.EventTarget = Object.extend(function (Class) {
                 events[type] = null;
             }
 
-            this.__event_change(type, items, false);
+            if (listener = this.__event_change)
+            {
+                listener.call(this, type, items, false);
+            }
         }
     }
 
 
-    this.trigger = function (type, payload) {
+    this.trigger = yaxi.trigger = function (type, payload) {
         
         var target = this,
             events,
@@ -484,6 +544,17 @@ yaxi.EventTarget = Object.extend(function (Class) {
 
     this.__event_change = function (type, items, on) {
     }
+
+
+
+    Class.mixin = function (target) {
+
+        target.on = prototype.on;
+        target.once = prototype.once;
+        target.off = prototype.off;
+        target.trigger = prototype.trigger;
+    }
+
 
 
 });
