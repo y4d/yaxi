@@ -1,11 +1,14 @@
 (function (color) {
 
 
+    color.back = '#ffffff';
+
+
     color.default1 = "#000000";
     color.default2 = "#606266";
     color.default3 = "#c0c4cc";
-    color.default4 = "#f8f8f8";
-    color.default5 = "#ffffff";
+    color.default4 = "#e0e0e0";
+    color.default5 = "#f8f8f8";
     
     
     color.primary1 = "#3a8ee6";

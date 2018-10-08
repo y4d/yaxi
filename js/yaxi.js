@@ -2314,11 +2314,25 @@ yaxi.Stream = Object.extend(function (Class) {
             {
                 if (this.status < 300)
                 {
-                    stream.resolve(this.responseText || this.responseXML);
+                    if (this.status === http.redirectStatus)
+                    {
+                        http.redirect();
+                    }
+                    else
+                    {
+                        stream.resolve(this.responseText || this.responseXML);
+                    }
                 }
                 else
                 {
-                    stream.reject(this.statusText);
+                    try
+                    {
+                        stream.reject(this.statusText);
+                    }
+                    catch (e)
+                    {
+                        flyingon.toast(this.statusText);
+                    }
                 }
                 
                 // 清除引用
@@ -2347,6 +2361,17 @@ yaxi.Stream = Object.extend(function (Class) {
         return stream;
     }
 
+
+
+    // 重定向状态码
+    http.redirectStatus = 299;
+
+
+    // 重定向
+    http.redirect = function () {
+        
+        location.href = 'index.html';
+    }
 
 
     http.send = function (method, url, data, options) {
@@ -2398,11 +2423,14 @@ yaxi.Stream = Object.extend(function (Class) {
 (function (color) {
 
 
+    color.back = '#ffffff';
+
+
     color.default1 = "#000000";
     color.default2 = "#606266";
     color.default3 = "#c0c4cc";
-    color.default4 = "#f8f8f8";
-    color.default5 = "#ffffff";
+    color.default4 = "#e0e0e0";
+    color.default5 = "#f8f8f8";
     
     
     color.primary1 = "#3a8ee6";
